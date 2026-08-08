@@ -1,0 +1,2 @@
+# Keep committed text reproducible across Windows and Unix clean checkouts.
+* text=auto eol=lf
