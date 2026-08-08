@@ -2,8 +2,10 @@
 
 **Version:** 1.0  
 **Date:** 5 August 2026  
-**Active phase:** Deliverable 3 owner review  
-**Implementation status:** Not started; Sprint 0 awaits explicit approval
+**Active phase:** Sprint 0 closed; Sprint 1 authentication decision gate
+**Implementation status:** Sprint 0 closed and committed; Sprint 1 awaits authentication-provider approval
+
+> **Status notice:** This approved blueprint preserves the forward-looking scope and authorization language written before Sprint 0. The current execution state is governed by the [Sprint 0 closure record](../sprints/sprint-0/closure.md); historical statements below about what approval did or did not authorize describe the gate at that time, not the current Git state.
 
 ## 1. Strategy
 
@@ -58,7 +60,7 @@ This is a recommendation, not an installed stack. Exact vendors and supported ve
 - No service, queue, storage bucket, analytics SDK, or AI integration is created for hypothetical future use.
 - Production and non-production accounts, data, secrets, and databases are separated.
 
-## 6. Review order
+## 6. Original review order
 
 1. Approve or revise the PRD and MVP boundary (`03a`, `03b`).
 2. Approve navigation/flow decisions (`03c`).
@@ -66,18 +68,13 @@ This is a recommendation, not an installed stack. Exact vendors and supported ve
 4. Review architecture/data invariants (`03e`, `03f`).
 5. Approve security/privacy/retention and quality gates (`03g`, `03h`).
 6. Approve or revise the sprint sequence (`03i`).
-7. Issue a separate explicit authorization before Sprint 0.
+7. Issue a separate explicit authorization before Sprint 0. **Completed.**
 
-## 7. Owner decisions before Sprint 0 or production
+## 7. Remaining owner decisions before Sprint 1 or production
 
-### Sprint 0 blockers
+### Sprint 1 blocker
 
-- Hosting direction and operating-cost ceiling.
-- Managed auth versus application-owned fallback; vendor-evaluation authority.
-- PostgreSQL provider/region and required backup tier.
-- Transactional email sender domain/provider.
-- Repository/branch/review policy and initial team/owner roles.
-- Locale routing, week-start default, and narrow-mobile calendar decision.
+- Approve the authentication provider direction, Saudi privacy/data-region position, technical evaluation, cost envelope, and operational ownership recorded in [the provider evaluation](../decisions/sprint-1-authentication-provider-evaluation.md).
 
 ### Production blockers
 
@@ -90,9 +87,9 @@ Unknown values are not guessed in application code.
 
 ## 8. Current status
 
-- Deliverable 3 documentation: prepared for owner review.
-- Sprint 0: **NOT STARTED / NOT AUTHORIZED**.
-- Production code/dependencies/database/infrastructure: none created by Deliverable 3.
+- Deliverable 3 documentation: approved production blueprint.
+- Sprint 0: **CLOSED AND COMMITTED**.
+- Sprint 1: **NOT STARTED / NOT AUTHORIZED** pending authentication-provider approval.
+- Production foundation: committed locally; no remote push, deployment, or production service exists.
 - Participant research: cancelled; no contact, forms, sessions, or findings.
 - Research prototype: historical disposable artifact only.
-

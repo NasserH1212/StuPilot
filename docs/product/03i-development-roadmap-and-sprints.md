@@ -3,7 +3,7 @@
 **Deliverable:** 3I  
 **Version:** 1.0  
 **Date:** 5 August 2026  
-**Status:** Proposed sequence; Sprint 0 has not started
+**Status:** Approved sequence; Sprint 0 closed; Sprint 1 awaits authentication-provider approval
 
 ## 1. Roadmap rules
 
@@ -12,7 +12,7 @@
 - Arabic/RTL, English/LTR, mobile, desktop, ownership, errors, and accessibility are continuous work—not Sprint 8 cleanup only.
 - Expected paths are planning conventions, not files created by this deliverable.
 - No participant research gate exists. Owner review, engineering evidence, security, legal/provider, and release gates still apply.
-- Sprint 0 implementation requires explicit owner approval after Deliverable 3 review.
+- Sprint 0 implementation began only after explicit owner approval of Deliverable 3 and is now closed.
 
 ## 2. Sequence overview
 
@@ -32,6 +32,8 @@
 Sprint numbers are dependency order, not calendar commitments. Duration depends on team, vendor decisions, and defect load.
 
 ## 3. Sprint 0 — Repository and engineering foundation
+
+> **Closure note (2026-08-08):** Sprint 0 is closed and committed on `main`. The owner accepted the implemented foundation and its recorded exceptions; see the [closure record](../sprints/sprint-0/closure.md). The planned scope below is retained as the approved roadmap baseline.
 
 **Goal:** establish a reproducible, secure production project without implementing academic features.
 
@@ -256,5 +258,4 @@ Owner decision: APPROVE / DEFER / REJECT
 
 ## 15. Start condition
 
-The next action is owner review of Deliverable 3. Do not create Sprint 0 code, dependencies, cloud services, environments, or deployment until the owner explicitly authorizes Sprint 0 and resolves its blocking decisions.
-
+The next action is owner review of the [Sprint 1 authentication provider evaluation](../decisions/sprint-1-authentication-provider-evaluation.md). Do not install or configure authentication, begin onboarding or academic features, create cloud services or production environments, deploy, or push until the owner explicitly approves the provider direction and separately authorizes Sprint 1.

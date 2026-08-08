@@ -4,7 +4,7 @@ StudentHub AI is an Arabic-first, bilingual academic organization product for un
 
 ## Active phase
 
-**Sprint 0 — Repository and Engineering Foundation is implemented and awaiting owner review. Sprint 1 has not started.**
+**Sprint 0 closed and committed; Sprint 1 awaits authentication-provider approval.**
 
 The repository currently contains a tested application shell and engineering foundation only. It does not contain accounts, authentication, onboarding, terms, courses, schedules, academic items, Today, This Week, calendar behavior, reminders, AI, integrations, or production deployment.
 

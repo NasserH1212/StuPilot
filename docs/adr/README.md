@@ -15,7 +15,7 @@ ADRs record decisions for the production application. `Accepted` decisions gover
 | [0009](0009-environment-and-secret-separation.md) | Environment and secret separation | Accepted |
 | [0010](0010-provider-adapter-strategy.md)         | Provider adapter strategy         | Accepted |
 | [0011](0011-hosting-evaluation-plan.md)           | Hosting evaluation plan           | Proposed |
-| [0012](0012-managed-authentication-evaluation.md) | Managed authentication evaluation | Proposed |
+| [0012](0012-managed-authentication-evaluation.md) | Authentication provider direction | Proposed |
 | [0013](0013-uuid-strategy.md)                     | UUID strategy                     | Accepted |
 | [0014](0014-week-start-and-time-zone.md)          | Week start and time-zone baseline | Accepted |
 | [0015](0015-research-prototype-isolation.md)      | Research-prototype isolation      | Accepted |
