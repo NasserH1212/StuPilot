@@ -1,0 +1,13 @@
+.next/
+coverage/
+node_modules/
+playwright-report/
+research-prototype/
+src/generated/
+test-results/
+
+# Preserve approved and historical long-form documents.
+docs/deliverables/
+docs/product/
+docs/research/
+docs/archive/

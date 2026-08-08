@@ -1,0 +1,33 @@
+# Dependencies and package-manager state
+node_modules/
+.npm/
+.sprint0-postgres-runtime/
+
+# Next.js outputs
+.next/
+out/
+next-env.d.ts
+
+# Test outputs
+coverage/
+playwright-report/
+test-results/
+
+# Generated database client
+src/generated/
+
+# Local environment files (examples remain tracked)
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Logs and local editor/OS state
+*.log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# TypeScript build cache
+*.tsbuildinfo

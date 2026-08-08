@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>StudentHub AI — نموذج بحث قابل للرمي</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <noscript>
+    <div class="noscript">هذا النموذج البحثي يحتاج JavaScript محليًا لعرض التفاعلات. لا توجد اتصالات خارجية.</div>
+  </noscript>
+
+  <div class="research-banner" role="note">
+    <strong>نموذج بحث قابل للرمي</strong>
+    <span>بيانات خيالية فقط · ليس تطبيقًا حقيقيًا · لا AI مباشر</span>
+  </div>
+
+  <header class="topbar">
+    <a class="brand" href="#welcome" data-nav="welcome" aria-label="العودة إلى البداية">
+      <span class="brand-mark" aria-hidden="true">ش</span>
+      <span>
+        <strong>StudentHub AI</strong>
+        <small>Research Prototype</small>
+      </span>
+    </a>
+    <div class="topbar-actions">
+      <span class="fictional-clock"><span aria-hidden="true">◷</span> الثلاثاء 13 أكتوبر 2026 · 08:30</span>
+      <button class="button button-quiet" id="resetPrototype" type="button">إعادة ضبط النموذج</button>
+    </div>
+  </header>
+
+  <div class="app-layout">
+    <nav class="primary-nav" aria-label="تنقل النموذج">
+      <button type="button" class="nav-item active" data-nav="welcome"><span>01</span> البداية</button>
+      <button type="button" class="nav-item" data-nav="setup"><span>02</span> الإعداد</button>
+      <button type="button" class="nav-item" data-nav="today"><span>03</span> اليوم</button>
+      <button type="button" class="nav-item" data-nav="week"><span>04</span> هذا الأسبوع</button>
+      <button type="button" class="nav-item" data-nav="states"><span>05</span> حالات البحث</button>
+      <button type="button" class="nav-item" data-nav="concepts"><span>06</span> مفاهيم AI الثابتة</button>
+    </nav>
+
+    <main id="mainContent" tabindex="-1">
+      <section class="screen active" id="screen-welcome" data-screen="welcome" aria-labelledby="welcomeTitle">
+        <div class="hero-grid">
+          <div>
+            <p class="eyebrow">جلسة بحث خاضعة للإشراف</p>
+            <h1 id="welcomeTitle">اعرف ما تحتاج إلى فعله اليوم وهذا الأسبوع.</h1>
+            <p class="lead">تصوّر تفاعلي لاختبار تنظيم الالتزامات الأكاديمية. لا تدخل أي معلومات حقيقية أثناء الجلسة.</p>
+
+            <fieldset class="language-picker">
+              <legend>اختر لغة تجربة النموذج</legend>
+              <label class="choice-card selected">
+                <input type="radio" name="language" value="ar" checked>
+                <span class="choice-icon" aria-hidden="true">ع</span>
+                <span><strong>العربية</strong><small>واجهة RTL الأساسية للاختبار</small></span>
+              </label>
+              <label class="choice-card">
+                <input type="radio" name="language" value="en">
+                <span class="choice-icon" aria-hidden="true">En</span>
+                <span><strong>English</strong><small>Changes direction for mixed-text review</small></span>
+              </label>
+            </fieldset>
+
+            <div class="action-row">
+              <button class="button button-primary" type="button" id="startPrototype">ابدأ الإعداد</button>
+              <button class="button button-secondary" type="button" data-nav="concepts">اعرض مفاهيم البحث فقط</button>
+            </div>
+          </div>
+
+          <aside class="prototype-card warning-card" aria-label="قيود النموذج">
+            <span class="status-pill status-static">Research only</span>
+            <h2>قبل أن تبدأ</h2>
+            <ul class="clean-list">
+              <li>كل الأسماء والمواعيد خيالية.</li>
+              <li>لا تسجيل دخول أو حفظ دائم.</li>
+              <li>لا إشعار أو مزامنة حقيقية.</li>
+              <li>يمكن إعادة الضبط في أي لحظة.</li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-setup" data-screen="setup" aria-labelledby="setupTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">إعداد تجريبي · بيانات خيالية</p>
+            <h1 id="setupTitle">جهّز فصلك في خطوات واضحة</h1>
+          </div>
+          <div class="progress-wrap" aria-label="تقدم الإعداد">
+            <span id="setupProgressLabel">الخطوة 1 من 4</span>
+            <div class="progress-track"><span id="setupProgressBar" style="width:25%"></span></div>
+          </div>
+        </div>
+
+        <div class="setup-step active" data-setup-step="profile">
+          <div class="form-card">
+            <div class="step-number">1</div>
+            <div>
+              <h2>معلومات اختيارية</h2>
+              <p class="muted">لا نحتاج اسم جامعتك أو تخصصك لبدء التجربة. استخدم القيم الخيالية فقط إن أردت تجربة الحقول.</p>
+            </div>
+
+            <div class="form-grid">
+              <label class="field">
+                <span>الجامعة <em>اختياري</em></span>
+                <input id="universityInput" type="text" placeholder="جامعة تجريبية" autocomplete="off" maxlength="60">
+                <small>لا تدخل اسم جامعة حقيقية.</small>
+              </label>
+              <label class="field">
+                <span>التخصص <em>اختياري</em></span>
+                <input id="majorInput" type="text" placeholder="تخصص تجريبي" autocomplete="off" maxlength="60">
+                <small>يمكنك المتابعة من دون هذا الحقل.</small>
+              </label>
+            </div>
+
+            <div class="action-row">
+              <button class="button button-primary" type="button" data-next-setup="term">متابعة</button>
+              <button class="button button-link" type="button" id="skipProfile" data-next-setup="term">تخطي الجامعة والتخصص</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="setup-step" data-setup-step="term">
+          <form class="form-card" id="termForm" novalidate>
+            <div class="step-number">2</div>
+            <div>
+              <h2>أنشئ فصلًا أكاديميًا نشطًا</h2>
+              <p class="muted">هذه البيانات ثابتة من سيناريو الاختبار.</p>
+            </div>
+
+            <div class="form-grid form-grid-3">
+              <label class="field field-wide">
+                <span>اسم الفصل</span>
+                <input id="termName" type="text" value="الفصل التجريبي — خريف 2026" required>
+              </label>
+              <label class="field">
+                <span>يبدأ</span>
+                <input id="termStart" type="date" value="2026-09-06" required>
+              </label>
+              <label class="field">
+                <span>ينتهي</span>
+                <input id="termEnd" type="date" value="2026-12-17" required>
+              </label>
+            </div>
+
+            <label class="toggle-row">
+              <input id="termActive" type="checkbox" checked>
+              <span class="toggle" aria-hidden="true"></span>
+              <span><strong>اجعله الفصل النشط</strong><small>ستظهر التزامات هذا الفصل في اليوم والأسبوع.</small></span>
+            </label>
+
+            <div class="inline-message error-message" id="termError" role="alert" hidden></div>
+
+            <div class="action-row">
+              <button class="button button-primary" type="submit">حفظ الفصل</button>
+              <button class="button button-secondary" type="button" data-next-setup="profile">رجوع</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="setup-step" data-setup-step="courses">
+          <div class="form-card">
+            <div class="step-number">3</div>
+            <div>
+              <h2>أضف المقررات الخيالية</h2>
+              <p class="muted">حدد المقررات الثلاثة. أسماء المقررات مختلطة لاختبار العربية والإنجليزية.</p>
+            </div>
+
+            <div class="course-selector" id="courseSelector">
+              <label class="course-option course-blue">
+                <input type="checkbox" value="CS214" checked>
+                <span><bdi>CS 214</bdi><strong>هياكل البيانات</strong><small>مقرر خيالي</small></span>
+              </label>
+              <label class="course-option course-purple">
+                <input type="checkbox" value="MATH203" checked>
+                <span><bdi>MATH 203</bdi><strong dir="ltr">Calculus III</strong><small>مقرر خيالي</small></span>
+              </label>
+              <label class="course-option course-green">
+                <input type="checkbox" value="ARAB110" checked>
+                <span><bdi>ARAB 110</bdi><strong>مهارات الكتابة</strong><small>مقرر خيالي</small></span>
+              </label>
+            </div>
+
+            <div class="inline-message error-message" id="coursesError" role="alert" hidden>اختر مقررًا واحدًا على الأقل للمتابعة.</div>
+            <div class="action-row">
+              <button class="button button-primary" type="button" id="addCourses">إضافة المقررات المحددة</button>
+              <button class="button button-secondary" type="button" data-next-setup="term">رجوع</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="setup-step" data-setup-step="schedule">
+          <form class="form-card" id="scheduleForm" novalidate>
+            <div class="step-number">4</div>
+            <div>
+              <h2>أضف حصة متكررة</h2>
+              <p class="muted">أضف سلسلة <bdi>CS 214</bdi> أولًا؛ ستُحمّل بقية بيانات الجدول الخيالية تلقائيًا لإكمال الاختبار.</p>
+            </div>
+
+            <div class="form-grid form-grid-3">
+              <label class="field field-wide">
+                <span>المقرر</span>
+                <select id="scheduleCourse" required>
+                  <option value="CS214">CS 214 — هياكل البيانات</option>
+                  <option value="MATH203">MATH 203 — Calculus III</option>
+                  <option value="ARAB110">ARAB 110 — مهارات الكتابة</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>من</span>
+                <input id="scheduleStart" type="time" value="10:00" required>
+              </label>
+              <label class="field">
+                <span>إلى</span>
+                <input id="scheduleEnd" type="time" value="11:15" required>
+              </label>
+              <label class="field field-wide">
+                <span>المكان</span>
+                <input id="scheduleRoom" type="text" value="قاعة T-12 الخيالية" required>
+              </label>
+            </div>
+
+            <fieldset class="days-picker">
+              <legend>يتكرر في</legend>
+              <label><input type="checkbox" name="scheduleDay" value="0" checked><span>الأحد</span></label>
+              <label><input type="checkbox" name="scheduleDay" value="1"><span>الاثنين</span></label>
+              <label><input type="checkbox" name="scheduleDay" value="2" checked><span>الثلاثاء</span></label>
+              <label><input type="checkbox" name="scheduleDay" value="3"><span>الأربعاء</span></label>
+              <label><input type="checkbox" name="scheduleDay" value="4"><span>الخميس</span></label>
+            </fieldset>
+
+            <div class="inline-message error-message" id="scheduleError" role="alert" hidden></div>
+            <div class="action-row">
+              <button class="button button-primary" type="submit">حفظ الجدول والانتقال إلى اليوم</button>
+              <button class="button button-secondary" type="button" data-next-setup="courses">رجوع</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-today" data-screen="today" aria-labelledby="todayTitle">
+        <div class="section-heading dashboard-heading">
+          <div>
+            <p class="eyebrow">الثلاثاء · 13 أكتوبر 2026</p>
+            <h1 id="todayTitle">صباح هادئ، نورة</h1>
+            <p class="lead compact">هذه التزاماتك الخيالية اليوم وما يستحق الانتباه قريبًا.</p>
+          </div>
+          <div class="action-row compact-actions">
+            <button class="button button-primary" type="button" data-open-modal="quickCaptureModal">+ التقاط سريع</button>
+            <button class="button button-secondary" type="button" data-open-modal="examModal">إضافة اختبار</button>
+          </div>
+        </div>
+
+        <div class="summary-grid" id="todaySummary">
+          <article class="summary-card"><span>اليوم</span><strong id="todayCount">2</strong><small>حصة والتزام</small></article>
+          <article class="summary-card"><span>هذا الأسبوع</span><strong id="weekCount">4</strong><small>التزامات قادمة</small></article>
+          <article class="summary-card calm"><span>متأخر بهدوء</span><strong id="overdueCount">1</strong><small>يمكنك ترتيبه الآن</small></article>
+        </div>
+
+        <div class="dashboard-grid">
+          <section class="panel" aria-labelledby="timelineTitle">
+            <div class="panel-heading">
+              <div><p class="eyebrow">خط اليوم</p><h2 id="timelineTitle">ما يحدث اليوم</h2></div>
+              <span class="status-pill">UTC+3</span>
+            </div>
+            <div class="timeline" id="todayTimeline"></div>
+          </section>
+
+          <aside class="panel" aria-labelledby="attentionTitle">
+            <div class="panel-heading">
+              <div><p class="eyebrow">ليس إنذارًا</p><h2 id="attentionTitle">عنصر يحتاج قرارًا</h2></div>
+            </div>
+            <div id="overduePanel"></div>
+          </aside>
+        </div>
+
+        <section class="panel upcoming-panel" aria-labelledby="upcomingTitle">
+          <div class="panel-heading">
+            <div><p class="eyebrow">قريبًا</p><h2 id="upcomingTitle">التالي في أسبوعك</h2></div>
+            <button class="button button-link" type="button" data-nav="week">عرض الأسبوع كاملًا</button>
+          </div>
+          <div class="item-list" id="todayUpcoming"></div>
+        </section>
+      </section>
+
+      <section class="screen" id="screen-week" data-screen="week" aria-labelledby="weekTitle">
+        <div class="section-heading dashboard-heading">
+          <div>
+            <p class="eyebrow">11–17 أكتوبر 2026</p>
+            <h1 id="weekTitle">هذا الأسبوع</h1>
+            <p class="lead compact">رتّب الالتزامات بحسب اليوم، من دون إخفاء المواعيد الأصلية.</p>
+          </div>
+          <button class="button button-primary" type="button" data-open-modal="quickCaptureModal">+ التقاط سريع</button>
+        </div>
+
+        <div class="week-strip" aria-label="أيام الأسبوع">
+          <button type="button"><span>الأحد</span><strong>11</strong></button>
+          <button type="button"><span>الاثنين</span><strong>12</strong></button>
+          <button type="button" class="selected"><span>الثلاثاء</span><strong>13</strong></button>
+          <button type="button"><span>الأربعاء</span><strong>14</strong></button>
+          <button type="button"><span>الخميس</span><strong>15</strong></button>
+          <button type="button"><span>الجمعة</span><strong>16</strong></button>
+          <button type="button"><span>السبت</span><strong>17</strong></button>
+        </div>
+
+        <div class="week-board" id="weekBoard"></div>
+      </section>
+
+      <section class="screen" id="screen-states" data-screen="states" aria-labelledby="statesTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">مختبر حالات ثابت</p>
+            <h1 id="statesTitle">حالات البحث</h1>
+            <p class="lead compact">استخدم هذه الأزرار في الجلسة لعرض الحالة المطلوبة. لا تمثل خدمات أو استجابات حقيقية.</p>
+          </div>
+        </div>
+
+        <div class="state-control-grid">
+          <button class="state-trigger" type="button" data-state-demo="empty"><span aria-hidden="true">○</span><strong>Empty</strong><small>لا التزامات اليوم</small></button>
+          <button class="state-trigger" type="button" data-state-demo="loading"><span aria-hidden="true">◌</span><strong>Loading</strong><small>تحميل محلي تمثيلي</small></button>
+          <button class="state-trigger" type="button" data-state-demo="error"><span aria-hidden="true">!</span><strong>Validation error</strong><small>حقل ناقص قابل للتصحيح</small></button>
+          <button class="state-trigger" type="button" data-state-demo="success"><span aria-hidden="true">✓</span><strong>Save success</strong><small>تم حفظ بيانات خيالية</small></button>
+          <button class="state-trigger" type="button" data-state-demo="overdue"><span aria-hidden="true">↻</span><strong>Calm overdue</strong><small>قرار بلا لوم</small></button>
+        </div>
+
+        <div class="state-stage" id="stateStage" aria-live="polite">
+          <div class="empty-state">
+            <div class="empty-icon" aria-hidden="true">◇</div>
+            <h2>اختر حالة لعرضها</h2>
+            <p>هذه المساحة منفصلة للاختبار ولا تغير بيانات الجدول.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-concepts" data-screen="concepts" aria-labelledby="conceptsTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">قسم بحث منفصل · لا AI مباشر</p>
+            <h1 id="conceptsTitle">أربع طرق خيالية للمساعدة</h1>
+            <p class="lead compact">كل المدخلات والمخرجات مكتوبة مسبقًا. ترتيب البطاقات لا يعني تفضيلًا أو اختيارًا.</p>
+          </div>
+          <span class="status-pill status-static">Static outputs only</span>
+        </div>
+
+        <div class="concept-grid" id="conceptGrid"></div>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <strong>StudentHub AI — Research Prototype</strong>
+    <span>يجب أرشفته أو التخلص منه بعد البحث. لا يُستخدم للإنتاج.</span>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden>
+    <span aria-hidden="true">✓</span>
+    <div><strong id="toastTitle">تم الحفظ</strong><small id="toastMessage">حُفظت البيانات الخيالية في ذاكرة الصفحة فقط.</small></div>
+    <button type="button" id="closeToast" aria-label="إغلاق">×</button>
+  </div>
+
+  <div class="modal" id="quickCaptureModal" role="dialog" aria-modal="true" aria-labelledby="quickCaptureTitle" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <form class="modal-card" id="quickCaptureForm" novalidate>
+      <div class="modal-heading">
+        <div><p class="eyebrow">Quick Capture</p><h2 id="quickCaptureTitle">التقاط واجب بسرعة</h2></div>
+        <button type="button" class="icon-button" data-close-modal aria-label="إغلاق">×</button>
+      </div>
+      <p class="privacy-note">استخدم البيانات الخيالية فقط. الحفظ مؤقت داخل الصفحة.</p>
+      <label class="field">
+        <span>عنوان الواجب</span>
+        <input id="assignmentTitle" type="text" value="تمارين الأشجار" required>
+      </label>
+      <div class="form-grid">
+        <label class="field"><span>المقرر</span><select id="assignmentCourse"><option value="CS214">CS 214 — هياكل البيانات</option><option value="MATH203">MATH 203 — Calculus III</option><option value="ARAB110">ARAB 110 — مهارات الكتابة</option></select></label>
+        <label class="field"><span>الموعد</span><input id="assignmentDue" type="datetime-local" value="2026-10-14T23:59" required></label>
+      </div>
+      <div class="inline-message error-message" id="assignmentError" role="alert" hidden></div>
+      <div class="action-row">
+        <button class="button button-primary" type="submit">حفظ الواجب</button>
+        <button class="button button-secondary" type="button" data-close-modal>إلغاء</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal" id="examModal" role="dialog" aria-modal="true" aria-labelledby="examTitle" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <form class="modal-card" id="examForm" novalidate>
+      <div class="modal-heading">
+        <div><p class="eyebrow">اختبار</p><h2 id="examTitle">إضافة اختبار خيالي</h2></div>
+        <button type="button" class="icon-button" data-close-modal aria-label="إغلاق">×</button>
+      </div>
+      <label class="field"><span>اسم الاختبار</span><input id="examName" type="text" value="اختبار قصير 2" required></label>
+      <div class="form-grid">
+        <label class="field"><span>المقرر</span><select id="examCourse"><option value="MATH203">MATH 203 — Calculus III</option><option value="CS214">CS 214 — هياكل البيانات</option></select></label>
+        <label class="field"><span>موعد البدء</span><input id="examDue" type="datetime-local" value="2026-10-19T13:00" required></label>
+      </div>
+      <div class="inline-message error-message" id="examError" role="alert" hidden></div>
+      <div class="action-row"><button class="button button-primary" type="submit">حفظ الاختبار</button><button class="button button-secondary" type="button" data-close-modal>إلغاء</button></div>
+    </form>
+  </div>
+
+  <div class="modal" id="rescheduleModal" role="dialog" aria-modal="true" aria-labelledby="rescheduleTitle" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <form class="modal-card" id="rescheduleForm" novalidate>
+      <div class="modal-heading">
+        <div><p class="eyebrow">إعادة جدولة</p><h2 id="rescheduleTitle">غيّر وقت العمل، لا الموعد الأصلي</h2></div>
+        <button type="button" class="icon-button" data-close-modal aria-label="إغلاق">×</button>
+      </div>
+      <input id="rescheduleItemId" type="hidden">
+      <div class="due-date-lock"><span>موعد التسليم الأصلي</span><strong id="rescheduleOriginalDue">—</strong><small>لن يتغير في هذا الإجراء.</small></div>
+      <label class="field"><span>وقت العمل الجديد</span><input id="reschedulePlanned" type="datetime-local" value="2026-10-14T16:00" required></label>
+      <div class="inline-message error-message" id="rescheduleError" role="alert" hidden></div>
+      <div class="action-row"><button class="button button-primary" type="submit">حفظ وقت العمل</button><button class="button button-secondary" type="button" data-close-modal>إلغاء</button></div>
+    </form>
+  </div>
+
+  <div class="modal" id="recurrenceModal" role="dialog" aria-modal="true" aria-labelledby="recurrenceTitle" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <form class="modal-card" id="recurrenceForm" novalidate>
+      <div class="modal-heading">
+        <div><p class="eyebrow">حصة متكررة</p><h2 id="recurrenceTitle">ما الذي تريد تعديله؟</h2></div>
+        <button type="button" class="icon-button" data-close-modal aria-label="إغلاق">×</button>
+      </div>
+      <p>حصة <bdi>CS 214 — هياكل البيانات</bdi> يوم الثلاثاء 13 أكتوبر.</p>
+      <fieldset class="scope-picker">
+        <legend>نطاق التغيير</legend>
+        <label><input type="radio" name="recurrenceScope" value="occurrence" checked><span><strong>هذه المرة فقط</strong><small>تبقى حصص الأحد والثلاثاء القادمة عند 10:00.</small></span></label>
+        <label><input type="radio" name="recurrenceScope" value="series"><span><strong>السلسلة كلها</strong><small>يتغير وقت كل حصص <bdi>CS 214</bdi> في هذا الفصل.</small></span></label>
+      </fieldset>
+      <div class="form-grid"><label class="field"><span>الوقت الجديد</span><input id="recurrenceStart" type="time" value="12:00" required></label><label class="field"><span>ينتهي</span><input id="recurrenceEnd" type="time" value="13:15" required></label></div>
+      <div class="inline-message error-message" id="recurrenceError" role="alert" hidden></div>
+      <div class="action-row"><button class="button button-primary" type="submit">حفظ التغيير</button><button class="button button-secondary" type="button" data-close-modal>إلغاء</button></div>
+    </form>
+  </div>
+
+  <div class="modal" id="reminderModal" role="dialog" aria-modal="true" aria-labelledby="reminderTitle" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <form class="modal-card" id="reminderForm">
+      <div class="modal-heading">
+        <div><p class="eyebrow">تمثيل فقط</p><h2 id="reminderTitle">تذكير خيالي للاختبار</h2></div>
+        <button type="button" class="icon-button" data-close-modal aria-label="إغلاق">×</button>
+      </div>
+      <div class="fictional-alert"><strong>لن يصل إشعار حقيقي.</strong><span>هذا الإعداد يظهر في الواجهة فقط ولا يستخدم خدمة أو إذن جهاز.</span></div>
+      <label class="field"><span>متى؟</span><select id="reminderOffset"><option value="24">قبل 24 ساعة</option><option value="48">قبل 48 ساعة</option><option value="2">قبل ساعتين</option></select></label>
+      <label class="field"><span>القناة</span><select disabled><option>داخل النموذج فقط — خيالي</option></select></label>
+      <div class="action-row"><button class="button button-primary" type="submit">حفظ التذكير الخيالي</button><button class="button button-secondary" type="button" data-close-modal>إلغاء</button></div>
+    </form>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

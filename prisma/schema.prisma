@@ -1,0 +1,17 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Technical-only Sprint 0 compatibility record. This is not a product entity.
+model FoundationHealthCheck {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  checkedAt DateTime @default(now()) @map("checked_at") @db.Timestamptz(3)
+  marker    String   @db.VarChar(64)
+
+  @@map("_foundation_health_checks")
+}
