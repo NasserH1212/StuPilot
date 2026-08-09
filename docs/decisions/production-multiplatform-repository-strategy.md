@@ -1,13 +1,14 @@
 # Production multi-platform repository strategy
 
 - **Decision date:** 2026-08-08
-- **Status:** **PROPOSED — selected recommendation, pending owner acceptance**
+- **Owner approval:** 2026-08-09 — Nasser Al-Tamimi
+- **Status:** **OWNER-APPROVED — Option D governs sequencing; entry/parity evidence remains required**
 - **Scope:** repository topology, backend placement, shared-code boundary, and transition timing
 - **Supersedes:** future topology/timing guidance that assumed native apps were permanently outside the product path; it does not rewrite historical implementation reports
 
 ## Decision summary
 
-**PROPOSED — select Option D: a gated, staged repository transition.** Keep the existing Next.js modular monolith at the repository root while implementing production identity, `/api/v1`, and one stable academic contract. Immediately before native application work, perform a dedicated behavior-neutral conversion to npm workspaces, moving the web application to `apps/web`. Only after that move passes parity gates should a separate change create `apps/mobile` and the minimal shared packages.
+**OWNER-APPROVED — Option D: a gated, staged repository transition.** Keep the existing Next.js modular monolith at the repository root while implementing production identity, `/api/v1`, and one stable academic contract. Immediately before native application work, perform a dedicated behavior-neutral conversion to npm workspaces, moving the web application to `apps/web`. Only after that move passes parity gates should a separate change create `apps/mobile` and the minimal shared packages.
 
 This is an explicit decision, not “decide later”:
 
@@ -17,7 +18,7 @@ root Next.js app   ->  auth + /api/v1 + first   ->  workspace conversion
 modular monolith       academic contract stable      -> native foundation
 ```
 
-**PROPOSED — keep the backend inside the Next.js deployment for the MVP.** Route Handlers expose the versioned HTTP API to native clients; Server Components and Server Actions call the same application services without an internal HTTP round trip. A separate backend service is justified only by measured operational or organizational triggers.
+**OWNER-APPROVED direction — keep the backend inside the Next.js deployment for the MVP.** Route Handlers expose the versioned HTTP API to native clients; Server Components and Server Actions call the same application services without an internal HTTP round trip. A separate backend service or worker is justified only by a measured requirement.
 
 ## Decision drivers
 
@@ -38,13 +39,13 @@ modular monolith       academic contract stable      -> native foundation
 | **A. Keep the current root web app and add mobile later with minimal repository changes** | Low immediate churn, but a second application at the root or a nested ad-hoc package creates unclear dependency, lockfile, CI, ownership, and shared-contract rules. It tends to postpone the topology decision until both clients are already coupled. | **REJECTED** — acceptable only as the current temporary state, not the target topology.    |
 | **B. Convert immediately to `apps/web`, `apps/mobile`, and shared packages**              | Produces a coherent target early, but moves every verified web/tooling path before auth/API contracts exist and encourages speculative shared packages.                                                                                                 | **REJECTED** — wrong timing; revisit as the bounded transition after the contract gate.    |
 | **C. Put native and web/backend in separate repositories**                                | Strong release and permission isolation, but duplicates contract/tooling work and raises coordination/version-drift cost for a small product team.                                                                                                      | **REJECTED** — no verified team, compliance, or ownership boundary justifies the overhead. |
-| **D. Gate the workspace conversion immediately before native implementation**             | Preserves the current foundation, forces identity/API semantics first, and creates a clean multi-app topology before mobile code accumulates. The transition has explicit entry, parity, and rollback gates.                                            | **SELECTED / PROPOSED** — best balance of near-term safety and long-term coherence.        |
+| **D. Gate the workspace conversion immediately before native implementation**             | Preserves the current foundation, forces identity/API semantics first, and creates a clean multi-app topology before mobile code accumulates. The transition has explicit entry, parity, and rollback gates.                                            | **SELECTED / OWNER-APPROVED** — governs the transition sequence.                           |
 
 ## Exact timing and entry gate
 
 The workspace transition begins only when all of the following are true:
 
-1. **VERIFIED** — the owner has accepted this topology decision.
+1. **VERIFIED** — Nasser Al-Tamimi accepted this topology decision on 2026-08-09.
 2. **VERIFIED** — an authentication provider and browser/native session flows have been selected through a separate decision.
 3. **VERIFIED** — a real staging provider/database proves sign-in, verification where applicable, refresh/expiry, logout/revocation, recovery, and internal identity mapping.
 4. **VERIFIED** — `/api/v1` has a documented error envelope, auth scheme, compatibility rules, and at least one authenticated contract test.
@@ -165,7 +166,8 @@ Until such evidence exists, service extraction is **DEFERRED**.
 
 ## Decision ownership and review
 
-- **BLOCKED** — the owner must accept or replace Option D before topology work.
+- **VERIFIED** — the owner accepted Option D on 2026-08-09; [the canonical owner record](../sprints/sprint-0m/owner-decisions.md) controls its constraints.
+- **BLOCKED** — the workspace move still requires every entry and parity gate above; owner approval is not implementation evidence.
 - **PROPOSED** — review this decision again at the first academic contract exit gate, before any file move.
 - **PROPOSED** — review backend placement after the first production load evidence or when an extraction trigger occurs, whichever comes first.
 - **PROPOSED** — record any replacement as a new decision; do not silently rewrite this record.

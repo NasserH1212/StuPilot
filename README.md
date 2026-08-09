@@ -4,7 +4,7 @@ StudentHub AI is an Arabic-first, bilingual academic organization product for un
 
 ## Active phase
 
-**Sprint 0 closed and committed; production multi-platform transition decisions await owner approval.**
+**Sprint 0 closed; D01–D16 were owner-approved on 2026-08-09. Phase 1 evidence-gated Supabase Auth qualification is next, subject to its account, privacy, regional, credential, and synthetic-data controls.**
 
 The repository currently contains a tested application shell and engineering foundation only. It does not contain accounts, authentication, onboarding, terms, courses, schedules, academic items, Today, This Week, calendar behavior, reminders, AI, integrations, or production deployment.
 

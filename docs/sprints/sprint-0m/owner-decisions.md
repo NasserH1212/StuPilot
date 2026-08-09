@@ -1,241 +1,292 @@
 # Owner decisions
 
-- **Prepared:** 2026-08-08 (Asia/Riyadh)
-- **Status:** **BLOCKED — the choices below have recommendations but no owner acceptance**
-- **Purpose:** identify the minimum decisions that materially change topology, security, privacy, product scope, cost, or release ownership
+- **Original decision package:** 2026-08-08 (Asia/Riyadh)
+- **Owner approval date:** 2026-08-09 (Asia/Riyadh)
+- **Accountable Project Owner:** Nasser Al-Tamimi
+- **Status:** **OWNER-APPROVED — D01 through D16 are recorded below; implementation and operational evidence gates remain enforceable**
+- **Purpose:** canonical, dated record of the owner decisions governing the production web/native transition
 
-## How to use this record
+## Record authority and interpretation
 
-For each decision, record the selected option, accountable owner, decision date, constraints, and evidence link. “Proceed” without those fields does not resolve a gate. A later change receives a new dated decision and migration/rollback impact review.
+**VERIFIED — owner declaration:** Nasser Al-Tamimi supplied the D01–D16 decisions recorded in this document on 2026-08-09. This commit records that direction; it does not infer completion of any implementation or operational gate.
 
-**PROPOSED response format:**
+Labels retain their evidence meaning:
 
-```text
-Decision: Dxx
-Selected option:
-Accountable owner:
-Decision date:
-Constraints/expiry:
-Evidence or follow-up:
-```
+- **OWNER-APPROVED** — the accountable owner selected the stated direction or principle.
+- **VERIFIED** — observed repository/evidence fact, including the dated owner declaration.
+- **PROPOSED** — deliberately provisional detail that still needs its stated review or decision.
+- **BLOCKED** — work cannot proceed past the named gate without evidence or separate authority.
+- **NOT VERIFIED** — no executed repository/environment/account evidence supports the claim yet.
+- **INFERRED** — a conclusion drawn from verified evidence that still needs validation.
+
+Approval of direction is not proof of readiness. In particular:
+
+- **NOT VERIFIED** — no authentication provider is accepted for production.
+- **NOT VERIFIED** — no provider, hosting, managed database, telemetry, Expo, Apple, Google Play, domain, signing, or store account has been created or inspected by this documentation step.
+- **NOT VERIFIED** — no production host, region, database, backup, restore, deployment, mobile application, signed build, privacy/legal compliance, or real-user environment exists.
+- **BLOCKED** — production or real-user work remains subject to the provider, privacy, regional, account, credential, backup, restore, observability, store, and release gates below.
+- **OWNER-APPROVED** — Phase 1 provider qualification is the single next phase. It must follow [transition-plan.md](transition-plan.md) and does not authorize a workspace move, product auth implementation, identity migration, mobile scaffold, deployment, production account, or real personal data.
+
+## Approval-recording safety baseline
+
+- **VERIFIED** — this approval task started on clean `planning/production-multiplatform-transition` at `8fac8d9f8393725b962c6d2322ed6856c8c47688`.
+- **VERIFIED** — the planning branch was the repository's only worktree; no Git remote was configured.
+- **VERIFIED** — `main` remained `80c9974e25e3e981d4712823c6d325f62f7148ac` and `spike/supabase-auth-runtime` remained `dd3af22dbc1821a6c0557d08b1d06ba73f3cce5b` at the edit boundary.
+- **VERIFIED** — no uncommitted file existed before this documentation-only approval recording began.
 
 ## Decision summary
 
-| ID  | Decision                                              | Recommended direction                                                                                  | Due before                         | Current status |
-| --- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------- | -------------- |
-| D01 | Repository topology and timing                        | Option D: root through contract stability, then behavior-neutral npm workspace move before native code | Any topology change                | **BLOCKED**    |
-| D02 | Authentication provider and evaluation authority      | Evidence-gated selection proving browser and signed-native flows; no provider assumed                  | Auth implementation                | **BLOCKED**    |
-| D03 | Internal identity, linking, and account lifecycle     | Internal UUID + opaque provider identities; no email auto-merge; explicit lifecycle                    | Identity schema/migration          | **BLOCKED**    |
-| D04 | Web/API hosting, PostgreSQL region, and operations    | Co-deploy Next.js web/API; managed PostgreSQL near users; prove connection/backup/restore              | Shared staging                     | **BLOCKED**    |
-| D05 | Mobile identifiers and store-account ownership        | Organization-owned stable IDs/accounts with separate non-production variants                           | Native project creation            | **BLOCKED**    |
-| D06 | Build/signing credential custody                      | EAS as initial build candidate; owner-controlled accounts, least privilege, recovery drill             | Signed native builds               | **BLOCKED**    |
-| D07 | Privacy, retention, export, and deletion              | Data-class inventory and minimal retention; in-app + public-web deletion; tested export                | Accounts/store testing             | **BLOCKED**    |
-| D08 | Reminder and push scope                               | Backend-owned schedule; best-effort minimal push; defer from first slice unless essential              | Notification implementation        | **BLOCKED**    |
-| D09 | Offline scope                                         | Online-first MVP with bounded read cache; no offline mutation queue initially                          | Native academic slice              | **BLOCKED**    |
-| D10 | Calendar, week, and time-zone semantics               | Preserve all-day/civil intent; Sunday/Asia-Riyadh default pending override/travel decision             | Academic contract freeze           | **BLOCKED**    |
-| D11 | Design system, theme, font, RTL, accessibility        | Share semantic tokens, not UI; native components; AA/native assistive-tech gate                        | Native UI foundation               | **BLOCKED**    |
-| D12 | Observability, service levels, and incident ownership | Safe telemetry + named alerts/runbooks; proposed RPO <=15m, RTO <=4h                                   | Production-like staging            | **BLOCKED**    |
-| D13 | Release scope, territories, age/support policy        | Limited test distribution first; public scope only after privacy/operations evidence                   | Store listing/submission           | **BLOCKED**    |
-| D14 | First cross-platform vertical slice                   | Auth + term/course + one academic item + agenda + cross-client consistency                             | Academic implementation            | **BLOCKED**    |
-| D15 | Auth spike disposition                                | Preserve temporarily as evidence; merge/cherry-pick nothing; delete only by later approval             | Auth implementation/branch cleanup | **BLOCKED**    |
-| D16 | API/client compatibility window                       | Support current and prior GA native version, plus time floor; measure before removal                   | First native store release         | **BLOCKED**    |
+| ID  | Decision                                         | Recorded owner direction                                                                                          | Status after approval                                               |
+| --- | ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| D01 | Repository topology and timing                   | Option D: root through auth/identity/API/first-contract stability; behavior-neutral workspaces before mobile      | **OWNER-APPROVED**                                                  |
+| D02 | Authentication provider and evaluation authority | Evidence-gated managed auth; Supabase primary candidate, not production-selected                                  | **OWNER-APPROVED direction / BLOCKED final selection**              |
+| D03 | Internal identity and account lifecycle          | Internal UUID ownership, opaque provider identity, no email auto-merge, explicit fail-closed states               | **OWNER-APPROVED; deletion grace remains PROPOSED**                 |
+| D04 | Hosting, PostgreSQL, and operational boundary    | One Next.js web/API deployment, managed PostgreSQL, no unmeasured service/worker                                  | **OWNER-APPROVED direction / BLOCKED vendor-region selection**      |
+| D05 | Mobile identifiers and account ownership         | Organization-controlled, MFA-protected, recoverable identities                                                    | **OWNER-APPROVED principle / DEFERRED exact accounts and IDs**      |
+| D06 | Build and signing custody                        | Evaluate EAS; owner-controlled, least-privilege, recoverable credentials outside Git                              | **OWNER-APPROVED direction / BLOCKED custody decision**             |
+| D07 | Privacy, export, retention, and deletion         | Saudi Arabia, 18+, minimal approved data, consistent export/deletion                                              | **OWNER-APPROVED direction / BLOCKED policy and qualified review**  |
+| D08 | Reminders and push                               | Intended product scope after academic stability; backend schedule and best-effort minimal push                    | **OWNER-APPROVED direction / DEFERRED implementation**              |
+| D09 | Offline scope                                    | Online-first, bounded read cache, no initial offline writes/database                                              | **OWNER-APPROVED**                                                  |
+| D10 | Calendar, week, and time-zone semantics          | Sunday, Asia/Riyadh default, user-selectable IANA zone before broad launch, explicit civil/instant rules          | **OWNER-APPROVED**                                                  |
+| D11 | Design, RTL, theme, and accessibility            | Original premium system; semantic tokens, separate UI, Arabic first-class, light/dark/system, accessibility gates | **OWNER-APPROVED direction / BLOCKED final brand decision**         |
+| D12 | Observability, backup, and incidents             | Privacy-safe telemetry/runbooks; RPO <=15m and RTO <=4h planning targets; restore proof                           | **OWNER-APPROVED direction / BLOCKED vendor and operational proof** |
+| D13 | Release policy                                   | Saudi Arabia, 18+, internal -> TestFlight/closed -> small phased public rollout                                   | **OWNER-APPROVED direction / BLOCKED public-release evidence**      |
+| D14 | First cross-platform vertical slice              | Auth -> term -> course -> academic item -> Today/This Week -> matching web/native state                           | **OWNER-APPROVED**                                                  |
+| D15 | Authentication spike disposition                 | Preserve immutable evidence; no merge/rebase/cherry-pick/wholesale copy; explicit deletion approval later         | **OWNER-APPROVED**                                                  |
+| D16 | API/native compatibility                         | Current + previous GA version, minimum 90 days, additive v1, explicit breaking-version path                       | **OWNER-APPROVED**                                                  |
 
 ## D01 — repository topology and timing
 
-**Decision needed:** accept Option D, choose another audited option, or revise its entry gate.
+**OWNER-APPROVED — Option D.**
 
-**PROPOSED recommendation:** keep the root Next.js app through real auth, `/api/v1`, and the first academic contract. Then make one behavior-neutral move to npm workspaces/`apps/web`; create `apps/mobile` only after parity passes.
+- Keep the verified root Next.js application until real authentication, internal identity, `/api/v1`, and the first academic contract are stable.
+- Then perform one behavior-neutral npm-workspaces transition, moving web to `apps/web`.
+- Create `apps/mobile` only after workspace parity passes.
 
-**Why:**
-
-- **VERIFIED** — current root foundation works and `/api/v1` does not.
-- **INFERRED** — moving now creates broad path churn without retiring identity/API risk.
-- **INFERRED** — waiting until after mobile feature code exists would create a more complex move and unclear shared-package rules.
-
-**Alternatives:** immediate workspaces (faster target shape, higher current regression/speculation risk); permanent root plus ad-hoc mobile (lower move cost, higher long-term tooling/boundary ambiguity); separate repositories (strong isolation, high coordination/contract drift).
-
-**Default if unanswered:** **BLOCKED** — no repository move and no mobile project creation.
+**BLOCKED:** no repository move or mobile scaffold begins before the exact entry/parity gates in the repository strategy pass.
 
 ## D02 — authentication provider and evaluation authority
 
-**Decision needed:** authorize a bounded provider evaluation, identify candidate(s), account owner, budget/region/privacy constraints, and who makes the final selection.
+**OWNER-APPROVED direction — evidence-gated managed authentication selection.**
 
-**PROPOSED recommendation:** select only after real isolated staging proof covers SSR browser cookie flow, signed-native secure flow, server token/session validation, verification/recovery, refresh/expiry, logout/revocation, deletion/export, rate limits/outage, data region/terms, cost, and provider exit.
+- Supabase Auth is the primary production candidate; it is **NOT VERIFIED** and not accepted for production.
+- Qualification must use a real, isolated, hosted non-production provider environment, real server-side session behavior, real callback/recovery flows, and synthetic users only.
+- Fake authentication, an evaluation-mode success adapter, provider-free claims, and real personal data are prohibited as qualification evidence.
+- Final provider selection requires current technical, privacy, regional, lifecycle, cost, browser, and signed-native evidence.
+- A fallback provider may be evaluated only if Supabase fails a documented gate.
 
-**VERIFIED:** neither `main` nor the spike proves a live provider. Supabase-specific code on the spike is compatibility evidence only.
+**BLOCKED — before the first external mutation in Phase 1:** record the owner-controlled evaluation account/operator, MFA/recovery control, synthetic-data rule, budget/expiry, secret custody, and regional/privacy evaluation criteria.
 
-**Alternatives:** managed auth candidate(s), self-hosted auth, or delay accounts. Self-hosting increases security/operations responsibility and is not recommended without a verified requirement that managed options cannot satisfy.
+**INFERRED sequencing note:** signed-native qualification evidence may require a narrowly scoped, non-production auth harness and provisional development identifier. It is not `apps/mobile`, must contain no product feature, and requires separate scoped authorization before creation. Exact production mobile identifiers/accounts remain deferred under D05.
 
-**Default if unanswered:** **BLOCKED** — no auth dependency, schema, UI, provider account, or credential creation.
+## D03 — internal identity and account lifecycle
 
-## D03 — internal identity, linking, and account lifecycle
+**OWNER-APPROVED:**
 
-**Decisions needed:**
+- StudentHub AI owns a server-generated internal UUID.
+- Academic data references only the internal user ID.
+- Authentication identities use an opaque provider key and provider subject.
+- Accounts are never merged automatically by email.
+- Email/password registration requires verified email.
+- MVP exposes no general multi-provider identity linking.
+- Account states support active, disabled, and deletion-pending.
+- Disabled and deletion-pending states fail closed.
 
-- whether one user may link multiple provider identities and how reauthentication proves the link;
-- whether verified email is required and whether it is contact-only or sign-in policy;
-- duplicate-account recovery without automatic email merge;
-- active/disabled/suspended/deletion-pending states and who can set them;
-- deletion grace, cancellation, provider revocation, retained audit evidence, and recovery support;
-- locale/time-zone defaults versus required onboarding choices.
+**PROPOSED — subject to final privacy/legal policy:** account deletion has a 30-day cancellation grace period.
 
-**PROPOSED recommendation:** stable StudentHub UUID owns all data; `(provider_key, provider_subject)` uniquely authenticates; email never auto-merges; linking requires authenticated proof of both sides or an owner-approved recovery process; default deny for disabled/deletion states.
+**BLOCKED:** duplicate-account recovery, administrative recovery authority, final deletion execution/retention behavior, and any future identity-linking ceremony need explicit security/privacy design before implementation.
 
-**VERIFIED:** the spike's separate user/identity concept is useful, but its vendor enum, lifecycle enum, default zone, and migration are unapproved/unexecuted.
+## D04 — hosting, PostgreSQL, and operational boundary
 
-**Default if unanswered:** **BLOCKED** — no identity migration.
+**OWNER-APPROVED direction:**
 
-## D04 — hosting, PostgreSQL region, and operational boundary
+- Keep the web application and `/api/v1` in one Next.js deployment for the MVP.
+- Keep PostgreSQL as the authoritative system of record.
+- Select a managed PostgreSQL provider and region using current latency, residency, backup, recovery, cost, and privacy evidence.
+- Do not create a separate backend service or worker until a measured requirement justifies it.
+- Initial planning targets are RPO no greater than 15 minutes and RTO no greater than 4 hours.
 
-**Decisions needed:** web/API host, managed PostgreSQL candidate/region, staging/production account ownership, connection/pooling approach, data residency, RPO/RTO budget, and whether a worker is needed for reminders.
+**NOT VERIFIED / BLOCKED:** this documentation approval selects no production host, database provider, region, connection strategy, backup service, or deployment.
 
-**PROPOSED recommendation:** keep web and `/api/v1` in the same Next.js deployment for MVP; choose managed PostgreSQL in a region that meets user latency/residency and supports tested encrypted backup/PITR; add a separate worker only for measured scheduled/queue needs.
+## D05 — mobile identifiers and account ownership
 
-**VERIFIED:** no host, managed database, region, deployment, backup, or restore is selected. Earlier Vercel prose is recommendation, not implementation fact.
+**OWNER-APPROVED principle:** production Apple, Google Play, Expo, domain, bundle, and application identities must be project/organization controlled, MFA protected, recoverable, and not dependent on one personal account.
 
-**Alternative:** separate backend now. Reject unless an extraction trigger—scaling, persistent workloads, team boundary, regional/compliance isolation—is demonstrated.
+**DEFERRED / BLOCKED:** exact identifiers and accounts remain intentionally deferred until the native-foundation gate. Do not scaffold `apps/mobile` before D01 workspace parity.
 
-**Default if unanswered:** local-only development; **BLOCKED** for shared staging and production.
+## D06 — build and signing custody
 
-## D05 — mobile identifiers and store-account ownership
+**OWNER-APPROVED direction:**
 
-**Decisions needed:** legal/organization display name, iOS bundle identifier, Android application ID, Expo organization/project ownership, Apple Developer and Google Play organization accounts, recovery contacts, development/preview variant identifiers, and domain ownership for Universal/App Links.
+- Evaluate EAS Build as the initial native build candidate.
+- Signing accounts and credentials must be owner controlled, MFA protected, least privilege, inventoried, recoverable, and excluded from Git.
 
-**PROPOSED recommendation:** stable reverse-domain production IDs owned by the organization; separate explicit non-production variants; two MFA-protected recovery-capable owners; no personal-only ownership.
+**BLOCKED:** the exact managed-versus-customer credential custody model remains a later security decision. No signing credential or build account exists by implication.
 
-**Why now:** identifiers, signing, push, deep links, provider callback allowlists, and store history become costly to change after distribution.
+## D07 — privacy, export, retention, and deletion
 
-**Default if unanswered:** **BLOCKED** — do not scaffold a native project or reserve identifiers through an individual's account.
+**OWNER-APPROVED direction:**
 
-## D06 — build and signing credential custody
+- Initial launch territory is Saudi Arabia.
+- Initial intended account eligibility is university students aged 18 or older.
+- Collect only approved account, security, settings, and academic organization data.
+- Provide consistent authenticated export and deletion capabilities on web and native.
+- Provide the public web deletion-request resource required for store readiness.
+- The deletion cancellation grace is **PROPOSED** as 30 days, subject to final privacy/legal policy.
+- Define separate purpose-bound retention periods for active data, security records, operational logs, idempotency records, support data, and backups before real-user staging.
+- Do not claim legal or Saudi Personal Data Protection Law compliance without qualified review.
 
-**Decisions needed:** EAS Build versus another reproducible build path; EAS-managed versus local/customer-managed credentials; Apple roles/certificates/profiles/APNs key ownership; Play App Signing and upload-key custody; rotation, recovery, offboarding, and emergency revocation.
+**BLOCKED:** real-user staging and public account creation require the approved privacy notice, data inventory, retention schedule, export/deletion behavior, responsible contacts, and qualified review appropriate to launch scope.
 
-**PROPOSED recommendation:** evaluate EAS Build first; use organization-owned platform accounts, least privilege, MFA, a credential inventory, protected secret storage, and a signed recovery drill. Play App Signing with a separate upload key is the default Android candidate. The exact managed/local custody choice needs an owner security review.
+## D08 — reminders and push
 
-**VERIFIED:** no account, key, certificate, profile, or signed artifact exists in the repository evidence.
+**OWNER-APPROVED direction:**
 
-**Default if unanswered:** unsigned local experimentation only; **BLOCKED** for device auth/push/store builds.
+- Reminders remain part of the intended product.
+- Push implementation is deferred until the first academic slice is stable.
+- The backend owns reminder schedules.
+- Push delivery is best effort and contains minimal non-sensitive information.
+- No notification dependency belongs in the first identity/API implementation phase.
 
-## D07 — privacy, retention, export, and deletion
-
-**Decisions needed:** data controller/contact, launch territories, applicable legal review, privacy policy owner/URL, each collected/shared data class and purpose, vendor/SDK subprocessors, retention periods, export format/SLA, deletion grace/exceptions, backup expiry, support verification, and audit/log handling.
-
-**PROPOSED recommendation:** collect only account/security and approved academic data; inventory actual SDK/network behavior; keep short purpose-bound retention; provide authenticated in-app deletion and a public web request path; make export/deletion available consistently from web/native; disclose backup expiry honestly.
-
-**VERIFIED:** Apple/Google store rules require privacy disclosures; account-creation apps require deletion capabilities, and Google requires a public web request resource in addition to in-app deletion.
-
-**Default if unanswered:** **BLOCKED** — no public account creation or store submission.
-
-## D08 — reminders and push scope
-
-**Decisions needed:** whether reminders are in first public MVP; allowed item types; default-off/opt-in behavior; local versus push role; quiet hours; maximum frequency; time-zone travel behavior; notification contents; Expo Push Service versus direct APNs/FCM; operational support.
-
-**PROPOSED recommendation:** defer reminders until the academic slice is stable unless product scope requires them. Backend owns schedule; push contains minimal non-sensitive context and is best effort; native fetches current data; background tasks only reconcile opportunistically.
-
-**VERIFIED:** mobile OS/background and push delivery are not guaranteed. Exact device-time execution is an unsafe product promise.
-
-**Default if unanswered:** no notifications or background task dependency; not a blocker for the first data slice, **BLOCKED** for reminder claims.
+**DEFERRED / BLOCKED:** provider path, permission copy, quiet hours, delivery policy, token lifecycle, disclosures, and device proof receive a later decision and evidence gate.
 
 ## D09 — offline scope
 
-**Decisions needed:** whether users must read or edit while offline, maximum staleness, cache sensitivity/retention, conflict UX, and which actions can queue.
+**OWNER-APPROVED:**
 
-**PROPOSED recommendation:** online-first MVP with bounded user-scoped read cache and preserved unsent form input; no general offline mutation queue. Require a separate product/architecture decision before a local database/outbox.
-
-**Tradeoff:** users need connectivity for confirmed changes, but identity, conflict, retry, and cross-account safety remain tractable. Full offline editing requires operation IDs, idempotency, version vectors/preconditions, queue visibility, migration, encryption/threat review, and user conflict resolution.
-
-**Default if unanswered:** no persistent academic cache and no offline writes; **BLOCKED** only for features claiming offline support.
+- The MVP is online-first with a bounded user-scoped read cache and preserved recoverable form input.
+- There is no general offline mutation queue, silent last-write-wins behavior, or local academic database in the initial MVP.
+- Future offline editing requires a separate owner and architecture decision.
 
 ## D10 — calendar, week, and time-zone semantics
 
-**Decisions needed:** Sunday week start globally or user-configurable; account versus term/course zone; travel behavior; all-day due-date meaning; inclusive/exclusive Today/This Week boundaries; recurrence/DST ambiguity and nonexistent times; locale calendar/number format; institution-import semantics.
+**OWNER-APPROVED:**
 
-**PROPOSED recommendation:** retain Sunday and `Asia/Riyadh` as onboarding defaults, allow an IANA user zone before broad launch, preserve all-day dates as civil dates, store instants as `timestamptz`, store named zone/recurrence intent separately, and return effective boundaries in agenda responses.
+- Sunday is the default week start.
+- `Asia/Riyadh` is the default onboarding time zone.
+- Users must be able to select a valid IANA time zone before broad launch.
+- All-day academic dates remain civil dates.
+- Instants use `timestamptz`.
+- Named time-zone and recurrence intent are stored separately where required.
+- Today/This Week responses expose the effective time zone and week boundaries.
 
-**VERIFIED:** current ADR 0014 provides a Sunday/Asia-Riyadh baseline but no product data or travel/override behavior.
+**BLOCKED:** the academic contract still needs explicit travel/change behavior, recurrence ambiguity policy, and boundary tests before it freezes.
 
-**Default if unanswered:** **BLOCKED** — do not freeze academic/agenda API or migrations.
+## D11 — design, theme, RTL, and accessibility
 
-## D11 — design, theme, font, RTL, and accessibility
+**OWNER-APPROVED direction:**
 
-**Decisions needed:** approved brand/token source, light/dark/system behavior, Arabic and Latin fonts/licensing/bundling, theme override persistence, minimum supported font scale/orientation, accessibility acceptance owner, and screenshot/device matrix.
+- Create an original, premium StudentHub AI design system.
+- Do not copy the historical research prototype or a marketplace template.
+- Share semantic design tokens and product intent across web and native, but do not share DOM/native UI components initially.
+- Arabic/RTL is first-class and English/LTR has equal functional coverage.
+- Support light, dark, and system appearance.
+- Require WCAG 2.2 AA intent, keyboard/manual web checks, VoiceOver/TalkBack checks, scalable text, reduced motion, contrast, logical order, and platform-appropriate interaction patterns.
 
-**PROPOSED recommendation:** derive semantic tokens from reviewed current web values, map them separately to CSS and React Native, share no UI components initially, use platform-native interaction patterns, and require WCAG 2.2 AA intent plus VoiceOver/TalkBack/manual web evidence.
+**BLOCKED:** exact brand fonts, logo, and final visual tokens require a dedicated design decision before public UI acceptance.
 
-**VERIFIED:** the current web foundation includes tokens and accessibility tests; it is not an approved native design system and the historical prototype is prohibited.
+## D12 — observability, backups, and incident ownership
 
-**Default if unanswered:** preserve neutral system typography/theme; **BLOCKED** for branded native UI and public visual acceptance, not API work.
+**OWNER-APPROVED direction:**
 
-## D12 — observability, service levels, backups, and incident ownership
+- Use privacy-safe structured logs, metrics, traces, request IDs, alerts, and tested runbooks.
+- Never record credentials, tokens, cookies, academic free text, email contents, or notification contents.
+- Initial recovery planning targets are RPO <=15 minutes and RTO <=4 hours.
+- Require isolated restore evidence before public launch.
 
-**Decisions needed:** telemetry vendor(s), processing region, data/redaction/retention, SLOs, alert thresholds/channels, on-call owner, incident severity/communications, audit-event scope, RPO/RTO, backup/PITR provider, and exercise cadence.
+**NOT VERIFIED / BLOCKED:** telemetry and managed database vendors, on-call operators, alert channels, retention, backup/PITR, restore performance, and runbook execution remain unselected/unproved.
 
-**PROPOSED recommendation:** safe structured correlation across client/API/database/provider; no content/credential telemetry; named tested alerts/runbooks; planning RPO <=15 minutes and RTO <=4 hours; monthly isolated restore and pre-launch/quarterly recovery exercise.
+## D13 — release policy
 
-**NOT VERIFIED:** the proposed targets may change with business cost/tolerance; no operational system exists.
+**OWNER-APPROVED direction:**
 
-**Default if unanswered:** **BLOCKED** for production-like staging with personal data and for public launch.
+- Saudi Arabia first.
+- Begin with internal development distribution, then TestFlight and Google Play closed testing using controlled data, then a small phased public rollout.
+- Public release requires current privacy, deletion, support, store-policy, backup, monitoring, signing, and operational evidence.
+- Initial eligibility is 18+ unless a later qualified decision changes it.
 
-## D13 — release scope, territories, age, testing, and support
-
-**Decisions needed:** initial territories, intended age group, institution independence claim, TestFlight/Play tester ownership, public versus limited launch, support/contact/status URLs, review account/data, staged rollout percentages/stop metrics, minimum OS/device matrix, and release approval role.
-
-**PROPOSED recommendation:** start organization-internal, then TestFlight/closed testing with non-production data, then a small phased public rollout after privacy/operations gates. Recheck current store rules on the actual artifact.
-
-**VERIFIED:** target API, toolchain, privacy, deletion, and metadata rules are mutable and cannot be frozen in this planning document.
-
-**Default if unanswered:** internal development distribution only; **BLOCKED** for store submission.
+**BLOCKED:** no store listing, tester program, public release, or compliance claim is authorized by this record alone.
 
 ## D14 — first cross-platform vertical slice
 
-**Decision needed:** approve or reduce the exact journey and its non-goals.
-
-**PROPOSED recommendation:**
+**OWNER-APPROVED journey:**
 
 ```text
 authenticate
-  -> establish/select term
-  -> establish/select course
+  -> establish/select an academic term
+  -> establish/select a course
   -> create or update one academic item
-  -> view it in Today/This Week
-  -> confirm same state on web and native
+  -> view the same item in Today and This Week
+  -> confirm the same authorized state on web and native
 ```
 
-Acceptance includes internal identity, ownership isolation, idempotency/conflict behavior, Arabic/English, RTL/LTR, time-zone/week boundary, accessible loading/error/empty states, sign-out/account-switch cache clearing, and cross-client consistency.
+**OWNER-APPROVED acceptance:**
 
-**PROPOSED non-goals:** AI, SIS/LMS integration, files, community, payments, analytics/ads, full calendar import, team collaboration, general offline writes, and reminders unless D08 explicitly brings them in.
+- internal identity and strict cross-account isolation;
+- Arabic/English and RTL/LTR;
+- idempotent create and stale-update conflict handling;
+- correct date, time-zone, and week boundaries;
+- accessible loading, empty, validation, error, and conflict states;
+- complete cache clearing on sign-out or account switch;
+- one versioned `/api/v1` contract used by native;
+- matching authorized state across web and native.
 
-**Default if unanswered:** **BLOCKED** — no academic schema/API/UI implementation.
+**OWNER-APPROVED non-goals:** AI, SIS/LMS integrations, files, community, payments, ads, analytics profiling, general offline writes, collaboration, and push implementation.
 
-## D15 — auth spike branch disposition
+## D15 — authentication spike disposition
 
-**Decision needed:** how long to preserve `spike/supabase-auth-runtime` and who may delete it.
+**OWNER-APPROVED:**
 
-**PROPOSED recommendation:** keep the immutable branch temporarily as audit evidence; merge and cherry-pick nothing; use the salvage map during approved auth design; delete only after the production auth decision and replacement evidence are committed, with explicit owner authorization.
+- Preserve `spike/supabase-auth-runtime` temporarily as immutable audit evidence.
+- Do not merge, rebase, cherry-pick, or copy it wholesale.
+- Reuse only separately reviewed concepts through fresh production implementation from the approved baseline.
+- Delete the branch only after replacement production evidence is committed and the owner provides explicit authorization.
 
-**VERIFIED:** no remote exists, so this local branch is currently the only named copy evidenced by the audit.
+**VERIFIED at approval recording:** the spike ref remained `dd3af22dbc1821a6c0557d08b1d06ba73f3cce5b` and no other worktree checked it out.
 
-**Default if unanswered:** preserve the branch; do not merge or delete it.
+## D16 — API and native-client compatibility
 
-## D16 — API and installed-client compatibility window
+**OWNER-APPROVED:**
 
-**Decisions needed:** number of supported GA native versions, minimum time window, emergency force-update authority, deprecation communication, telemetry threshold for removal, and how beta/internal builds are treated.
+- Support the current and immediately previous generally available native application version.
+- Use a minimum compatibility time floor of 90 days unless a documented security or data-integrity emergency requires otherwise.
+- Additive behavior remains in `/api/v1`.
+- Breaking behavior requires a new major API path or an explicit compatibility adapter.
+- Force updates require documented owner authorization and a security/data-integrity reason.
 
-**PROPOSED recommendation:** support the current and immediately previous GA native version and a minimum time floor long enough for normal store rollout/review, with the exact duration selected before first release. Additive changes stay in v1; breaking changes use a new major path or compatibility adapter. Force update only for a documented security/data-integrity emergency.
+## Phase authorization and remaining gates
 
-**Tradeoff:** a wider window increases backend/contract test cost but protects users who cannot update promptly; a narrow window simplifies code but raises outage/support risk.
+### Closed decision gate
 
-**Default if unanswered:** **BLOCKED** — no public native release and no removal of v1 behavior.
+**VERIFIED — Phase 0M owner-decision gate:** D01–D16 now have dated owner outcomes. Option D, the first vertical slice, spike preservation, and the API compatibility window are no longer awaiting owner choice.
 
-## Minimum approval set by phase
+### Single next phase
 
-| Phase                        | Decisions that must be resolved                         |
-| ---------------------------- | ------------------------------------------------------- |
-| Auth evaluation              | D01, D02, D03, D04, D07, D12, D15                       |
-| Identity/API implementation  | D02, D03, D04, D07, D10, D12, D16                       |
-| Academic contract            | D10, D14, D16                                           |
-| Workspace transition         | D01, D05, D06, D11, D14, D16                            |
-| Native foundation            | D02, D03, D05, D06, D07, D11, D13, D16                  |
-| Native academic slice        | D09, D10, D11, D14, D16                                 |
-| Notifications/public release | D04–D13 and D16, with current store-policy revalidation |
+**OWNER-APPROVED direction — Phase 1: evidence-gated Supabase Auth qualification and operational preflight.**
+
+The phase evaluates Supabase as the primary candidate using real isolated hosted non-production behavior and synthetic users. It records current browser/server, callback/recovery, lifecycle, privacy, regional, cost, and signed-native evidence. A fallback provider is considered only after a documented Supabase gate fails.
+
+Before external resources or credentials are created, the Phase 1 work record must name the operator/account authority, organization ownership/recovery, budget/expiry, secret handling, synthetic-data boundary, and evidence retention/cleanup plan. **BLOCKED** until those controls are recorded.
+
+### Not authorized yet
+
+- **BLOCKED** — production provider acceptance or product authentication implementation;
+- **BLOCKED** — user/identity schema or migration;
+- **BLOCKED** — web/API deployment or production hosting/database selection;
+- **BLOCKED** — workspace conversion or `apps/mobile` creation;
+- **BLOCKED** — real personal data, real-user staging, legal/PDPL compliance claims, store accounts/listings, signing credentials, push, or public release;
+- **BLOCKED** — merge, rebase, cherry-pick, wholesale copy, or deletion of the authentication spike.
+
+## Change control
+
+A later change to D01–D16 must identify the decision ID, accountable owner, date, replacement text, reason, affected phases, migration/rollback impact, and evidence link. Do not silently rewrite owner direction or historical execution evidence.
+
+## Approval-recording validation
+
+- **VERIFIED** — the repository-wide Prettier check passed after formatting the edited Markdown with the existing configuration.
+- **VERIFIED** — all 27 local Markdown targets across the seven changed/index documents resolved.
+- **VERIFIED** — the repository secret scan passed with 145 files inspected.
+- **VERIFIED** — `git diff --check` passed.
+- **VERIFIED** — the candidate change contains exactly seven documentation files: the README plus six active transition/decision documents. No product source, dependency, lockfile, schema/migration, test, CI, runtime configuration, prototype, generated, account, or credential file is included.
+- **VERIFIED** — the D01–D16 structure check found exactly sixteen decision sections and all required owner constraints.
+- **VERIFIED** — no application build or product test was run because the changed surface is documentation-only.

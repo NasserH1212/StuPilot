@@ -1,7 +1,8 @@
 # Production multi-platform architecture
 
 - **Architecture date:** 2026-08-08
-- **Status:** **PROPOSED — implementation blueprint, not current capability**
+- **Owner constraints approved:** 2026-08-09 — Nasser Al-Tamimi, D01–D16
+- **Status:** **OWNER-APPROVED constraints with PROPOSED implementation blueprint; not current capability**
 - **Current implementation evidence:** [repository and branch audit](../sprints/sprint-0m/repository-and-branch-audit.md)
 - **Repository decision:** [production multi-platform repository strategy](../decisions/production-multiplatform-repository-strategy.md)
 
@@ -11,7 +12,7 @@
 
 **PROPOSED — target state:** one server-authoritative StudentHub product serves a web client and native iOS/Android client through transport-independent application services. The web application and `/api/v1` remain one deployable Next.js backend for the MVP. The mobile application is an independently released Expo/React Native client. PostgreSQL is the system of record; client caches are replaceable projections.
 
-**NOT VERIFIED:** provider selection, hosting topology, regions, scale, legal retention rules, store accounts, release territories, production service levels, and device support. They are owner gates, not hidden assumptions.
+**NOT VERIFIED:** provider selection, hosting/database vendors and regions, scale, final legal/retention policy, store accounts, production service levels, and device support. Saudi Arabia and 18+ are owner-approved launch direction, not proof of legal/store readiness.
 
 ## System context
 
@@ -141,7 +142,7 @@ The exact URL set is approved with the first vertical slice. A minimal candidate
 ### Versioning and compatibility
 
 - **PROPOSED** — `/api/v1` is the major compatibility boundary. Additive optional fields and endpoints remain in v1; breaking meaning, required fields, or removals require a new major path or an explicit compatibility adapter.
-- **PROPOSED** — support at least the current and previous generally available native app versions, with the exact time/version window owner-approved before the first store release.
+- **OWNER-APPROVED** — support the current and immediately previous generally available native app versions with a minimum compatibility floor of 90 days, except a documented security/data-integrity emergency authorized by the owner.
 - **PROPOSED** — advertise minimum-supported client policy through a non-sensitive capability response; do not force-upgrade unless a security or data-integrity issue requires it.
 - **PROPOSED** — record deprecation and sunset dates, measure active versions, and remove behavior only after the support window and store rollout evidence permit it.
 - **PROPOSED** — contract tests replay fixtures from every supported client version against the candidate backend.
@@ -157,12 +158,13 @@ users.id (StudentHub UUID)
     * auth_identities(provider_key, provider_subject)
 ```
 
-- **PROPOSED** — `users.id` is the only identity used as owner/actor in academic tables and audit events.
-- **PROPOSED** — `auth_identities` has a unique `(provider_key, provider_subject)` key and a foreign key to `users.id`.
-- **PROPOSED** — `provider_key` is an opaque configured identifier, not a database enum of vendor names. This avoids a schema migration merely to add or replace a provider.
+- **OWNER-APPROVED** — `users.id` is a server-generated internal UUID and the only identity used as owner/actor in academic tables and audit events.
+- **OWNER-APPROVED** — authentication identities use an opaque provider key and provider subject; the persistence design must enforce their uniqueness and relation to `users.id`.
+- **OWNER-APPROVED** — `provider_key` is opaque, not a database enum of vendor names. This avoids a schema migration merely to add or replace a provider.
 - **PROPOSED** — provider subject, issuer, and validation context are normalized only as required by the selected provider/protocol. Raw access/refresh tokens are not stored in application tables.
-- **PROPOSED** — email is profile/contact evidence, not the durable identity join key. Accounts are never silently merged by matching email.
-- **BLOCKED** — linking identities, verified-email policy, duplicate account remediation, suspension, deletion grace, and administrator recovery require owner decisions and threat modeling.
+- **OWNER-APPROVED** — email is profile/contact evidence, not the durable identity join key; accounts are never automatically merged by email. Email/password registration requires verified email.
+- **OWNER-APPROVED** — MVP exposes no general multi-provider linking; active, disabled, and deletion-pending states are required, and disabled/deletion-pending access fails closed.
+- **PROPOSED / BLOCKED** — a 30-day deletion-cancellation grace remains subject to final privacy/legal policy. Duplicate-account remediation, administrative recovery, final deletion execution, and any future linking ceremony require security/privacy design.
 
 ### Browser session
 
@@ -210,7 +212,7 @@ users.id (StudentHub UUID)
 - **PROPOSED** — actual instants use `timestamptz`, are normalized by PostgreSQL, and serialize with an explicit offset/UTC.
 - **PROPOSED** — store an IANA zone such as `Asia/Riyadh` separately when the original civil-time rule matters, because a `timestamptz` value does not retain the named zone.
 - **PROPOSED** — recurring class meetings store local day/time plus IANA zone and recurrence rules; generated occurrences are derived with explicit daylight-saving policy.
-- **VERIFIED** — the current product baseline uses Sunday as week start and Asia/Riyadh as a default seam. **BLOCKED** — owner approval is needed for per-user/per-term override and travel behavior before agenda contracts freeze.
+- **OWNER-APPROVED** — Sunday is the default week start, `Asia/Riyadh` is the onboarding default, and users can select a valid IANA zone before broad launch. **BLOCKED** — travel/change and recurrence-ambiguity behavior still need contract design and tests.
 - **PROPOSED** — server responses include the effective zone and week boundary used so web/native cannot silently disagree.
 
 ### Lifecycle and deletion
@@ -231,10 +233,10 @@ users.id (StudentHub UUID)
 ### Backup and restore
 
 - **PROPOSED** — select a managed PostgreSQL capability with encrypted backups and point-in-time recovery appropriate to approved RPO/RTO.
-- **PROPOSED** — initial planning target: RPO at most 15 minutes and RTO at most 4 hours; the owner must accept cost and business fit.
+- **OWNER-APPROVED planning target** — RPO at most 15 minutes and RTO at most 4 hours. **NOT VERIFIED** — provider capability, cost, configuration, and restore performance remain unproved.
 - **PROPOSED** — run an automated backup policy plus a restore into an isolated environment at least monthly, and a documented recovery exercise before public launch and quarterly thereafter.
 - **PROPOSED** — a backup success signal is insufficient; record restoration duration, data-integrity checks, migration compatibility, access control, and deletion/retention behavior.
-- **NOT VERIFIED** — no provider, backup, PITR, restore, RPO, or RTO exists today.
+- **NOT VERIFIED** — no provider, backup, PITR, restore, or achieved operational RPO/RTO evidence exists today.
 
 ## Mobile application architecture
 
@@ -267,11 +269,11 @@ Native adapters
 
 ### Cache and offline behavior
 
-- **PROPOSED — MVP is online-first with resilient reads, not offline-first.** Server data is authoritative; the first native slice may retain a bounded, user-scoped read cache for launch/network interruption.
+- **OWNER-APPROVED — MVP is online-first with resilient reads, not offline-first.** Server data is authoritative; the first native slice may retain a bounded, user-scoped read cache and recoverable form input for launch/network interruption.
 - **PROPOSED** — on sign-out or identity change, clear every user-scoped cache before another account can render.
 - **PROPOSED** — store only the minimum session credential in secure storage. Academic caches use a separately reviewed persistence mechanism, data minimization, expiry, and device-threat decision if persistent storage is enabled.
 - **PROPOSED** — show last-updated/stale state and preserve user input on recoverable failure.
-- **DEFERRED** — offline mutation queues, cross-device conflict UI, and local database selection until product evidence requires offline editing. If introduced, use an explicit outbox, client operation IDs, idempotent server commands, per-record version conflicts, and user-visible resolution; never silently last-write-wins critical dates/completion state.
+- **OWNER-APPROVED** — the initial MVP has no general offline mutation queue, silent last-write-wins behavior, or local academic database. Any future offline editing requires a separate owner and architecture decision.
 
 ### Deep links and auth callbacks
 
@@ -297,7 +299,7 @@ Native adapters
 - **PROPOSED** — define platform-neutral primitives and semantic aliases in reviewed data/TypeScript: colors, spacing, radius, typography roles, elevation intent, focus, and motion durations.
 - **PROPOSED** — generate or map those values into web CSS custom properties and a React Native theme object. Keep platform exceptions explicit rather than forcing false pixel identity.
 - **PROPOSED** — no shared UI-component package for the MVP. Web and native components share names/intent and acceptance criteria, not DOM/native implementations.
-- **PROPOSED** — theme variants meet contrast in light/dark/high-contrast contexts before release. System-theme following and manual override behavior require owner approval.
+- **OWNER-APPROVED** — support light, dark, and system appearance. Theme variants must meet contrast requirements; exact brand fonts, logo, and final visual tokens remain a dedicated design decision.
 
 ### Localization and RTL
 
@@ -330,7 +332,7 @@ Native adapters
 
 ### Native build and signing
 
-- **PROPOSED** — EAS Build is the initial candidate for reproducible signed development/preview/store artifacts; the owner chooses managed versus locally supplied credentials after a custody review.
+- **OWNER-APPROVED direction** — evaluate EAS Build as the initial candidate for reproducible signed development/preview/store artifacts. The managed-versus-customer credential custody model remains **BLOCKED** on a later security decision.
 - **VERIFIED** — store artifacts must be signed. iOS distribution uses Apple account certificates/profiles; Android can use Play App Signing with a separate upload key.
 - **PROPOSED** — organization-owned accounts, MFA, least-privilege roles, recovery contacts, key inventory, rotation/revocation runbooks, and no credentials in Git are release prerequisites.
 - **PROPOSED** — use internal/TestFlight/internal or closed testing before public rollout, then staged/phased release with crash/API/error monitoring and a stop rule.

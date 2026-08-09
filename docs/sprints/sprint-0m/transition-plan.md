@@ -1,13 +1,14 @@
 # Production multi-platform transition plan
 
 - **Plan date:** 2026-08-08 (Asia/Riyadh)
-- **Status:** **PROPOSED — no implementation is authorized by this document**
+- **Owner approval:** 2026-08-09 — Nasser Al-Tamimi
+- **Status:** **OWNER-APPROVED sequencing — Phase 1 is next; its external-resource and evidence controls remain gated**
 - **Strategy:** retain the root Next.js modular monolith through identity/API stabilization; convert to npm workspaces immediately before native implementation
 - **Target outcome:** one production vertical slice works in Arabic and English on web, iOS, and Android against the same authorized backend and PostgreSQL data
 
 ## Outcome and critical path
 
-**PROPOSED — first cross-platform vertical slice:** a student authenticates, creates or selects an academic term and course, creates or updates one academic item, sees it in a time-zone-correct agenda, and observes the same authorized state from the other client. Completion/edit conflict behavior, sign-out, cache clearing, Arabic/RTL, English/LTR, and accessible error/loading states are part of acceptance.
+**OWNER-APPROVED — first cross-platform vertical slice:** a student authenticates, creates or selects an academic term and course, creates or updates one academic item, sees the same item in Today and This Week, and observes the same authorized state from the other client. Idempotent create, stale-update conflict, sign-out/account-switch cache clearing, Arabic/RTL, English/LTR, time-zone/week boundaries, and accessible loading/empty/validation/error/conflict states are part of acceptance.
 
 ```text
 Owner decisions
@@ -20,10 +21,10 @@ Owner decisions
               -> reminders/store production readiness
 ```
 
-- **PROPOSED** — authentication and identity resolution precede mobile feature development.
-- **PROPOSED** — API behavior precedes mobile screens that depend on it.
-- **PROPOSED** — repository conversion follows stable contracts and precedes creation of native features.
-- **PROPOSED** — reminders and background delivery follow server-authoritative academic data; they do not block the first CRUD/agenda slice unless the owner explicitly includes them in MVP.
+- **OWNER-APPROVED** — authentication and identity resolution precede mobile feature development.
+- **OWNER-APPROVED** — versioned `/api/v1` behavior precedes mobile screens that depend on it.
+- **OWNER-APPROVED** — repository conversion follows stable contracts and precedes creation of native features.
+- **OWNER-APPROVED** — reminders remain intended product scope, but push implementation follows a stable first academic slice and is not part of the identity/API phase.
 
 ## Global rules
 
@@ -57,41 +58,45 @@ Owner decisions
 
 ### Work
 
-1. **PROPOSED** — owner reviews and accepts, amends, or rejects the selected Option D repository strategy.
-2. **PROPOSED** — resolve decisions D01-D16 in [owner-decisions.md](owner-decisions.md) at their stated deadlines; decisions can be staged rather than all completed immediately.
-3. **PROPOSED** — approve the first vertical slice and explicit non-goals.
-4. **PROPOSED** — decide whether the spike branch remains as historical evidence or is deleted later; do not merge it.
-5. **PROPOSED** — assign accountable engineering, product/privacy, and release/signing owners even if one person holds multiple roles.
-6. **PROPOSED** — record a decision-change process and evidence location.
+1. **VERIFIED** — Nasser Al-Tamimi approved Option D on 2026-08-09.
+2. **VERIFIED** — D01–D16 have dated outcomes in [owner-decisions.md](owner-decisions.md).
+3. **VERIFIED** — the first vertical slice and its explicit non-goals are owner-approved.
+4. **VERIFIED** — the spike remains immutable audit evidence and cannot be merged, rebased, cherry-picked, copied wholesale, or deleted without the stated future evidence and explicit authorization.
+5. **BLOCKED** — name delegated engineering/security, privacy, and release/signing operators before their external or production-relevant work; Nasser Al-Tamimi remains the Accountable Project Owner.
+6. **VERIFIED** — the canonical owner record defines decision-change evidence and replacement requirements.
 
 ### Exit evidence
 
-- **BLOCKED** until D01 (topology), D02 (auth evaluation authority), D03 (identity lifecycle), D14 (vertical slice), and D15 (spike disposition) have named outcomes.
-- **PROPOSED** — approved record identifies who may create external resources and who holds recovery authority.
+- **VERIFIED** — D01, D02, D03, D14, and D15 have named, dated owner outcomes.
+- **BLOCKED before Phase 1 creates an external resource** — record the delegated operator/account authority, organization recovery controls, budget/expiry, secret handling, synthetic-data boundary, and cleanup/evidence retention plan.
 
 ### Rollback/stop
 
-**PROPOSED** — this phase is documentation-only. If the direction is rejected, replace the proposed decisions with a new record; do not reinterpret the current package as approval.
+**VERIFIED** — Phase 0M is documentation-only and complete for owner decisions. A future change must create a dated replacement record; it must not silently rewrite this approval or historical execution evidence.
 
 ## Phase 1 — provider and operational preflight
+
+**OWNER-APPROVED — single next phase:** qualify Supabase Auth as the primary managed-auth candidate using real, isolated, hosted non-production behavior and synthetic users. This is qualification, not production acceptance or product authentication implementation.
 
 ### Entry
 
 - **VERIFIED** — Phase 0M decisions required for evaluation are approved.
-- **PROPOSED** — evaluation budget, data region constraints, account owner, and expiry date are known.
+- **BLOCKED before external mutation** — record the owner-controlled evaluation account/operator, MFA and recovery controls, budget/expiry, secret custody, synthetic-data rule, Saudi regional/privacy criteria, and cleanup/evidence plan.
 
 ### Work
 
-1. **PROPOSED** — evaluate current auth candidates against browser SSR/cookies, native Authorization Code + PKCE or supported secure native flow, token validation, email verification/recovery, session revocation, account deletion, export, MFA/passkeys roadmap, rate limits, auditability, regional/data-processing terms, cost, and exit/export capability.
+1. **OWNER-APPROVED direction** — evaluate Supabase first against browser SSR/cookies, native Authorization Code + PKCE or supported secure native flow, token validation, verified-email registration, recovery, session revocation, deletion/export, rate limits/outage, auditability, Saudi regional/privacy requirements, cost, and provider exit. Evaluate a fallback only after Supabase fails a documented gate.
 2. **PROPOSED** — create separate staging auth/database resources through owner-controlled accounts; enable MFA and recovery contacts.
 3. **PROPOSED** — prove callback allowlists for web plus development native identifiers without production credentials.
 4. **PROPOSED** — select web/API hosting and PostgreSQL region only to the extent required for latency, connection, migration, secret, backup, and restore proof. Do not deploy production.
 5. **PROPOSED** — prepare privacy data-flow inventory for provider SDKs and planned academic data.
 6. **PROPOSED** — write the auth decision, threat model, provider exit plan, and credential custody plan.
 
+**INFERRED sequencing constraint:** D02 requires signed-native evidence while D01 defers the production mobile application until workspace parity. If needed, propose a separate, disposable, auth-only signed qualification harness with a provisional non-production identifier. It must not be `apps/mobile`, contain product behavior, or establish production identifiers; its creation requires separately recorded scope/account authority.
+
 ### Required tests
 
-- **PROPOSED** — real staging registration/sign-in, applicable verification, refresh/expiry, logout/local-vs-global revocation, recovery, invalid/expired/replayed callback, provider outage, rate limit, duplicate subject race, and account deletion/export capability.
+- **PROPOSED** — real hosted non-production registration/sign-in with synthetic users, verified email, refresh/expiry, logout/local-vs-global revocation, recovery, invalid/expired/replayed callback, provider outage, rate limit, duplicate subject race, and account deletion/export capability.
 - **PROPOSED** — browser and signed native-development flow proof; mock-only or Expo Go proof is insufficient.
 - **PROPOSED** — no email/account enumeration in public errors or timing within the practical threat model.
 
@@ -106,6 +111,7 @@ Owner decisions
 
 - **PROPOSED** — delete or disable evaluation resources and credentials if no provider passes.
 - **BLOCKED** — do not implement Phase 2 against an unavailable/fake gateway or evaluation-mode switch.
+- **BLOCKED** — do not treat Supabase as production-selected until every D02 browser/server, signed-native, technical, privacy, regional, lifecycle, and cost gate passes.
 
 ## Phase 2 — production identity and `/api/v1` spine
 

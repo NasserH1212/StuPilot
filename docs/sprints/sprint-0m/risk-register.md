@@ -1,7 +1,8 @@
 # Production multi-platform risk register
 
 - **Register date:** 2026-08-08 (Asia/Riyadh)
-- **Status:** **PROPOSED — owners and acceptance require approval**
+- **Owner direction recorded:** 2026-08-09 — Nasser Al-Tamimi
+- **Status:** **ACTIVE — D01–D16 are owner-approved; risk controls still require delegated owners and executed evidence**
 - **Review cadence:** at every phase entry/exit, before each store submission, and immediately after a material provider/policy/architecture change
 
 ## Scale
@@ -46,13 +47,13 @@ Likelihood (`L/M/H`) is the planning estimate before mitigation. Impact is the w
 | R27 | P1       | **INFERRED** — account deletion can conflict with backups, audit evidence, idempotency records, provider state, and installed offline caches.                                         | M / High            | **PROPOSED** — per-class retention/deletion map, provider revocation, cache wipe, backup-expiry disclosure, completion audit without retained content, end-to-end tests. | **PROPOSED** — quarantine failed jobs, retry idempotently, provide support/escalation and accurate status. Privacy/data owner; accounts/store blocker.                    |
 | R28 | P2       | **INFERRED** — extracting the backend prematurely adds deployment, network, auth, tracing, and incident boundaries without measured value.                                            | M / Medium          | **PROPOSED** — keep modular backend in Next.js; extract only on documented workload/team/compliance trigger with measured baseline.                                      | **PROPOSED** — retain or reintegrate service boundary; avoid dual-write. Architecture/operations owner; architecture review.                                              |
 
-## Top blockers at package close
+## Top blockers after owner approval
 
-1. **BLOCKED — D01/D14:** owner acceptance of repository timing and first vertical slice.
-2. **BLOCKED — authentication:** provider, browser/native flow, account lifecycle, live staging evidence, and responsible account owner.
-3. **BLOCKED — operations:** hosting/database region, backup/PITR/restore, observability, and incident ownership.
-4. **BLOCKED — mobile release:** identifiers, signing custody, store accounts, supported platforms, privacy/delete/export, and real-device matrix.
-5. **BLOCKED — compatibility:** `/api/v1` conventions, first academic contract, and supported native-client window.
+1. **VERIFIED — owner direction:** repository timing (D01), identity principles (D03), vertical slice (D14), spike disposition (D15), and compatibility policy (D16) are no longer awaiting owner choice.
+2. **BLOCKED — Phase 1 authentication qualification:** operator/account controls, real hosted Supabase evidence, browser/server and signed-native flows, regional/privacy/lifecycle/cost evidence, and final provider selection.
+3. **BLOCKED — operations:** hosting/database vendor and region, backup/PITR/restore, observability, delegated incident ownership, and executed RPO/RTO evidence.
+4. **BLOCKED — privacy and mobile release:** final retention/legal review, identifiers, signing custody, store accounts, supported platforms, delete/export behavior, and real-device matrix.
+5. **BLOCKED — implementation compatibility:** `/api/v1` conventions and first academic contract are not implemented even though the current+previous/90-day policy is approved.
 
 ## Review procedure
 

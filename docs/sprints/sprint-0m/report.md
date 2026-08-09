@@ -1,28 +1,31 @@
 # Sprint 0M production multi-platform transition report
 
 - **Report date:** 2026-08-08 (Asia/Riyadh)
+- **Owner approval recorded:** 2026-08-09 — Nasser Al-Tamimi
 - **Scope:** repository/branch audit and production web + native architecture decision package
 - **Implementation status:** **VERIFIED — documentation only; no product/runtime implementation was performed**
-- **Decision status:** **PROPOSED — ready for owner review, not authorization by implication**
+- **Decision status:** **OWNER-APPROVED — D01–D16 govern sequencing and constraints; operational readiness remains gated**
 
 ## Executive outcome
 
-**PROPOSED — adopt a gated staged transition (Option D).** Keep the verified Next.js modular monolith at the repository root while production authentication, internal identity, `/api/v1`, and the first academic contract are proved. Immediately before native application implementation, move the web application to `apps/web` in one behavior-neutral npm-workspaces change. Create the Expo/React Native application in a following change only after parity passes.
+**OWNER-APPROVED — adopt the gated staged transition (Option D).** Keep the verified Next.js modular monolith at the repository root while production authentication, internal identity, `/api/v1`, and the first academic contract are proved. Immediately before native application implementation, move the web application to `apps/web` in one behavior-neutral npm-workspaces change. Create the Expo/React Native application in a following change only after parity passes.
 
-**PROPOSED — retain the backend inside Next.js for the MVP.** Web Server Components/Actions and public `/api/v1` Route Handlers call the same application services. Native uses only the versioned HTTPS API. Extract a backend service only when measured workload, team, regional, or compliance evidence crosses a documented trigger.
+**OWNER-APPROVED direction — retain the backend inside Next.js for the MVP.** Web Server Components/Actions and public `/api/v1` Route Handlers call the same application services. Native uses only the versioned HTTPS API. Extract a backend service or worker only when a measured requirement justifies it.
 
-**PROPOSED — do not merge `spike/supabase-auth-runtime`.** Preserve its internal-identity, fail-closed, port, threat-model, and testing ideas selectively. Rewrite from `main` after owner/provider gates; discard its evaluation mode and unexecuted migration; defer provider-specific adapters until selection.
+**OWNER-APPROVED — do not merge, rebase, cherry-pick, or copy `spike/supabase-auth-runtime` wholesale.** Preserve it temporarily as immutable audit evidence. Reuse only separately reviewed concepts through fresh production implementation from the approved baseline; delete it only after replacement production evidence and explicit owner authorization.
+
+**OWNER-APPROVED next phase — Phase 1 evidence-gated Supabase Auth qualification.** Supabase is the primary candidate, not the production-selected provider. Qualification requires real isolated hosted non-production behavior, synthetic users, real browser/server and callback/recovery evidence, current privacy/regional/lifecycle/cost review, and signed-native evidence. External resources remain **BLOCKED** until the operator/account, MFA/recovery, budget/expiry, secret, synthetic-data, and cleanup controls are recorded.
 
 ## Package index
 
 | Artifact                                                                               | Purpose                                                                                                                           | Status                                         |
 | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
 | [Repository and branch audit](repository-and-branch-audit.md)                          | Git safety, current readiness, main/spike comparison, commit/file salvage map, drift, source-ref disposition                      | **VERIFIED audit / PROPOSED disposition**      |
-| [Repository strategy](../../decisions/production-multiplatform-repository-strategy.md) | Explicit Option D selection, rejected alternatives, exact transition gate, target layout, backend placement                       | **PROPOSED**                                   |
+| [Repository strategy](../../decisions/production-multiplatform-repository-strategy.md) | Explicit Option D selection, rejected alternatives, exact transition gate, target layout, backend placement                       | **OWNER-APPROVED / evidence-gated**            |
 | [Production architecture](../../engineering/production-multiplatform-architecture.md)  | Web/API/native boundaries, auth/identity, contracts, data/time, offline/cache, design, mobile/store, operations, testing, sources | **PROPOSED with VERIFIED baseline/research**   |
-| [Transition plan](transition-plan.md)                                                  | Phased sequence, entry/exit tests, deployment/rollback, first vertical slice                                                      | **PROPOSED**                                   |
-| [Risk register](risk-register.md)                                                      | P0–P3 risks, controls, contingencies, accountable roles, phase blockers                                                           | **PROPOSED**                                   |
-| [Owner decisions](owner-decisions.md)                                                  | Sixteen material owner choices with recommendations, tradeoffs, deadlines, and safe defaults                                      | **BLOCKED pending owner**                      |
+| [Transition plan](transition-plan.md)                                                  | Phased sequence, entry/exit tests, deployment/rollback, first vertical slice                                                      | **OWNER-APPROVED sequence / gated execution**  |
+| [Risk register](risk-register.md)                                                      | P0–P3 risks, controls, contingencies, accountable roles, phase blockers                                                           | **ACTIVE**                                     |
+| [Owner decisions](owner-decisions.md)                                                  | Canonical dated D01–D16 owner record, constraints, unresolved evidence, and next phase                                            | **OWNER-APPROVED**                             |
 | This report                                                                            | Executive handoff, coverage, validation, limitations, and next action                                                             | **VERIFIED summary / PROPOSED recommendation** |
 
 ## Verified repository findings
@@ -100,26 +103,26 @@ Full links, exact claims, access date, and uncertainty are recorded in the [arch
 
 ## Requirement coverage
 
-| Requested area                                                          | Coverage                                                                                        |
-| ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| Repository/branch safety and clean-state audit                          | **VERIFIED** — audit safety snapshot and final validation procedure                             |
-| Main vs spike history, commit/file salvage                              | **VERIFIED** — commit-level and detailed file-group classifications                             |
-| One topology choice, rejected alternatives, exact timing                | **PROPOSED** — selected Option D with seven-entry gate and rollback                             |
-| Backend/API/Server Action boundary                                      | **PROPOSED** — one application layer, direct web server access, versioned native HTTP transport |
-| Auth/identity/browser/native sessions                                   | **PROPOSED / BLOCKED** — full model and flows; provider/lifecycle owner decisions open          |
-| Shared types/domain/UI                                                  | **PROPOSED** — narrow share/do-not-share policy and target packages                             |
-| PostgreSQL/migrations/time/lifecycle/concurrency/backup                 | **PROPOSED / NOT VERIFIED operationally** — explicit rules, tests, and restore targets          |
-| Offline/cache/sync/conflicts                                            | **PROPOSED** — online-first initial scope; offline mutation design deferred with trigger        |
-| Design/tokens/theme/RTL/localization/accessibility                      | **PROPOSED** — semantic sharing and platform-specific implementation/matrices                   |
-| Expo/native compatibility, SecureStore, links, notifications/background | **VERIFIED research / PROPOSED design** — no version/package selected or installed              |
-| EAS/signing/store/privacy/release                                       | **VERIFIED research / BLOCKED accounts** — custody, policy, and phased release gates            |
-| Transition phases, tests, deployment, rollback, vertical slice          | **PROPOSED** — Phases 0M–7 and definition of done                                               |
-| Risks and owner decisions                                               | **PROPOSED / BLOCKED** — 28 risks and 16 decisions with safe defaults                           |
-| Secret and docs-only scope                                              | **VERIFIED** — repository scan passed; cached scope contains exactly eight documentation files. |
+| Requested area                                                          | Coverage                                                                                                         |
+| ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Repository/branch safety and clean-state audit                          | **VERIFIED** — audit safety snapshot and final validation procedure                                              |
+| Main vs spike history, commit/file salvage                              | **VERIFIED** — commit-level and detailed file-group classifications                                              |
+| One topology choice, rejected alternatives, exact timing                | **PROPOSED** — selected Option D with seven-entry gate and rollback                                              |
+| Backend/API/Server Action boundary                                      | **PROPOSED** — one application layer, direct web server access, versioned native HTTP transport                  |
+| Auth/identity/browser/native sessions                                   | **OWNER-APPROVED principles / BLOCKED evidence** — Supabase candidate; no final provider or implementation proof |
+| Shared types/domain/UI                                                  | **PROPOSED** — narrow share/do-not-share policy and target packages                                              |
+| PostgreSQL/migrations/time/lifecycle/concurrency/backup                 | **PROPOSED / NOT VERIFIED operationally** — explicit rules, tests, and restore targets                           |
+| Offline/cache/sync/conflicts                                            | **PROPOSED** — online-first initial scope; offline mutation design deferred with trigger                         |
+| Design/tokens/theme/RTL/localization/accessibility                      | **PROPOSED** — semantic sharing and platform-specific implementation/matrices                                    |
+| Expo/native compatibility, SecureStore, links, notifications/background | **VERIFIED research / PROPOSED design** — no version/package selected or installed                               |
+| EAS/signing/store/privacy/release                                       | **VERIFIED research / BLOCKED accounts** — custody, policy, and phased release gates                             |
+| Transition phases, tests, deployment, rollback, vertical slice          | **PROPOSED** — Phases 0M–7 and definition of done                                                                |
+| Risks and owner decisions                                               | **ACTIVE / OWNER-APPROVED** — 28 risks remain active; D01–D16 have dated outcomes                                |
+| Secret and docs-only scope                                              | **VERIFIED** — the initial package scan passed; commit `8fac8d9` contains exactly eight documentation files.     |
 
-## Validation record
+## Initial planning package validation record — 2026-08-08
 
-Executed after all package files were complete:
+The table below records the validation of the initial planning package committed as `8fac8d9`. The 2026-08-09 owner-approval follow-up receives its own final Git handoff checks; this historical evidence is not rewritten to describe that later diff.
 
 | Check                     | Result                                                                                                                                                                                                                                                                                                          |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -138,10 +141,10 @@ Executed after all package files were complete:
 ## Limitations and non-claims
 
 - **NOT VERIFIED** — no real auth provider, email flow, hosted PostgreSQL, app signing, native build, device, push, store, production deployment, backup restore, or telemetry system was exercised.
-- **NOT VERIFIED** — legal compliance, data residency, age rating, launch territories, service levels, and provider cost require owner/professional review.
+- **OWNER-APPROVED direction** — Saudi Arabia and university students aged 18+ define the initial launch scope. **NOT VERIFIED** — legal/PDPL compliance, residency suitability, store classification, service levels, and provider cost require current qualified/operational review.
 - **NOT VERIFIED** — point-in-time framework/store research may change; every implementation/submission gate requires current official revalidation.
 - **VERIFIED** — no service/account/credential/deployment/push/mobile implementation was authorized or performed by this planning package.
 
 ## Recommended next action
 
-**PROPOSED — owner reviews [owner-decisions.md](owner-decisions.md), beginning with D01, D02, D03, D14, and D15.** After those are recorded, Phase 1 may evaluate a real authentication path. Do not start with the workspace move or a mobile scaffold.
+**OWNER-APPROVED — execute only Phase 1: evidence-gated Supabase Auth qualification and operational preflight.** First record its operator/account, recovery, budget/expiry, secret, synthetic-data, regional/privacy, and cleanup controls. Then evaluate real isolated hosted non-production browser/server, callback/recovery, lifecycle, cost, and signed-native behavior. Do not start product authentication, a schema/migration, workspace move, mobile scaffold, deployment, or fallback-provider evaluation unless the stated gate authorizes it.
