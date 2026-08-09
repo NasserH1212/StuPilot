@@ -1,4 +1,4 @@
-# StudentHub AI — Product Requirements Document
+# StuPilot — Product Requirements Document
 
 **Deliverable:** 3A — Production Product Blueprint  
 **Version:** 1.0 — Owner-Directed Planning Baseline  
@@ -19,13 +19,13 @@ Terms used here:
 
 ## 2. Product vision
 
-StudentHub AI is a bilingual personal academic command center for university students. It turns terms, courses, class schedules, deadlines, and planned work into a clear Today and This Week view. It is a general-purpose product: it does not depend on a particular university, major, country, SIS, or LMS.
+StuPilot is a bilingual personal academic command center for university students. It turns terms, courses, class schedules, deadlines, and planned work into a clear Today and This Week view. It is a general-purpose product: it does not depend on a particular university, major, country, SIS, or LMS.
 
 The production product begins as a responsive website. A future mobile application can consume the same domain rules and versioned API, but native iOS and Android applications are outside the MVP.
 
 ## 3. Product problem
 
-University students must reconcile recurring classes, assignments, projects, exams, and changes across several sources. A generic calendar can represent time, and an LMS can represent some official work, but neither guarantees a personal, actionable plan. StudentHub AI addresses the operational problem of maintaining one student-owned view of what is due and what is planned without requiring institutional integration.
+University students must reconcile recurring classes, assignments, projects, exams, and changes across several sources. A generic calendar can represent time, and an LMS can represent some official work, but neither guarantees a personal, actionable plan. StuPilot addresses the operational problem of maintaining one student-owned view of what is due and what is planned without requiring institutional integration.
 
 This is an owner-approved product thesis, not a claimed research finding. Product telemetry, support feedback, and real usage after release will test it.
 
@@ -349,4 +349,3 @@ Genuine owner decisions still open:
 ## 17. Approval boundary
 
 Approval of this PRD authorizes refinement of Sprint 0 only when the owner says so explicitly. It does not itself authorize package installation, application code, cloud resources, accounts, deployment, production data, payments, AI, or participant research.
-

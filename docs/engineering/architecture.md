@@ -2,7 +2,7 @@
 
 ## System shape
 
-StudentHub AI is one Next.js App Router deployment backed by one PostgreSQL database. It is a modular monolith: module boundaries are code ownership/dependency rules, not network calls.
+StuPilot is one Next.js App Router deployment backed by one PostgreSQL database. It is a modular monolith: module boundaries are code ownership/dependency rules, not network calls.
 
 ```text
 app route composition

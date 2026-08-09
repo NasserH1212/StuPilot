@@ -1,4 +1,4 @@
-# StudentHub AI — Database and Domain Model
+# StuPilot — Database and Domain Model
 
 **Deliverable:** 3F  
 **Version:** 1.0  
@@ -451,4 +451,3 @@ The following are architecture notes only and must not be created during MVP:
 - Archive, soft delete, hard delete, backup aging, and retention are distinguishable.
 - Auth provider can change without rewriting domain foreign keys.
 - ERD contains no out-of-scope production domain.
-

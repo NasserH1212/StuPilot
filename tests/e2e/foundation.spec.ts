@@ -11,6 +11,7 @@ test("the root safely selects Arabic and emits matching direction in the first r
   const response = await page.goto("/");
   expect(response?.status()).toBe(200);
   await expect(page).toHaveURL(/\/ar$/);
+  await expect(page).toHaveTitle(/StuPilot/);
   await expect(page.locator("html")).toHaveAttribute("lang", "ar");
   await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
 });

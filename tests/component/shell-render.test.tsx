@@ -24,6 +24,10 @@ describe("foundation shell rendering", () => {
       "href",
       "/ar/auth/sign-in",
     );
+    expect(screen.getByRole("link", { name: "StuPilot" })).toHaveAttribute(
+      "href",
+      "/ar",
+    );
   });
 
   it("renders the English application placeholder and states its limits", () => {

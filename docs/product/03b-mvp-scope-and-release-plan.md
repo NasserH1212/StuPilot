@@ -1,4 +1,4 @@
-# StudentHub AI — MVP Scope and Release Plan
+# StuPilot — MVP Scope and Release Plan
 
 **Deliverable:** 3B  
 **Version:** 1.0  
@@ -160,4 +160,3 @@ Support tickets, bug reports, opt-in feedback, and aggregate usage can guide pos
 - Analytics policy and success targets.
 
 If unresolved at Sprint 0, they are recorded as blockers with an owner and deadline; they are not guessed in code.
-

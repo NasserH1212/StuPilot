@@ -1,4 +1,4 @@
-# StudentHub AI — Development Roadmap and Controlled Sprints
+# StuPilot — Development Roadmap and Controlled Sprints
 
 **Deliverable:** 3I  
 **Version:** 1.0  

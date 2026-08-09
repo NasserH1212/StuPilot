@@ -2,7 +2,7 @@ import type { ExternalPrincipal } from "@/src/modules/authentication/application
 import type { UserIdentityRepository } from "@/src/modules/authentication/application/ports/user-identity-repository";
 import type { UserAccount } from "@/src/modules/authentication/domain/user-account";
 
-import type { StudentHubPrismaClient } from "./create-prisma-client";
+import type { StuPilotPrismaClient } from "./create-prisma-client";
 
 const concurrentRetryLimit = 3;
 
@@ -31,7 +31,7 @@ function toAccount(record: {
 }
 
 export class PrismaUserIdentityRepository implements UserIdentityRepository {
-  public constructor(private readonly client: StudentHubPrismaClient) {}
+  public constructor(private readonly client: StuPilotPrismaClient) {}
 
   public async resolveOrCreate(principal: ExternalPrincipal): Promise<UserAccount> {
     for (let attempt = 1; attempt <= concurrentRetryLimit; attempt += 1) {

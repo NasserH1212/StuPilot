@@ -1,4 +1,4 @@
-# StudentHub AI — Security and Privacy Baseline
+# StuPilot — Security and Privacy Baseline
 
 **Deliverable:** 3G  
 **Version:** 1.0  
@@ -230,4 +230,3 @@ Production launch is blocked until:
 - all release-blocking tests pass with no unresolved critical/high risk;
 - operator MFA, least privilege, backups, restore, alerting, key rotation, and incident runbooks work;
 - owner signs the go-live decision.
-

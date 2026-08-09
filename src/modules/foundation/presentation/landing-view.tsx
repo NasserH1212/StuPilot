@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { publicBrand } from "@/src/shared/config/brand";
 import { getDictionary } from "@/src/shared/localization/dictionaries";
 import type { Locale } from "@/src/shared/localization/locales";
 import { localizedPath } from "@/src/shared/localization/routing";
@@ -29,7 +30,7 @@ export function LandingView({ locale }: LandingViewProps) {
         {dictionary.landing.openApplicationShell}
       </Link>
       <p className="mixedText">
-        <BidiIsolate direction="ltr">StudentHub AI</BidiIsolate>
+        <BidiIsolate direction="ltr">{publicBrand.productName}</BidiIsolate>
         <span aria-hidden="true"> · </span>
         <BidiIsolate>العربية + English</BidiIsolate>
       </p>

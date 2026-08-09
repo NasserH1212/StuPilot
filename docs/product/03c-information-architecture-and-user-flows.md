@@ -1,4 +1,4 @@
-# StudentHub AI — Information Architecture and User Flows
+# StuPilot — Information Architecture and User Flows
 
 **Deliverable:** 3C  
 **Version:** 1.0  
@@ -296,4 +296,3 @@ Where the auth provider supports it: list sessions → revoke one/all others. Ac
 - Every form has loading, validation, conflict, network failure, and success states.
 - No flow asks for SIS/LMS credentials, real academic files, payment, or AI content.
 - The research prototype is not used as the production design system or code source.
-

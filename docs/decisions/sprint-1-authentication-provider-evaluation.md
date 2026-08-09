@@ -5,6 +5,8 @@
 - **Evidence cutoff:** 2026-08-08
 - **Scope:** Authentication direction only; no provider is installed, configured, connected, or approved for implementation by this document
 
+> Historical naming note: this evaluation was authored when StuPilot was named StudentHub AI. The former name is retained below to preserve the evaluated responsibilities and evidence record.
+
 ## Decision summary
 
 The proposed primary MVP choice is **Supabase Auth**, subject to two blocking gates:

@@ -67,6 +67,8 @@ Supabase provider adapter   Prisma identity repository
 
 Do not create these resources automatically. The owner should complete only the steps below, then return the values through the approved local/deployment secret channel.
 
+The owner has purchased `stupilot.com`, but DNS, hosting, and production deployment are not configured. Do not add that domain to Supabase Site URL or callback allowlists until a separately authorized deployment serves the exact HTTPS origin; the local evaluation values below remain loopback-only.
+
 1. Create or designate an **owner-controlled Supabase organization and one isolated hosted non-production project** for authentication evaluation. Require MFA, documented recovery ownership, a budget/expiry date, a cleanup owner, and synthetic test identities only. Do not use production or participant data.
 2. Decide the Supabase project region using current supported-region, Saudi cross-border/privacy, latency, DPA/subprocessor, deletion, backup, and cost evidence. **The region decision remains open and is a blocker.** Do not imply that the nearest region satisfies Saudi requirements without qualified review.
 3. In Authentication settings, enable email/password signup and **Confirm Email**. Disable anonymous signup, phone auth, social providers, manual identity linking, and any unapproved provider.

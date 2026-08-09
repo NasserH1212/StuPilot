@@ -26,6 +26,8 @@ Prisma configuration reads local ignored files for CLI work. The connection-free
 
 Authentication activates only when `AUTH_APP_ORIGIN`, `AUTH_STATE_SECRET`, `DATABASE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` all pass validation. Missing, partial, malformed, non-HTTPS (except loopback), or path-bearing origin configuration fails closed. Ordinary runtime does not read or accept a Supabase service-role key, secret key, or management token.
 
+`stupilot.com` is the purchased primary domain, but DNS, hosting, and production deployment are not configured. Do not set `AUTH_APP_ORIGIN` to `https://stupilot.com` until a separately authorized deployment serves that exact HTTPS origin; local setup continues to use `http://localhost:3000`.
+
 ## Validation behavior
 
 Zod parsers are separated into public, server, and test functions. They fail with field names/reasons without rendering the supplied value. PostgreSQL URLs must use `postgres:`/`postgresql:` and name a database. Test configuration must name a dedicated test database and cannot equal the development URL.
@@ -37,7 +39,7 @@ Only explicit `NEXT_PUBLIC_*` keys may ever be client-visible. The Supabase URL 
 - **Local:** local database values; real provider values only during an owner-authorized isolated hosted evaluation using synthetic accounts.
 - **Test:** isolated database and deterministic cleanup; no participant or production data.
 - **Preview:** not created; future isolated secrets and database/schema require owner approval.
-- **Production:** not created; credentials, accounts, domains, and deployment are outside Sprint 0.
+- **Production:** not created; credentials, external account changes, DNS, and deployment require separate authorization.
 
 Never reuse passwords or URLs between these scopes. Never place participant data in development/test. A `.env` file, key, certificate, token, or database dump must not be committed; `npm run secrets:scan` enforces common cases, but review remains required.
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { publicBrand } from "@/src/shared/config/brand";
 import { getDictionary } from "@/src/shared/localization/dictionaries";
 import { getAlternateLocale, type Locale } from "@/src/shared/localization/locales";
 import {
@@ -28,7 +29,7 @@ export function SiteShell({ children, locale, destination }: SiteShellProps) {
       <header className="siteHeader">
         <div className="headerInner">
           <Link className="brand" href={localizedPath(locale)}>
-            <BidiIsolate direction="ltr">StudentHub AI</BidiIsolate>
+            <BidiIsolate direction="ltr">{publicBrand.productName}</BidiIsolate>
           </Link>
           <nav className="primaryNav" aria-label={dictionary.navigation.publicHome}>
             <Link href={localizedPath(locale)}>{dictionary.navigation.publicHome}</Link>

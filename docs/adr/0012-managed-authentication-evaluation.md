@@ -3,6 +3,8 @@
 - **Status:** Proposed
 - **Date:** 2026-08-08
 
+> Historical naming note: this evaluation was authored when StuPilot was named StudentHub AI. The former name is retained below to preserve the decision record.
+
 ## Context
 
 Authentication belongs to Sprint 1 or later. No vendor is approved. Arabic/English custom-flow quality, account recovery, session controls, privacy, data location, and internal ownership mapping are material requirements for the Saudi undergraduate market.

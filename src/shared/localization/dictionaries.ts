@@ -1,3 +1,4 @@
+import { publicBrand } from "../config/brand";
 import type { Locale } from "./locales";
 
 export interface Dictionary {
@@ -129,8 +130,8 @@ export interface Dictionary {
 const dictionaries = {
   ar: {
     metadata: {
-      title: "StudentHub AI | الأساس الهندسي",
-      description: "واجهة StudentHub AI العربية التأسيسية — دون خصائص أكاديمية.",
+      title: `${publicBrand.productName} | الأساس الهندسي`,
+      description: `واجهة ${publicBrand.productName} العربية التأسيسية — دون خصائص أكاديمية.`,
     },
     navigation: {
       publicHome: "الرئيسية",
@@ -172,7 +173,7 @@ const dictionaries = {
       signIn: {
         eyebrow: "مصادقة آمنة",
         title: "تسجيل الدخول",
-        body: "استخدم بريدك الإلكتروني وكلمة المرور للوصول إلى مساحة StudentHub AI.",
+        body: `استخدم بريدك الإلكتروني وكلمة المرور للوصول إلى مساحة ${publicBrand.productName}.`,
         submit: "تسجيل الدخول",
         invalidCredentials: "تعذر تسجيل الدخول بهذه البيانات.",
         emailNotVerified: "تحقق من بريدك الإلكتروني قبل تسجيل الدخول.",
@@ -195,7 +196,7 @@ const dictionaries = {
       verified: {
         eyebrow: "تم التحقق",
         title: "تم التحقق من البريد الإلكتروني",
-        body: "أصبحت الجلسة جاهزة، وتم ربط الهوية بمعرّف StudentHub AI الداخلي.",
+        body: `أصبحت الجلسة جاهزة، وتم ربط الهوية بمعرّف ${publicBrand.productName} الداخلي.`,
         openWorkspace: "فتح مساحة العمل",
       },
       forgotPassword: {
@@ -235,7 +236,7 @@ const dictionaries = {
       },
       workspace: {
         eyebrow: "مساحة محمية",
-        title: "مساحة عمل StudentHub AI",
+        title: `مساحة عمل ${publicBrand.productName}`,
         body: "تم التحقق من الجلسة والحساب الداخلي على الخادم. لم تبدأ الخصائص الأكاديمية بعد.",
         signedInAs: "معرّف المستخدم الداخلي",
         signOut: "تسجيل الخروج",
@@ -258,9 +259,8 @@ const dictionaries = {
   },
   en: {
     metadata: {
-      title: "StudentHub AI | Engineering foundation",
-      description:
-        "The foundational StudentHub AI English shell — no academic features.",
+      title: `${publicBrand.productName} | Engineering foundation`,
+      description: `The foundational ${publicBrand.productName} English shell — no academic features.`,
     },
     navigation: {
       publicHome: "Home",
@@ -305,7 +305,7 @@ const dictionaries = {
       signIn: {
         eyebrow: "Secure authentication",
         title: "Sign in",
-        body: "Use your email and password to access your StudentHub AI workspace.",
+        body: `Use your email and password to access your ${publicBrand.productName} workspace.`,
         submit: "Sign in",
         invalidCredentials: "We could not sign in with those details.",
         emailNotVerified: "Verify your email address before signing in.",
@@ -328,7 +328,7 @@ const dictionaries = {
       verified: {
         eyebrow: "Verified",
         title: "Your email address is verified",
-        body: "The session is ready and the identity is linked to an internal StudentHub AI ID.",
+        body: `The session is ready and the identity is linked to an internal ${publicBrand.productName} ID.`,
         openWorkspace: "Open workspace",
       },
       forgotPassword: {
@@ -368,7 +368,7 @@ const dictionaries = {
       },
       workspace: {
         eyebrow: "Protected workspace",
-        title: "StudentHub AI workspace",
+        title: `${publicBrand.productName} workspace`,
         body: "The provider session and internal account were validated on the server. Academic features have not started.",
         signedInAs: "Internal user ID",
         signOut: "Sign out",

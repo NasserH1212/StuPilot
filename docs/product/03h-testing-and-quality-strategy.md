@@ -1,4 +1,4 @@
-# StudentHub AI — Testing and Quality Strategy
+# StuPilot — Testing and Quality Strategy
 
 **Deliverable:** 3H  
 **Version:** 1.0  
@@ -273,4 +273,3 @@ Each release candidate reports:
 - performance against budgets;
 - migration, backup restore, rollback, and alert evidence;
 - deployment version and owner go/no-go.
-

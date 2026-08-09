@@ -13,10 +13,12 @@ The repository enforces the Node/npm major lines. The latest security patch with
 
 ```bash
 git clone <repository-url>
-cd StudentHub-AI
+cd <repository-folder>
 npm ci
 npm run db:generate
 ```
+
+The local repository folder has not been renamed by the StuPilot rebrand. Use the actual folder created by your clone or existing checkout.
 
 `npm ci` consumes the committed lockfile. Prisma client generation is an explicit command so a dependency install never needs a database URL or network connection beyond package installation/schema-engine download.
 

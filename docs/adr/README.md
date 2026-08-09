@@ -1,4 +1,4 @@
-# StudentHub AI architecture decision records
+# StuPilot architecture decision records
 
 ADRs record decisions for the production application. `Accepted` decisions govern current work; `Proposed` decisions define an evaluation path but do not authorize a vendor or implementation.
 

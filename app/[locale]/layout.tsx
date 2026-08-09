@@ -49,7 +49,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
 
   const requestHeaders = await headers();
   const destination = localizedDestinationFromPath(
-    requestHeaders.get("x-studenthub-pathname"),
+    requestHeaders.get("x-stupilot-pathname"),
   );
 
   return (

@@ -1,4 +1,4 @@
-# StudentHub AI — Archived Research Program
+# StudentHub AI (former product name, now StuPilot) — Archived Research Program
 
 **Archive decision date:** 5 August 2026  
 **Status:** Optional historical material; cancelled and non-blocking  
@@ -57,4 +57,3 @@ It may not be used to claim validated demand, fabricate findings, contact people
 ## Active phase
 
 The active phase is [Deliverable 3 — Production Product Blueprint](../../product/README.md). Sprint 0 remains unstarted until separate owner approval.
-

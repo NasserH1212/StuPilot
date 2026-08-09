@@ -5,7 +5,7 @@ import { getAuthenticationConfiguration } from "@/src/shared/config/authenticati
 import { defaultLocale, isLocale } from "@/src/shared/localization/locales";
 import { localizedPath } from "@/src/shared/localization/routing";
 
-const localeHeader = "x-studenthub-locale";
+const localeHeader = "x-stupilot-locale";
 
 function privateNoStore(response: NextResponse): NextResponse {
   response.headers.set(
@@ -41,7 +41,7 @@ export async function proxy(request: NextRequest) {
   const locale = firstSegment && isLocale(firstSegment) ? firstSegment : defaultLocale;
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set(localeHeader, locale);
-  requestHeaders.set("x-studenthub-pathname", pathname);
+  requestHeaders.set("x-stupilot-pathname", pathname);
 
   const response = NextResponse.next({
     request: {

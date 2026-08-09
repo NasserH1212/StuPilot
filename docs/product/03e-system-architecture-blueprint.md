@@ -1,4 +1,4 @@
-# StudentHub AI — System Architecture Blueprint
+# StuPilot — System Architecture Blueprint
 
 **Deliverable:** 3E  
 **Version:** 1.0  

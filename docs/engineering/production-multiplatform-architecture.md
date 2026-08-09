@@ -8,9 +8,9 @@
 
 ## Architecture boundary
 
-**VERIFIED — current state:** StudentHub AI is a root-level Next.js 16.3 modular-monolith foundation with Arabic/RTL and English/LTR shells, PostgreSQL/Prisma infrastructure, and no product API, authentication, user data, mobile app, provider, or deployment.
+**VERIFIED — current state:** StuPilot is a root-level Next.js 16.3 modular-monolith foundation with Arabic/RTL and English/LTR shells, PostgreSQL/Prisma infrastructure, production-shaped authentication and application-owned identity, and no academic product API, mobile app, accepted hosted provider, or deployment.
 
-**PROPOSED — target state:** one server-authoritative StudentHub product serves a web client and native iOS/Android client through transport-independent application services. The web application and `/api/v1` remain one deployable Next.js backend for the MVP. The mobile application is an independently released Expo/React Native client. PostgreSQL is the system of record; client caches are replaceable projections.
+**PROPOSED — target state:** one server-authoritative StuPilot product serves a web client and native iOS/Android client through transport-independent application services. The web application and `/api/v1` remain one deployable Next.js backend for the MVP. The mobile application is an independently released Expo/React Native client. PostgreSQL is the system of record; client caches are replaceable projections.
 
 **NOT VERIFIED:** provider selection, hosting/database vendors and regions, scale, final legal/retention policy, store accounts, production service levels, and device support. Saudi Arabia and 18+ are owner-approved launch direction, not proof of legal/store readiness.
 
@@ -63,7 +63,7 @@ flowchart LR
 
 ### Native reads and mutations
 
-**PROPOSED** — the native client uses HTTPS `/api/v1` Route Handlers exclusively for StudentHub server data. It never imports a Server Action, database type, provider server client, or server environment variable.
+**PROPOSED** — the native client uses HTTPS `/api/v1` Route Handlers exclusively for StuPilot server data. It never imports a Server Action, database type, provider server client, or server environment variable.
 
 ### Public API controls
 
@@ -95,7 +95,7 @@ The exact URL set is approved with the first vertical slice. A minimal candidate
 | `/api/v1/devices`                                               | Register/revoke a push installation after notification scope is approved.                                           | **DEFERRED / PROPOSED**                   |
 | `/api/v1/account/export` and `/api/v1/account/deletion-request` | Data access/deletion lifecycle used by web, native, and required public web deletion path.                          | **BLOCKED** by retention/legal decisions. |
 
-**PROPOSED** — authentication initiation/callback endpoints depend on the selected provider and are designed separately. Never infer that email/password must traverse StudentHub APIs.
+**PROPOSED** — authentication initiation/callback endpoints depend on the selected provider and are designed separately. Never infer that email/password must traverse StuPilot APIs.
 
 ### Media type and schema
 
@@ -107,11 +107,11 @@ The exact URL set is approved with the first vertical slice. A minimal candidate
 
 ### Error envelope
 
-**PROPOSED** — use an RFC 9457-style `application/problem+json` envelope with stable StudentHub codes:
+**PROPOSED** — use an RFC 9457-style `application/problem+json` envelope with stable StuPilot codes:
 
 ```json
 {
-  "type": "https://studenthub.example/problems/validation",
+  "type": "https://stupilot.com/problems/validation",
   "title": "Request validation failed",
   "status": 422,
   "code": "VALIDATION_FAILED",
@@ -119,6 +119,8 @@ The exact URL set is approved with the first vertical slice. A minimal candidate
   "errors": [{ "path": "dueAt", "code": "INVALID_INSTANT" }]
 }
 ```
+
+The `stupilot.com` problem-type namespace above is a proposed contract example, not evidence that DNS, hosting, or the domain is live.
 
 - **PROPOSED** — `code` and field error codes are stable client inputs; localized human copy remains client-owned.
 - **PROPOSED** — `detail` is safe and optional; stack traces, SQL/provider messages, email existence, tokens, and internal IDs are never returned.
@@ -152,7 +154,7 @@ The exact URL set is approved with the first vertical slice. A minimal candidate
 ### Identity model
 
 ```text
-users.id (StudentHub UUID)
+users.id (StuPilot UUID)
     1
     |
     * auth_identities(provider_key, provider_subject)

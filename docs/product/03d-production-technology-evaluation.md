@@ -1,4 +1,4 @@
-# StudentHub AI — Production Technology Evaluation
+# StuPilot — Production Technology Evaluation
 
 **Deliverable:** 3D  
 **Version:** 1.0  
@@ -220,4 +220,3 @@ Official sources accessed 5 August 2026:
 6. Whether product analytics is enabled at launch and under what consent policy.
 
 None requires participant research; all require owner or legal/operational approval before production use.
-

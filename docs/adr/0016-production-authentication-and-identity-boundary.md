@@ -2,7 +2,7 @@
 
 - **Date:** 2026-08-09
 - **Status:** Accepted architecture; Supabase provider acceptance remains evidence-gated
-- **Decision owners:** StudentHub AI project owner and engineering
+- **Decision owners:** StuPilot project owner and engineering
 
 ## Context
 

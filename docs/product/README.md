@@ -1,11 +1,12 @@
-# StudentHub AI — Deliverable 3: Production Product Blueprint
+# StuPilot — Deliverable 3: Production Product Blueprint
 
 **Version:** 1.0  
 **Date:** 5 August 2026  
-**Active phase:** Sprint 0 closed; Sprint 1 authentication decision gate
-**Implementation status:** Sprint 0 closed and committed; Sprint 1 awaits authentication-provider approval
+**Active phase:** Production authentication foundation implemented; hosted-provider acceptance pending
 
-> **Status notice:** This approved blueprint preserves the forward-looking scope and authorization language written before Sprint 0. The current execution state is governed by the [Sprint 0 closure record](../sprints/sprint-0/closure.md); historical statements below about what approval did or did not authorize describe the gate at that time, not the current Git state.
+**Implementation status:** Repository authentication and application-owned identity are implemented; real Supabase qualification remains evidence-gated
+
+> **Status notice:** This approved blueprint preserves the forward-looking scope and authorization language written before Sprint 0. The current authentication state is recorded in the [production authentication report](../sprints/production-authentication-report.md); historical statements below about what approval did or did not authorize describe the gate at that time, not the current Git state.
 
 ## 1. Strategy
 
@@ -31,7 +32,7 @@ The disposable prototype in `../../research-prototype/` is not production code a
 
 ## 3. Approved production product
 
-StudentHub AI is a general-purpose bilingual website and future mobile application for university students. It is institution- and country-platform independent, manual-first, Arabic/RTL and English/LTR from release day, mobile-first, and fully usable on desktop.
+StuPilot is a general-purpose bilingual website and future mobile application for university students. It is institution- and country-platform independent, manual-first, Arabic/RTL and English/LTR from release day, mobile-first, and fully usable on desktop.
 
 The MVP contains identity/account recovery, onboarding, optional university/major, terms, courses, recurring classes, assignments/projects/exams, Today, This Week, calendar, Quick Capture, completion/reopen, planned-work rescheduling, occurrence/series edits, in-app reminders, settings, and strict per-user ownership.
 

@@ -59,6 +59,8 @@ If any item is absent, the transition is **BLOCKED**. A target calendar date alo
 
 ### Current, retained until the gate
 
+The following trees preserve the existing local repository folder name. This rebrand does not rename that folder automatically.
+
 ```text
 StudentHub-AI/
 ├── app/                 # Next.js routes and future /api/v1 handlers

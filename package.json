@@ -1,8 +1,8 @@
 {
-  "name": "studenthub-ai",
+  "name": "stupilot",
   "version": "0.0.0",
   "private": true,
-  "description": "Bilingual, Arabic-first StudentHub AI production foundation.",
+  "description": "Bilingual, Arabic-first StuPilot production foundation.",
   "type": "module",
   "packageManager": "npm@11.9.0",
   "engines": {

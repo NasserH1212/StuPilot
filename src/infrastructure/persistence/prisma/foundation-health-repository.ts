@@ -3,10 +3,10 @@ import type {
   FoundationHealthRepository,
 } from "@/src/modules/foundation/application/ports/foundation-health-repository";
 
-import type { StudentHubPrismaClient } from "./create-prisma-client";
+import type { StuPilotPrismaClient } from "./create-prisma-client";
 
 export class PrismaFoundationHealthRepository implements FoundationHealthRepository {
-  public constructor(private readonly client: StudentHubPrismaClient) {}
+  public constructor(private readonly client: StuPilotPrismaClient) {}
 
   public async createInTransaction(): Promise<FoundationHealthRecord> {
     return this.client.$transaction(async (transaction) => {

@@ -1,10 +1,10 @@
-# StudentHub AI
+# StuPilot
 
-StudentHub AI is an Arabic-first, bilingual academic organization product for university students. The production foundation is mobile-first, supports Arabic/RTL and English/LTR equally, and remains independent of any university, country platform, SIS, or LMS.
+StuPilot is an Arabic-first, bilingual academic organization product for university students. The production foundation is mobile-first, supports Arabic/RTL and English/LTR equally, and remains independent of any university, country platform, SIS, or LMS.
 
 ## Active phase
 
-**Production authentication and application-owned identity are implemented on `feature/production-authentication`; real hosted Supabase qualification is still required before provider or production acceptance.**
+**Production authentication and application-owned identity are implemented; real hosted Supabase qualification is still required before provider or production acceptance.**
 
 The repository contains bilingual authentication routes, secure server session boundaries, and the internal user/identity model. Without a complete authorized provider/database configuration it fails closed. It does not contain onboarding, academic terms, courses, schedules, academic items, Today, This Week, calendar behavior, reminders, AI, integrations, mobile applications, or deployment.
 
@@ -34,6 +34,12 @@ Open:
 - `http://localhost:3000/ar/workspace` or `/en/workspace` — server-protected workspace with no academic features.
 
 No external font, analytics script, production credential, fake authentication, or demo user is included. Supabase SDKs exist only in the infrastructure candidate adapter.
+
+## Brand and domain status
+
+The current product name is **StuPilot** in Arabic and English. The owner has purchased `stupilot.com`, but this repository-only rebrand does not configure DNS, connect a custom domain, create hosting, or deploy the application. The existing Supabase project, external accounts, repository folder, GitHub repository, and remote URLs are not renamed or modified.
+
+See [the external rebrand handoff](docs/engineering/rebrand-handoff.md) before changing any external identity or behavior-coupled identifier.
 
 ## PostgreSQL locally
 
