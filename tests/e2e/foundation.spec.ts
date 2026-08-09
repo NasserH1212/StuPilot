@@ -63,17 +63,53 @@ test("the shell fits a 320px viewport without horizontal overflow", async ({
   ).toBe(true);
 });
 
-test("the application placeholder remains usable at desktop width", async ({
+test("the protected workspace fails closed without authentication configuration", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/en/workspace");
+  const response = await page.goto("/en/workspace");
+  expect(response?.headers()["cache-control"]).toContain("no-store");
+  await expect(page).toHaveURL(/\/en\/auth\/unavailable\?reason=configuration$/);
   await expect(
-    page.getByRole("heading", { name: "Protected application shell" }),
+    page.getByRole("heading", { name: "Authentication is currently unavailable" }),
   ).toBeVisible();
   await expect(
-    page.getByText(/Authentication is not active in Sprint 0/),
+    page.getByText(/No substitute account or session was created/),
   ).toBeVisible();
+});
+
+test("public authentication routes fail closed without rendering credential forms", async ({
+  page,
+}) => {
+  const response = await page.goto(
+    "/en/auth/sign-in?returnTo=https%3A%2F%2Fattacker.invalid",
+  );
+  expect(response?.headers()["cache-control"]).toContain("no-store");
+  await expect(
+    page.getByRole("heading", { name: "Authentication is currently unavailable" }),
+  ).toBeVisible();
+  await expect(page.getByLabel("Email address")).toHaveCount(0);
+});
+
+test("malformed callback links are stripped and shown as localized failures", async ({
+  page,
+}) => {
+  await page.goto("/ar/auth/callback?token_hash=not-accepted&type=unknown");
+  await expect(page).toHaveURL(/\/ar\/auth\/link-error\?reason=invalid$/);
+  await expect(
+    page.getByRole("heading", { name: "رابط المصادقة غير صالح" }),
+  ).toBeVisible();
+});
+
+test("the current-session API is private and unavailable without real configuration", async ({
+  request,
+}) => {
+  const response = await request.get("/api/v1/session");
+  expect(response.status()).toBe(503);
+  expect(response.headers()["cache-control"]).toContain("no-store");
+  expect(await response.json()).toEqual({
+    error: { code: "AUTH_CONFIGURATION_UNAVAILABLE" },
+  });
 });
 
 test("keyboard users reach a visible skip link and main content", async ({ page }) => {

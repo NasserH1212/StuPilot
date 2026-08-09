@@ -2,7 +2,7 @@
   "name": "studenthub-ai",
   "version": "0.0.0",
   "private": true,
-  "description": "Bilingual, Arabic-first academic organization product — Sprint 0 foundation only.",
+  "description": "Bilingual, Arabic-first StudentHub AI production foundation.",
   "type": "module",
   "packageManager": "npm@11.9.0",
   "engines": {
@@ -26,6 +26,7 @@
     "test:integration": "vitest run tests/integration",
     "test:e2e": "node scripts/run-e2e.mjs",
     "db:generate": "node scripts/run-prisma.mjs generate",
+    "db:validate": "node scripts/run-prisma.mjs validate",
     "db:migrate:dev": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate deploy",
     "db:migrate:status": "prisma migrate status",
@@ -38,6 +39,8 @@
   "dependencies": {
     "@prisma/adapter-pg": "7.9.1",
     "@prisma/client": "7.9.1",
+    "@supabase/ssr": "0.12.3",
+    "@supabase/supabase-js": "2.110.8",
     "next": "16.3.0",
     "pg": "8.22.0",
     "react": "19.2.8",

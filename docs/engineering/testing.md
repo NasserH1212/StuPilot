@@ -2,20 +2,21 @@
 
 ## Test layers
 
-| Layer          | Command                    | What it proves                                                                                  |
-| -------------- | -------------------------- | ----------------------------------------------------------------------------------------------- |
-| Format         | `npm run format:check`     | Tracked foundation files match Prettier                                                         |
-| Lint           | `npm run lint`             | Next.js, React, TypeScript, accessibility-oriented lint rules                                   |
-| Boundaries     | `npm run boundaries`       | Dependency direction and prototype isolation                                                    |
-| Types          | `npm run typecheck`        | Strict TypeScript including generated Prisma types                                              |
-| Unit           | `npm run test:unit`        | Locales, fallback, env validation, time default, boundary negatives                             |
-| Component      | `npm run test:component`   | Arabic/English shells and route states                                                          |
-| Component a11y | `npm run test:a11y`        | axe structural rules in JSDOM                                                                   |
-| Database       | `npm run test:integration` | Real PostgreSQL connection, migration evidence, generated client, transaction rollback, cleanup |
-| Build          | `npm run build`            | Optimized Next.js production compilation                                                        |
-| Browser        | `npm run test:e2e`         | First response, hydration, 404, 320px/desktop, keyboard, browser axe                            |
-| Secrets        | `npm run secrets:scan`     | Common tokens/private keys and forbidden local credential files                                 |
-| Dependencies   | `npm run audit`            | npm high/critical production dependency advisories                                              |
+| Layer          | Command                    | What it proves                                                                                   |
+| -------------- | -------------------------- | ------------------------------------------------------------------------------------------------ |
+| Format         | `npm run format:check`     | Tracked foundation files match Prettier                                                          |
+| Lint           | `npm run lint`             | Next.js, React, TypeScript, accessibility-oriented lint rules                                    |
+| Boundaries     | `npm run boundaries`       | Dependency direction, prototype isolation, and provider SDK isolation                            |
+| Types          | `npm run typecheck`        | Strict TypeScript including generated Prisma types                                               |
+| Prisma schema  | `npm run db:validate`      | Prisma schema/config parse and generator compatibility                                           |
+| Unit           | `npm run test:unit`        | Auth orchestration/security, locales, environment, time, and boundary negatives                  |
+| Component      | `npm run test:component`   | Arabic/English auth forms, shells, and route states                                              |
+| Component a11y | `npm run test:a11y`        | axe structural rules for auth and shell UI in JSDOM                                              |
+| Database       | `npm run test:integration` | Migrations, generated client, transaction rollback, identity concurrency/no-email-merge, cleanup |
+| Build          | `npm run build`            | Optimized Next.js production compilation                                                         |
+| Browser        | `npm run test:e2e`         | Fail-closed auth/API, callbacks, cache, first response, 320px, keyboard, browser axe             |
+| Secrets        | `npm run secrets:scan`     | Common tokens/private keys and forbidden local credential files                                  |
+| Dependencies   | `npm run audit`            | npm high/critical production dependency advisories                                               |
 
 ## Fast local loop
 
@@ -24,6 +25,7 @@ npm run format:check
 npm run lint
 npm run boundaries
 npm run typecheck
+npm run db:validate
 npm test
 ```
 
@@ -43,6 +45,8 @@ npm run test:integration
 The runner refuses a URL whose database name does not contain `test` and refuses a test URL equal to `DATABASE_URL`. The migration command uses `migrate deploy`, not schema push. A missing URL causes the test file to skip for developer convenience, but a skip does **not** satisfy Sprint acceptance or CI.
 
 Integration cleanup targets only markers with the test prefix; it does not reset/drop a database. CI provides a fresh PostgreSQL 18.4 service per job.
+
+Provider success paths are not mocked as production evidence. Real registration, email delivery, verification/recovery tokens, cookies, refresh, rate limits, outage behavior, and revocation require the owner-authorized hosted environment listed in [authentication.md](authentication.md#provider-evidence-still-required).
 
 ## Browser and accessibility
 

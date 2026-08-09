@@ -6,7 +6,7 @@ import { LandingView } from "@/src/modules/foundation/presentation/landing-view"
 import { SiteShell } from "@/src/modules/foundation/presentation/site-shell";
 
 describe("foundation shell rendering", () => {
-  it("renders a clean Arabic public shell without product features", () => {
+  it("renders a clean Arabic public shell with the production sign-in entry", () => {
     render(
       <SiteShell locale="ar" destination="home">
         <LandingView locale="ar" />
@@ -20,7 +20,10 @@ describe("foundation shell rendering", () => {
       "href",
       "/en",
     );
-    expect(screen.queryByText(/تسجيل الدخول/)).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "تسجيل الدخول" })).toHaveAttribute(
+      "href",
+      "/ar/auth/sign-in",
+    );
   });
 
   it("renders the English application placeholder and states its limits", () => {

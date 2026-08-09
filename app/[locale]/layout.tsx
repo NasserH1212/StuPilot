@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 import { SiteShell } from "@/src/modules/foundation/presentation/site-shell";
 import { getDictionary } from "@/src/shared/localization/dictionaries";
 import { isLocale, locales } from "@/src/shared/localization/locales";
+import { localizedDestinationFromPath } from "@/src/shared/localization/routing";
 
 interface LocaleLayoutProps {
   readonly children: ReactNode;
@@ -47,11 +48,9 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   }
 
   const requestHeaders = await headers();
-  const destination = requestHeaders
-    .get("x-studenthub-pathname")
-    ?.endsWith("/workspace")
-    ? "workspace"
-    : "home";
+  const destination = localizedDestinationFromPath(
+    requestHeaders.get("x-studenthub-pathname"),
+  );
 
   return (
     <SiteShell locale={locale} destination={destination}>

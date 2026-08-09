@@ -1,4 +1,4 @@
-name: Sprint 0 CI
+name: Production foundation CI
 
 on:
   push:
@@ -46,6 +46,9 @@ jobs:
 
       - name: Generate Prisma client
         run: npm run db:generate
+
+      - name: Validate Prisma schema
+        run: npm run db:validate
 
       - name: Check formatting
         run: npm run format:check

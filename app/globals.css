@@ -152,7 +152,8 @@ a {
 
 .hero,
 .applicationPlaceholder,
-.stateCard {
+.stateCard,
+.authCard {
   border: 1px solid rgb(183 194 212 / 70%);
   border-radius: var(--radius-large);
   background: var(--color-surface);
@@ -214,6 +215,33 @@ h1 {
   cursor: pointer;
 }
 
+.primaryAction:disabled,
+.secondaryAction:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.secondaryAction {
+  display: inline-flex;
+  min-block-size: 2.75rem;
+  inline-size: fit-content;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  color: var(--color-text);
+  background: var(--color-surface);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.secondaryAction:hover {
+  background: var(--color-surface-subtle);
+}
+
 .primaryAction:hover {
   background: var(--color-accent-strong);
 }
@@ -228,6 +256,100 @@ h1 {
   display: grid;
   gap: var(--space-5);
   padding: clamp(1.5rem, 5vw, 3rem);
+}
+
+.authCard {
+  inline-size: min(100%, 35rem);
+  margin-inline: auto;
+  padding: clamp(1.25rem, 5vw, 3rem);
+}
+
+.authCard h1 {
+  font-size: clamp(1.8rem, 7vw, 3.25rem);
+}
+
+.authForm,
+.fieldGroup,
+.authLinks,
+.signOutForm {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.authForm {
+  gap: var(--space-5);
+}
+
+.fieldGroup {
+  gap: var(--space-2);
+}
+
+.fieldGroup label,
+.identitySummary dt {
+  font-weight: 750;
+}
+
+.fieldGroup input {
+  min-block-size: 3rem;
+  inline-size: 100%;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-small);
+  color: var(--color-text);
+  background: var(--color-surface);
+  font: inherit;
+}
+
+.fieldGroup input[aria-invalid="true"] {
+  border-color: #b42318;
+}
+
+.fieldHelp,
+.fieldError,
+.authMessage,
+.authSuccess {
+  margin: 0;
+  font-size: var(--font-size-small);
+}
+
+.fieldHelp {
+  color: var(--color-text-muted);
+}
+
+.fieldError,
+.authMessage {
+  color: #8a1c13;
+}
+
+.authMessage {
+  min-block-size: 1.5rem;
+}
+
+.authSuccess {
+  margin-block-end: var(--space-5);
+  padding: var(--space-4);
+  border-inline-start: 0.25rem solid #157f3b;
+  border-radius: var(--radius-small);
+  background: #eaf7ef;
+}
+
+.authLinks {
+  margin-block-start: var(--space-5);
+}
+
+.identitySummary {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-4);
+  border-radius: var(--radius-small);
+  background: var(--color-surface-subtle);
+}
+
+.identitySummary dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
 }
 
 .notice {

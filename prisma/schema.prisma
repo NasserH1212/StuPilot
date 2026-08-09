@@ -7,6 +7,40 @@ datasource db {
   provider = "postgresql"
 }
 
+enum UserAccountState {
+  active
+  disabled
+  deletion_pending
+
+  @@map("user_account_state")
+}
+
+model User {
+  id         String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  state      UserAccountState @default(active)
+  createdAt  DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt  DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  identities AuthIdentity[]
+
+  @@map("users")
+}
+
+model AuthIdentity {
+  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId                String   @map("user_id") @db.Uuid
+  provider              String   @db.VarChar(64)
+  providerSubject       String   @map("provider_subject") @db.VarChar(255)
+  verifiedEmailSnapshot String?  @map("verified_email_snapshot") @db.VarChar(320)
+  emailVerifiedAt       DateTime @map("email_verified_at") @db.Timestamptz(3)
+  createdAt             DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt             DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@unique([provider, providerSubject], map: "auth_identities_provider_subject_key")
+  @@index([userId], map: "auth_identities_user_id_idx")
+  @@map("auth_identities")
+}
+
 // Technical-only Sprint 0 compatibility record. This is not a product entity.
 model FoundationHealthCheck {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid

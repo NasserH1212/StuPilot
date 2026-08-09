@@ -1,10 +1,36 @@
 import { NextResponse, type NextRequest } from "next/server";
 
+import { refreshSupabaseSession } from "@/src/infrastructure/authentication/supabase-session-proxy";
+import { getAuthenticationConfiguration } from "@/src/shared/config/authentication";
 import { defaultLocale, isLocale } from "@/src/shared/localization/locales";
+import { localizedPath } from "@/src/shared/localization/routing";
 
 const localeHeader = "x-studenthub-locale";
 
-export function proxy(request: NextRequest) {
+function privateNoStore(response: NextResponse): NextResponse {
+  response.headers.set(
+    "Cache-Control",
+    "private, no-store, no-cache, must-revalidate, max-age=0",
+  );
+  response.headers.set("Vary", "Cookie");
+  return response;
+}
+
+function localizedRedirect(
+  request: NextRequest,
+  pathname: string,
+  parameters: Readonly<Record<string, string>> = {},
+): NextResponse {
+  const destination = request.nextUrl.clone();
+  destination.pathname = pathname;
+  destination.search = "";
+  for (const [name, value] of Object.entries(parameters)) {
+    destination.searchParams.set(name, value);
+  }
+  return privateNoStore(NextResponse.redirect(destination));
+}
+
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname === "/") {
@@ -17,13 +43,52 @@ export function proxy(request: NextRequest) {
   requestHeaders.set(localeHeader, locale);
   requestHeaders.set("x-studenthub-pathname", pathname);
 
-  return NextResponse.next({
+  const response = NextResponse.next({
     request: {
       headers: requestHeaders,
     },
   });
+  const isPrivateRoute =
+    pathname === localizedPath(locale, "workspace") || pathname.includes("/auth/");
+  const configuration = getAuthenticationConfiguration();
+
+  if (!configuration.available) {
+    if (pathname === localizedPath(locale, "workspace")) {
+      return localizedRedirect(
+        request,
+        localizedPath(locale, "authentication-unavailable"),
+        { reason: "configuration" },
+      );
+    }
+    return isPrivateRoute ? privateNoStore(response) : response;
+  }
+
+  const session = await refreshSupabaseSession(
+    request,
+    response,
+    configuration.environment,
+  );
+
+  if (pathname === localizedPath(locale, "workspace")) {
+    if (session.providerUnavailable) {
+      return localizedRedirect(
+        request,
+        localizedPath(locale, "authentication-unavailable"),
+        { reason: "provider" },
+      );
+    }
+    if (!session.authenticated) {
+      return localizedRedirect(request, localizedPath(locale, "sign-in"), {
+        returnTo: localizedPath(locale, "workspace"),
+      });
+    }
+  }
+
+  return isPrivateRoute ? privateNoStore(response) : response;
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 };

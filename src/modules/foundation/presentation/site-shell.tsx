@@ -3,14 +3,17 @@ import type { ReactNode } from "react";
 
 import { getDictionary } from "@/src/shared/localization/dictionaries";
 import { getAlternateLocale, type Locale } from "@/src/shared/localization/locales";
-import { localizedPath } from "@/src/shared/localization/routing";
+import {
+  localizedPath,
+  type LocalizedDestination,
+} from "@/src/shared/localization/routing";
 
 import { BidiIsolate } from "./bidi-isolate";
 
 interface SiteShellProps {
   readonly children: ReactNode;
   readonly locale: Locale;
-  readonly destination: "home" | "workspace";
+  readonly destination: LocalizedDestination;
 }
 
 export function SiteShell({ children, locale, destination }: SiteShellProps) {
@@ -31,6 +34,9 @@ export function SiteShell({ children, locale, destination }: SiteShellProps) {
             <Link href={localizedPath(locale)}>{dictionary.navigation.publicHome}</Link>
             <Link href={localizedPath(locale, "workspace")}>
               {dictionary.navigation.applicationShell}
+            </Link>
+            <Link href={localizedPath(locale, "sign-in")}>
+              {dictionary.navigation.signIn}
             </Link>
             <Link
               className="languageLink"

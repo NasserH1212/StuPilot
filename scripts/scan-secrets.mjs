@@ -21,6 +21,7 @@ const patterns = [
   { name: "AWS access key", expression: /AKIA[0-9A-Z]{16}/ },
   { name: "GitHub token", expression: /gh[pousr]_[A-Za-z0-9_]{20,}/ },
   { name: "OpenAI-style token", expression: /sk-[A-Za-z0-9_-]{20,}/ },
+  { name: "Supabase secret key", expression: /sb_secret_[A-Za-z0-9_-]{20,}/ },
 ];
 
 async function walk(directory, root) {

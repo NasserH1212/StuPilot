@@ -26,11 +26,42 @@ const postgresUrlSchema = z
 
 const publicEnvironmentSchema = z.object({
   NEXT_PUBLIC_APP_ENV: applicationEnvironmentSchema.default("local"),
+  NEXT_PUBLIC_SUPABASE_URL: z.url().optional(),
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.string().min(20).optional(),
 });
 
 const serverEnvironmentSchema = z.object({
   DATABASE_URL: postgresUrlSchema,
 });
+
+const authenticationEnvironmentSchema = z
+  .object({
+    AUTH_APP_ORIGIN: z.url(),
+    AUTH_STATE_SECRET: z.string().min(32),
+    DATABASE_URL: postgresUrlSchema,
+    NEXT_PUBLIC_SUPABASE_URL: z.url(),
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.string().min(20),
+  })
+  .superRefine((value, context) => {
+    const origin = new URL(value.AUTH_APP_ORIGIN);
+    const isLoopback = ["localhost", "127.0.0.1", "[::1]"].includes(origin.hostname);
+
+    if (origin.pathname !== "/" || origin.search || origin.hash) {
+      context.addIssue({
+        code: "custom",
+        path: ["AUTH_APP_ORIGIN"],
+        message: "must be an origin without a path, query, or fragment",
+      });
+    }
+
+    if (origin.protocol !== "https:" && !(isLoopback && origin.protocol === "http:")) {
+      context.addIssue({
+        code: "custom",
+        path: ["AUTH_APP_ORIGIN"],
+        message: "must use HTTPS except for a loopback local environment",
+      });
+    }
+  });
 
 const testEnvironmentSchema = z
   .object({
@@ -61,6 +92,7 @@ const testEnvironmentSchema = z
 export type PublicEnvironment = z.infer<typeof publicEnvironmentSchema>;
 export type ServerEnvironment = z.infer<typeof serverEnvironmentSchema>;
 export type TestEnvironment = z.infer<typeof testEnvironmentSchema>;
+export type AuthenticationEnvironment = z.infer<typeof authenticationEnvironmentSchema>;
 
 function parseEnvironment<T>(schema: z.ZodType<T>, value: unknown, scope: string): T {
   const result = schema.safeParse(value);
@@ -89,4 +121,10 @@ export function parseServerEnvironment(value: unknown): ServerEnvironment {
 
 export function parseTestEnvironment(value: unknown): TestEnvironment {
   return parseEnvironment(testEnvironmentSchema, value, "test");
+}
+
+export function parseAuthenticationEnvironment(
+  value: unknown,
+): AuthenticationEnvironment {
+  return parseEnvironment(authenticationEnvironmentSchema, value, "authentication");
 }

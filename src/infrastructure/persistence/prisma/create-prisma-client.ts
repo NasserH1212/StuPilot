@@ -8,3 +8,23 @@ export function createPrismaClient(connectionString: string) {
 }
 
 export type StudentHubPrismaClient = ReturnType<typeof createPrismaClient>;
+
+const globalPrisma = globalThis as typeof globalThis & {
+  studentHubPrisma?: {
+    readonly connectionString: string;
+    readonly client: StudentHubPrismaClient;
+  };
+};
+
+export function getPrismaClient(connectionString: string): StudentHubPrismaClient {
+  const existing = globalPrisma.studentHubPrisma;
+  if (existing?.connectionString === connectionString) return existing.client;
+
+  const client = createPrismaClient(connectionString);
+
+  if (process.env.NODE_ENV !== "production") {
+    globalPrisma.studentHubPrisma = { connectionString, client };
+  }
+
+  return client;
+}

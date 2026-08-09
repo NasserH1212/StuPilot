@@ -45,6 +45,18 @@ Never edit/delete a migration already applied to a shared environment. Never run
 
 `prisma/recovery/20260807000000_foundation_health_check.rollback.sql` drops only the technical health table. It was validated in a disposable `studenthub_recovery_test` database. It is a manual reference—not an automatic down migration—and becomes inappropriate if that table ever contains required data.
 
+## Production identity migration
+
+`20260809090000_production_identity_foundation` creates:
+
+- `user_account_state` with `active`, `disabled`, and `deletion_pending`;
+- `users` with a PostgreSQL-generated internal UUID and explicit lifecycle state;
+- `auth_identities` with a restrictive foreign key to `users.id`;
+- a unique `(provider, provider_subject)` index and a supporting `user_id` index;
+- non-blank checks for provider keys and opaque provider subjects.
+
+The migration does not create ownership by email and does not reference Supabase schemas. `prisma/recovery/20260809090000_production_identity_foundation.rollback.sql` is a manual, data-destructive reference for a verified empty/disposable target only. Once any user or product data exists, use a reviewed forward fix and preserve the identity history.
+
 ## Current technical table
 
 `_foundation_health_checks` proves migration execution, UUID/default mapping, generated client use, transactions, and cleanup. It contains only `id`, `checked_at`, and a test marker. Do not add product or user fields to it.

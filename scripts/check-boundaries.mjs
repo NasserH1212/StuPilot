@@ -68,6 +68,9 @@ export function boundaryViolations(root, importer, imports) {
     const targetsNext = isExternal(target, "next");
     const targetsPrisma =
       isExternal(target, "@prisma/client") || target.includes("generated/prisma");
+    const targetsAuthenticationProviderSdk =
+      isExternal(target, "@supabase/ssr") ||
+      isExternal(target, "@supabase/supabase-js");
     const isDomain = /^src\/modules\/[^/]+\/domain\//.test(file);
     const isApplication = /^src\/modules\/[^/]+\/application\//.test(file);
     const isPresentation =
@@ -110,6 +113,11 @@ export function boundaryViolations(root, importer, imports) {
     if (isInfrastructure && (targetsPresentation || targetsTransport)) {
       violations.push(
         `${file}: infrastructure cannot depend on delivery layers (${source})`,
+      );
+    }
+    if (targetsAuthenticationProviderSdk && !isInfrastructure) {
+      violations.push(
+        `${file}: authentication provider SDKs belong only in infrastructure (${source})`,
       );
     }
   }

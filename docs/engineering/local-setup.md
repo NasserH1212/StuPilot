@@ -34,7 +34,7 @@ On PowerShell:
 Copy-Item .env.example .env.local
 ```
 
-The web shell requires no server secret. Database commands validate configuration when invoked.
+The public shell requires no server secret. Authentication remains safely unavailable unless the complete group in [environment.md](environment.md) is configured. Never put a real value in the committed example.
 
 ## 4. Start the application
 
@@ -42,7 +42,9 @@ The web shell requires no server secret. Database commands validate configuratio
 npm run dev
 ```
 
-Open `/ar` for Arabic/RTL or `/en` for English/LTR. `/` redirects to Arabic. `/ar/workspace` and `/en/workspace` are explicit unauthenticated placeholders; they are not fake login or product screens.
+Open `/ar` for Arabic/RTL or `/en` for English/LTR. `/` redirects to Arabic. Authentication routes live below `/{locale}/auth`; without real configuration they show the explicit unavailable state. `/ar/workspace` and `/en/workspace` fail closed and never render private content without authoritative provider and internal-account validation.
+
+For real hosted-provider verification, follow only the [owner credential handoff](authentication.md#owner-credential-handoff--minimum-actions). Do not invent credentials, use a service-role key, or create demo users.
 
 ## 5. Start local PostgreSQL
 
@@ -58,7 +60,7 @@ The services are intentionally separate:
 | `postgres-dev`  | 5432 | `studenthub_dev`  | Local development migrations             |
 | `postgres-test` | 5433 | `studenthub_test` | Destructive/deterministic test work only |
 
-Apply the reviewed migration:
+Apply the reviewed migrations:
 
 ```bash
 npm run db:migrate:dev

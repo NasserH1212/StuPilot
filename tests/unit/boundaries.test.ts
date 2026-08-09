@@ -31,4 +31,18 @@ describe("architecture boundaries", () => {
       boundaryViolations(process.cwd(), importer, ["@/research-prototype/app.js"]),
     ).toEqual([expect.stringContaining("research prototype is prohibited")]);
   });
+
+  it("rejects authentication provider SDK imports outside infrastructure", () => {
+    const importer = path.join(
+      process.cwd(),
+      "src/modules/authentication/application/authenticate-user.ts",
+    );
+    expect(
+      boundaryViolations(process.cwd(), importer, ["@supabase/supabase-js"]),
+    ).toEqual([
+      expect.stringContaining(
+        "authentication provider SDKs belong only in infrastructure",
+      ),
+    ]);
+  });
 });

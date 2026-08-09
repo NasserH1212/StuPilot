@@ -54,7 +54,9 @@ The Sprint 0 `_foundation_health_checks` table is a technical compatibility arti
 
 ## Provider boundaries
 
-Hosting, managed PostgreSQL, authentication, email, and observability remain unselected. Future adapters translate provider errors/IDs into internal contracts. Storage, jobs, analytics, AI, payments, and external messaging have no current boundary or SDK because they are not approved scope.
+Supabase Auth now has one candidate adapter below infrastructure, while production provider acceptance, hosting, managed PostgreSQL, email delivery, and observability remain unselected/unproved. Application-owned ports and errors prevent SDK types from crossing inward. `users.id` owns future product data; `auth_identities` stores replaceable opaque provider links and never merges by email. Storage, jobs, analytics, AI, payments, and external messaging remain outside approved scope.
+
+See [authentication.md](authentication.md) and [ADR 0016](../adr/0016-production-authentication-and-identity-boundary.md) for session, callback, identity-concurrency, lifecycle, and owner-handoff rules.
 
 ## Enforced rules
 
@@ -64,6 +66,7 @@ Hosting, managed PostgreSQL, authentication, email, and observability remain uns
 - application imports delivery or infrastructure;
 - presentation/transport imports persistence or Prisma;
 - infrastructure imports presentation/transport;
+- any non-infrastructure source imports a Supabase SDK;
 - any production/test/tooling source imports `research-prototype/`.
 
 The checker is run directly, unit-tested with negative fixtures, and executed in CI.

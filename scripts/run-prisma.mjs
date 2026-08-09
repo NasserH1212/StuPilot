@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 
 const args = process.argv.slice(2);
 
-if (args[0] === "generate") {
+if (args[0] === "generate" || args[0] === "validate") {
   process.env.PRISMA_GENERATE_ONLY = "1";
 }
 
