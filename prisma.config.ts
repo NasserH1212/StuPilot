@@ -7,7 +7,7 @@ loadEnvironment({ path: ".env", quiet: true });
 const generateOnlyUrl =
   "postgresql://generate-only:generate-only@127.0.0.1:1/generate_only";
 const databaseUrl =
-  process.env.DATABASE_URL ??
+  process.env.DATABASE_URL ||
   (process.env.PRISMA_GENERATE_ONLY === "1" ? generateOnlyUrl : undefined);
 
 if (!databaseUrl) {

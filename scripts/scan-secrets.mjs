@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
@@ -42,10 +43,22 @@ async function walk(directory, root) {
 
 const root = process.cwd();
 const files = await walk(root, root);
+const committableFiles = new Set(
+  execFileSync(
+    "git",
+    ["ls-files", "--cached", "--others", "--exclude-standard", "-z"],
+    { cwd: root, encoding: "utf8" },
+  )
+    .split("\0")
+    .filter(Boolean),
+);
 const findings = [];
+let inspectedFileCount = 0;
 
 for (const file of files) {
   const relative = path.relative(root, file).split(path.sep).join("/");
+  if (!committableFiles.has(relative)) continue;
+  inspectedFileCount += 1;
   const baseName = path.basename(file);
   const extension = path.extname(file).toLowerCase();
 
@@ -77,5 +90,5 @@ if (findings.length > 0) {
   console.error(findings.join("\n"));
   process.exitCode = 1;
 } else {
-  console.log(`Secret scan passed (${files.length} files inspected).`);
+  console.log(`Secret scan passed (${inspectedFileCount} files inspected).`);
 }
