@@ -5,7 +5,7 @@ import { useActionState, useState } from "react";
 import type { Locale } from "@/src/shared/localization/locales";
 
 import { createTermAction, initialTermActionState } from "../transport/term-actions";
-import { getTermsDictionary } from "./terms-dictionary";
+import { getTermsDictionary, termActionMessage } from "./terms-dictionary";
 
 export function TermCreateForm({ locale }: { readonly locale: Locale }) {
   const dictionary = getTermsDictionary(locale);
@@ -23,13 +23,7 @@ export function TermCreateForm({ locale }: { readonly locale: Locale }) {
 
   const fieldErrors = state.fieldErrors ?? {};
   const actionMessage =
-    state.status === "error" && state.code === "UNAVAILABLE"
-      ? dictionary.errors.unavailable
-      : state.status === "error" &&
-          state.code !== "VALIDATION_ERROR" &&
-          state.code !== undefined
-        ? dictionary.errors.unexpected
-        : null;
+    state.status === "error" ? termActionMessage(dictionary, state.code) : null;
 
   return (
     <section className="authCard" aria-labelledby="term-create-heading">

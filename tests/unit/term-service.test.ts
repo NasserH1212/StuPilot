@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { TermError } from "@/src/modules/terms/application/term-error";
 import { TermService } from "@/src/modules/terms/application/term-service";
 import type {
   NewTerm,
@@ -95,6 +96,65 @@ describe("academic term application service", () => {
     await expect(
       service.editTerm(baseRecord.userId, baseRecord.id, validDraft()),
     ).rejects.toMatchObject({ code: "TERM_NOT_FOUND" });
+  });
+
+  it("archives an owned term using its current version", async () => {
+    let receivedVersion: number | undefined;
+    const service = new TermService(
+      repository({
+        archive: async (_id, _userId, expectedVersion) => {
+          receivedVersion = expectedVersion;
+          return { ...baseRecord, isActive: false, archivedAt: new Date() };
+        },
+      }),
+    );
+
+    const result = await service.archiveTerm(baseRecord.userId, baseRecord.id);
+
+    expect(receivedVersion).toBe(baseRecord.version);
+    expect(result.archivedAt).not.toBeNull();
+  });
+
+  it("reports a missing term as not found when archiving", async () => {
+    const service = new TermService(repository({ findForUser: async () => null }));
+
+    await expect(
+      service.archiveTerm(baseRecord.userId, baseRecord.id),
+    ).rejects.toMatchObject({ code: "TERM_NOT_FOUND" });
+  });
+
+  it("activates an owned term using its current version", async () => {
+    let receivedVersion: number | undefined;
+    const service = new TermService(
+      repository({
+        activate: async (_id, _userId, expectedVersion) => {
+          receivedVersion = expectedVersion;
+          return { ...baseRecord, isActive: true };
+        },
+      }),
+    );
+
+    const result = await service.activateTerm(baseRecord.userId, baseRecord.id);
+
+    expect(receivedVersion).toBe(baseRecord.version);
+    expect(result.isActive).toBe(true);
+  });
+
+  it("surfaces a version conflict raised by the repository on activation", async () => {
+    const service = new TermService(
+      repository({
+        activate: async () => {
+          throw new TermError(
+            "TERM_VERSION_CONFLICT",
+            "The academic term changed since it was loaded.",
+          );
+        },
+      }),
+    );
+
+    await expect(
+      service.activateTerm(baseRecord.userId, baseRecord.id),
+    ).rejects.toMatchObject({ code: "TERM_VERSION_CONFLICT" });
   });
 
   it("scopes listing to the requesting user", async () => {

@@ -12,11 +12,14 @@ export interface Term {
   readonly updatedAt: Date;
 }
 
-export interface TermDraft {
+export interface TermDates {
   readonly name: string;
   readonly startsOn: Date;
   readonly endsOn: Date;
   readonly timeZone: string;
+}
+
+export interface TermDraft extends TermDates {
   readonly isActive: boolean;
 }
 
@@ -31,7 +34,7 @@ export class TermInvariantError extends Error {
   }
 }
 
-export function assertTermDraft(draft: TermDraft): TermDraft {
+export function assertTermDraft<T extends TermDates>(draft: T): T {
   if (draft.name.trim().length === 0) {
     throw new TermInvariantError("NAME_REQUIRED");
   }

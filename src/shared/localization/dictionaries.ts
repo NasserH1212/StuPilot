@@ -109,6 +109,7 @@ export interface Dictionary {
       readonly body: string;
       readonly signedInAs: string;
       readonly signOut: string;
+      readonly termsLink: string;
     };
   };
   readonly state: {
@@ -240,6 +241,7 @@ const dictionaries = {
         body: "تم التحقق من الجلسة والحساب الداخلي على الخادم. لم تبدأ الخصائص الأكاديمية بعد.",
         signedInAs: "معرّف المستخدم الداخلي",
         signOut: "تسجيل الخروج",
+        termsLink: "الفصول الدراسية",
       },
     },
     state: {
@@ -372,6 +374,7 @@ const dictionaries = {
         body: "The provider session and internal account were validated on the server. Academic features have not started.",
         signedInAs: "Internal user ID",
         signOut: "Sign out",
+        termsLink: "Academic terms",
       },
     },
     state: {

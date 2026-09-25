@@ -1,5 +1,7 @@
 import type { Locale } from "@/src/shared/localization/locales";
 
+import type { TermActionCode } from "../transport/term-actions";
+
 export interface TermsDictionary {
   readonly eyebrow: string;
   readonly title: string;
@@ -19,12 +21,27 @@ export interface TermsDictionary {
   readonly archivedBadge: string;
   readonly datesSeparator: string;
   readonly backToWorkspace: string;
+  readonly editAction: string;
+  readonly editHeading: string;
+  readonly editSubmit: string;
+  readonly editSubmitting: string;
+  readonly editCancel: string;
+  readonly edited: string;
+  readonly archiveAction: string;
+  readonly archiveConfirm: string;
+  readonly archiveConfirmPrompt: string;
+  readonly archiveCancel: string;
+  readonly archiving: string;
+  readonly activateAction: string;
+  readonly activating: string;
   readonly errors: {
     readonly nameRequired: string;
     readonly dateRequired: string;
     readonly dateOrder: string;
     readonly timeZoneRequired: string;
     readonly unavailable: string;
+    readonly notFound: string;
+    readonly conflict: string;
     readonly unexpected: string;
   };
 }
@@ -49,12 +66,27 @@ const dictionaries: Record<Locale, TermsDictionary> = {
     archivedBadge: "مؤرشف",
     datesSeparator: "إلى",
     backToWorkspace: "العودة إلى مساحة العمل",
+    editAction: "تعديل",
+    editHeading: "تعديل الفصل",
+    editSubmit: "حفظ التعديلات",
+    editSubmitting: "جارٍ الحفظ…",
+    editCancel: "إلغاء",
+    edited: "تم تحديث الفصل بنجاح.",
+    archiveAction: "أرشفة",
+    archiveConfirm: "تأكيد الأرشفة",
+    archiveConfirmPrompt: "لا يمكن التراجع عن أرشفة الفصل. هل تريد المتابعة؟",
+    archiveCancel: "إلغاء",
+    archiving: "جارٍ الأرشفة…",
+    activateAction: "تنشيط",
+    activating: "جارٍ التنشيط…",
     errors: {
       nameRequired: "أدخل اسماً للفصل.",
       dateRequired: "أدخل تاريخي البداية والنهاية.",
       dateOrder: "تاريخ النهاية يجب أن يكون بعد تاريخ البداية أو مساوياً له.",
       timeZoneRequired: "أدخل منطقة زمنية صالحة.",
       unavailable: "الخدمة غير متاحة حالياً. حاول لاحقاً.",
+      notFound: "تعذر العثور على هذا الفصل. ربما حُذف أو أُرشف.",
+      conflict: "تغيّر هذا الفصل في مكان آخر. أعد تحميل الصفحة وحاول مرة أخرى.",
       unexpected: "تعذر حفظ الفصل بأمان.",
     },
   },
@@ -77,12 +109,27 @@ const dictionaries: Record<Locale, TermsDictionary> = {
     archivedBadge: "Archived",
     datesSeparator: "to",
     backToWorkspace: "Back to workspace",
+    editAction: "Edit",
+    editHeading: "Edit term",
+    editSubmit: "Save changes",
+    editSubmitting: "Saving…",
+    editCancel: "Cancel",
+    edited: "The term was updated successfully.",
+    archiveAction: "Archive",
+    archiveConfirm: "Confirm archive",
+    archiveConfirmPrompt: "Archiving this term cannot be undone. Continue?",
+    archiveCancel: "Cancel",
+    archiving: "Archiving…",
+    activateAction: "Activate",
+    activating: "Activating…",
     errors: {
       nameRequired: "Enter a term name.",
       dateRequired: "Enter both the start and end dates.",
       dateOrder: "The end date must be on or after the start date.",
       timeZoneRequired: "Enter a valid time zone.",
       unavailable: "The service is unavailable right now. Try again later.",
+      notFound: "This term could not be found. It may have been deleted or archived.",
+      conflict: "This term changed elsewhere. Reload the page and try again.",
       unexpected: "The term could not be saved safely.",
     },
   },
@@ -90,4 +137,22 @@ const dictionaries: Record<Locale, TermsDictionary> = {
 
 export function getTermsDictionary(locale: Locale): TermsDictionary {
   return dictionaries[locale];
+}
+
+export function termActionMessage(
+  dictionary: TermsDictionary,
+  code: TermActionCode | undefined,
+): string | null {
+  switch (code) {
+    case "UNAVAILABLE":
+      return dictionary.errors.unavailable;
+    case "NOT_FOUND":
+      return dictionary.errors.notFound;
+    case "CONFLICT":
+      return dictionary.errors.conflict;
+    case "UNEXPECTED":
+      return dictionary.errors.unexpected;
+    default:
+      return null;
+  }
 }

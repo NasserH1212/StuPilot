@@ -9,6 +9,7 @@ import { isTermError } from "@/src/modules/terms/application/term-error";
 import { locales, type Locale } from "@/src/shared/localization/locales";
 
 const localeSchema = z.enum(locales);
+const idSchema = z.string().uuid();
 const nameSchema = z.string().trim().min(1).max(120);
 const dateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 const timeZoneSchema = z.string().trim().min(1).max(64);
@@ -49,6 +50,26 @@ function toActionError(error: unknown): TermActionState {
   return { status: "error", code: "UNAVAILABLE" };
 }
 
+type AccountLookup =
+  { readonly account: { readonly id: string } } | { readonly error: TermActionState };
+
+async function currentAccountOrError(): Promise<AccountLookup> {
+  const authentication = await createAuthenticationRuntime();
+  if (!authentication.available) {
+    return { error: { status: "error", code: "UNAVAILABLE" } };
+  }
+
+  let account;
+  try {
+    account = await authentication.service.currentAccount();
+  } catch {
+    return { error: { status: "error", code: "UNAVAILABLE" } };
+  }
+  if (!account) return { error: { status: "error", code: "UNAVAILABLE" } };
+
+  return { account };
+}
+
 export async function createTermAction(
   _state: TermActionState,
   formData: FormData,
@@ -82,25 +103,111 @@ export async function createTermAction(
     return { status: "error", code: "VALIDATION_ERROR", fieldErrors };
   }
 
-  const authentication = await createAuthenticationRuntime();
-  if (!authentication.available) return { status: "error", code: "UNAVAILABLE" };
-
-  let account;
-  try {
-    account = await authentication.service.currentAccount();
-  } catch {
-    return { status: "error", code: "UNAVAILABLE" };
-  }
-  if (!account) return { status: "error", code: "UNAVAILABLE" };
+  const lookup = await currentAccountOrError();
+  if ("error" in lookup) return lookup.error;
 
   try {
-    await createTermService().createTerm(account.id, {
+    await createTermService().createTerm(lookup.account.id, {
       name: name.data,
       startsOn: new Date(startsOn.data),
       endsOn: new Date(endsOn.data),
       timeZone: timeZone.data,
       isActive,
     });
+  } catch (error) {
+    return toActionError(error);
+  }
+
+  revalidatePath(`/${locale}/workspace/terms`);
+  return { status: "success" };
+}
+
+export async function editTermAction(
+  _state: TermActionState,
+  formData: FormData,
+): Promise<TermActionState> {
+  const locale = localeFrom(formData);
+  const id = idSchema.safeParse(fieldValue(formData, "id"));
+  const name = nameSchema.safeParse(fieldValue(formData, "name"));
+  const startsOn = dateSchema.safeParse(fieldValue(formData, "startsOn"));
+  const endsOn = dateSchema.safeParse(fieldValue(formData, "endsOn"));
+  const timeZone = timeZoneSchema.safeParse(fieldValue(formData, "timeZone"));
+
+  const fieldErrors: Partial<Record<TermFieldName, true>> = {};
+  if (!name.success) fieldErrors.name = true;
+  if (!startsOn.success) fieldErrors.startsOn = true;
+  if (!endsOn.success) fieldErrors.endsOn = true;
+  if (!timeZone.success) fieldErrors.timeZone = true;
+
+  if (startsOn.success && endsOn.success) {
+    if (new Date(endsOn.data).getTime() < new Date(startsOn.data).getTime()) {
+      fieldErrors.endsOn = true;
+    }
+  }
+
+  if (
+    !id.success ||
+    !name.success ||
+    !startsOn.success ||
+    !endsOn.success ||
+    !timeZone.success ||
+    fieldErrors.endsOn === true
+  ) {
+    return { status: "error", code: "VALIDATION_ERROR", fieldErrors };
+  }
+
+  const lookup = await currentAccountOrError();
+  if ("error" in lookup) return lookup.error;
+
+  try {
+    await createTermService().editTerm(lookup.account.id, id.data, {
+      name: name.data,
+      startsOn: new Date(startsOn.data),
+      endsOn: new Date(endsOn.data),
+      timeZone: timeZone.data,
+    });
+  } catch (error) {
+    return toActionError(error);
+  }
+
+  revalidatePath(`/${locale}/workspace/terms`);
+  return { status: "success" };
+}
+
+export async function archiveTermAction(
+  _state: TermActionState,
+  formData: FormData,
+): Promise<TermActionState> {
+  const locale = localeFrom(formData);
+  const id = idSchema.safeParse(fieldValue(formData, "id"));
+  if (!id.success) return { status: "error", code: "VALIDATION_ERROR" };
+
+  const lookup = await currentAccountOrError();
+  if ("error" in lookup) return lookup.error;
+
+  try {
+    await createTermService().archiveTerm(lookup.account.id, id.data);
+  } catch (error) {
+    return toActionError(error);
+  }
+
+  revalidatePath(`/${locale}/workspace/terms`);
+  return { status: "success" };
+}
+
+export async function activateTermAction(
+  _state: TermActionState,
+  formData: FormData,
+): Promise<TermActionState> {
+  const locale = localeFrom(formData);
+  const id = idSchema.safeParse(fieldValue(formData, "id"));
+  if (!id.success) return { status: "error", code: "VALIDATION_ERROR" };
+
+  const lookup = await currentAccountOrError();
+  if ("error" in lookup) return lookup.error;
+
+  try {
+    await createTermService().activateTerm(lookup.account.id, id.data);
   } catch (error) {
     return toActionError(error);
   }

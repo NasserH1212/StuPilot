@@ -1,18 +1,12 @@
-import { BidiIsolate } from "@/src/modules/foundation/presentation/bidi-isolate";
+import Link from "next/link";
+
 import type { TermRecord } from "@/src/modules/terms/application/ports/term-repository";
 import type { Locale } from "@/src/shared/localization/locales";
+import { localizedPath } from "@/src/shared/localization/routing";
 
 import { getTermsDictionary } from "./terms-dictionary";
 import { TermCreateForm } from "./term-create-form";
-
-function formatDate(locale: Locale, value: Date): string {
-  return new Intl.DateTimeFormat(locale === "ar" ? "ar" : "en", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    timeZone: "UTC",
-  }).format(value);
-}
+import { TermItem } from "./term-item";
 
 export function TermsView({
   locale,
@@ -41,34 +35,16 @@ export function TermsView({
       ) : (
         <ul className="termList">
           {terms.map((term) => (
-            <li key={term.id} className="termItem">
-              <div className="termItemHeader">
-                <span className="termName">
-                  <BidiIsolate>{term.name}</BidiIsolate>
-                </span>
-                {term.archivedAt ? (
-                  <span className="termBadge">{dictionary.archivedBadge}</span>
-                ) : term.isActive ? (
-                  <span className="termBadge termBadgeActive">
-                    {dictionary.activeBadge}
-                  </span>
-                ) : null}
-              </div>
-              <p className="termDates">
-                <BidiIsolate direction="ltr">
-                  {formatDate(locale, term.startsOn)}
-                </BidiIsolate>
-                <span aria-hidden="true"> {dictionary.datesSeparator} </span>
-                <BidiIsolate direction="ltr">
-                  {formatDate(locale, term.endsOn)}
-                </BidiIsolate>
-              </p>
-            </li>
+            <TermItem key={term.id} locale={locale} term={term} />
           ))}
         </ul>
       )}
 
       <TermCreateForm locale={locale} />
+
+      <Link className="secondaryAction" href={localizedPath(locale, "workspace")}>
+        {dictionary.backToWorkspace}
+      </Link>
     </section>
   );
 }

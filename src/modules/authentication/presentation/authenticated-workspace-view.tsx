@@ -1,5 +1,8 @@
+import Link from "next/link";
+
 import { getDictionary } from "@/src/shared/localization/dictionaries";
 import type { Locale } from "@/src/shared/localization/locales";
+import { localizedPath } from "@/src/shared/localization/routing";
 
 import type { UserAccount } from "../domain/user-account";
 import { SignOutButton } from "./sign-out-button";
@@ -26,6 +29,9 @@ export function AuthenticatedWorkspaceView({
           <bdi dir="ltr">{account.id}</bdi>
         </dd>
       </dl>
+      <Link className="primaryAction" href={localizedPath(locale, "terms")}>
+        {dictionary.auth.workspace.termsLink}
+      </Link>
       <SignOutButton locale={locale} />
     </section>
   );

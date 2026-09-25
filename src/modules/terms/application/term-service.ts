@@ -1,4 +1,9 @@
-import { assertTermDraft, TermInvariantError, type TermDraft } from "../domain/term";
+import {
+  assertTermDraft,
+  TermInvariantError,
+  type TermDates,
+  type TermDraft,
+} from "../domain/term";
 import { isTermError, TermError } from "./term-error";
 import type { TermEdit, TermRecord, TermRepository } from "./ports/term-repository";
 
@@ -32,7 +37,7 @@ export class TermService {
   public async editTerm(
     userId: string,
     id: string,
-    draft: TermDraft,
+    draft: TermDates,
   ): Promise<TermRecord> {
     const normalized = this.normalize(draft);
     const existing = await this.requireOwnedTerm(id, userId);
@@ -68,7 +73,7 @@ export class TermService {
     }
   }
 
-  private normalize(draft: TermDraft): TermDraft {
+  private normalize<T extends TermDates>(draft: T): T {
     try {
       return assertTermDraft({ ...draft, name: draft.name.trim() });
     } catch (error) {
