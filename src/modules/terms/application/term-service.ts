@@ -18,6 +18,14 @@ export class TermService {
     }
   }
 
+  public async getTerm(userId: string, id: string): Promise<TermRecord | null> {
+    try {
+      return await this.terms.findForUser(id, userId);
+    } catch (error) {
+      throw this.toTermError(error);
+    }
+  }
+
   public async createTerm(userId: string, draft: TermDraft): Promise<TermRecord> {
     const normalized = this.normalize(draft);
     try {

@@ -1,5 +1,7 @@
 "use client";
 
+import type { Route } from "next";
+import Link from "next/link";
 import { useActionState, useState } from "react";
 
 import { BidiIsolate } from "@/src/modules/foundation/presentation/bidi-isolate";
@@ -57,6 +59,12 @@ export function TermItem({
           <span aria-hidden="true"> {dictionary.datesSeparator} </span>
           <BidiIsolate direction="ltr">{formatDate(locale, term.endsOn)}</BidiIsolate>
         </p>
+        <Link
+          className="secondaryAction"
+          href={`/${locale}/workspace/terms/${term.id}/courses` as Route}
+        >
+          {dictionary.coursesLink}
+        </Link>
       </li>
     );
   }
@@ -97,6 +105,12 @@ export function TermItem({
         <span aria-hidden="true"> {dictionary.datesSeparator} </span>
         <BidiIsolate direction="ltr">{formatDate(locale, term.endsOn)}</BidiIsolate>
       </p>
+      <Link
+        className="secondaryAction"
+        href={`/${locale}/workspace/terms/${term.id}/courses` as Route}
+      >
+        {dictionary.coursesLink}
+      </Link>
 
       <div className="termActions">
         <button

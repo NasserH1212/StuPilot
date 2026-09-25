@@ -98,6 +98,20 @@ describe("academic term application service", () => {
     ).rejects.toMatchObject({ code: "TERM_NOT_FOUND" });
   });
 
+  it("returns the term when looked up by its owner", async () => {
+    const service = new TermService(repository());
+
+    await expect(service.getTerm(baseRecord.userId, baseRecord.id)).resolves.toEqual(
+      baseRecord,
+    );
+  });
+
+  it("returns null from getTerm when no term is found for the user", async () => {
+    const service = new TermService(repository({ findForUser: async () => null }));
+
+    await expect(service.getTerm(baseRecord.userId, baseRecord.id)).resolves.toBeNull();
+  });
+
   it("archives an owned term using its current version", async () => {
     let receivedVersion: number | undefined;
     const service = new TermService(

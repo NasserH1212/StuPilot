@@ -34,6 +34,7 @@ export interface TermsDictionary {
   readonly archiving: string;
   readonly activateAction: string;
   readonly activating: string;
+  readonly coursesLink: string;
   readonly errors: {
     readonly nameRequired: string;
     readonly dateRequired: string;
@@ -79,6 +80,7 @@ const dictionaries: Record<Locale, TermsDictionary> = {
     archiving: "جارٍ الأرشفة…",
     activateAction: "تنشيط",
     activating: "جارٍ التنشيط…",
+    coursesLink: "المقررات",
     errors: {
       nameRequired: "أدخل اسماً للفصل.",
       dateRequired: "أدخل تاريخي البداية والنهاية.",
@@ -122,6 +124,7 @@ const dictionaries: Record<Locale, TermsDictionary> = {
     archiving: "Archiving…",
     activateAction: "Activate",
     activating: "Activating…",
+    coursesLink: "Courses",
     errors: {
       nameRequired: "Enter a term name.",
       dateRequired: "Enter both the start and end dates.",

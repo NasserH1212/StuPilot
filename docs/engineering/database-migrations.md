@@ -72,6 +72,28 @@ not been run via `db:migrate:dev`/`db:test:migrate` or exercised by
 this migration as verified. `prisma/recovery/20260925000000_onboarding_profile.rollback.sql`
 is a manual, data-destructive reference for a verified empty/disposable target only.
 
+## Courses migration
+
+`20260925010000_courses` creates two tables, matching `03f-database-domain-model.md`
+§4.5–4.6: `courses` (a reusable, user-owned course identity — name, optional code,
+color token, and default location) and `user_courses` (an enrollment attaching one
+course to one term for one user). `user_courses` carries composite FKs
+`(term_id, user_id)` → `academic_terms(id, user_id)` and `(course_id, user_id)` →
+`courses(id, user_id)`, so a row can never reference another user's term or course
+even if application checks are missed. A unique `(user_id, term_id, course_id)`
+prevents enrolling the same course twice in the same term. Archiving a
+`user_courses` row hides the course from that term's default lists without
+touching the reusable `courses` row or other terms' enrollments. This slice's UI
+always creates a course and its enrollment together in one step; reusing an
+existing course across terms (course picker) is deferred.
+
+Like the onboarding migration above, this one was authored by hand with no
+`DATABASE_URL`/`TEST_DATABASE_URL` configured, so it has not been run via
+`db:test:migrate`/`db:test:status` or exercised by `test:integration`. Verify it
+against a real dedicated test database before treating it as safe to deploy.
+`prisma/recovery/20260925010000_courses.rollback.sql` is a manual,
+data-destructive reference for a verified empty/disposable target only.
+
 ## Current technical table
 
 `_foundation_health_checks` proves migration execution, UUID/default mapping, generated client use, transactions, and cleanup. It contains only `id`, `checked_at`, and a test marker. Do not add product or user fields to it.

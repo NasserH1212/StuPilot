@@ -20,9 +20,11 @@ model User {
   state      UserAccountState @default(active)
   createdAt  DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt  DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
-  identities AuthIdentity[]
-  terms      Term[]
-  profile    UserProfile?
+  identities        AuthIdentity[]
+  terms             Term[]
+  profile           UserProfile?
+  courses           Course[]
+  courseEnrollments UserCourse[]
 
   @@map("users")
 }
@@ -44,22 +46,66 @@ model AuthIdentity {
 }
 
 model Term {
+  id                String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId            String       @map("user_id") @db.Uuid
+  name              String       @db.VarChar(120)
+  startsOn          DateTime     @map("starts_on") @db.Date
+  endsOn            DateTime     @map("ends_on") @db.Date
+  timeZone          String       @map("time_zone") @db.VarChar(64)
+  isActive          Boolean      @default(false) @map("is_active")
+  archivedAt        DateTime?    @map("archived_at") @db.Timestamptz(3)
+  version           Int          @default(0)
+  createdAt         DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user              User         @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  courseEnrollments UserCourse[]
+
+  @@unique([id, userId], map: "academic_terms_id_user_id_key")
+  @@index([userId, archivedAt, startsOn, endsOn], map: "academic_terms_user_id_idx")
+  @@map("academic_terms")
+}
+
+model Course {
+  id              String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId          String       @map("user_id") @db.Uuid
+  name            String       @db.VarChar(120)
+  code            String?      @db.VarChar(32)
+  colorToken      String?      @map("color_token") @db.VarChar(32)
+  defaultLocation String?      @map("default_location") @db.VarChar(120)
+  archivedAt      DateTime?    @map("archived_at") @db.Timestamptz(3)
+  version         Int          @default(0)
+  createdAt       DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user            User         @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  enrollments     UserCourse[]
+
+  @@unique([id, userId], map: "courses_id_user_id_key")
+  @@index([userId, archivedAt], map: "courses_user_id_idx")
+  @@map("courses")
+}
+
+// Enrollment: attaches a reusable course identity to one term for one user
+// (Slice B — academic foundation). "Course" fields (name/code/color/location)
+// live on `Course`; this row's `archivedAt` controls whether the course is
+// active within THIS term without affecting other terms or historical data.
+model UserCourse {
   id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId     String    @map("user_id") @db.Uuid
-  name       String    @db.VarChar(120)
-  startsOn   DateTime  @map("starts_on") @db.Date
-  endsOn     DateTime  @map("ends_on") @db.Date
-  timeZone   String    @map("time_zone") @db.VarChar(64)
-  isActive   Boolean   @default(false) @map("is_active")
+  termId     String    @map("term_id") @db.Uuid
+  courseId   String    @map("course_id") @db.Uuid
   archivedAt DateTime? @map("archived_at") @db.Timestamptz(3)
   version    Int       @default(0)
   createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt  DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
   user       User      @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  term       Term      @relation(fields: [termId, userId], references: [id, userId], onDelete: Restrict, onUpdate: Cascade)
+  course     Course    @relation(fields: [courseId, userId], references: [id, userId], onDelete: Restrict, onUpdate: Cascade)
 
-  @@unique([id, userId], map: "academic_terms_id_user_id_key")
-  @@index([userId, archivedAt, startsOn, endsOn], map: "academic_terms_user_id_idx")
-  @@map("academic_terms")
+  @@unique([id, userId], map: "user_courses_id_user_id_key")
+  @@unique([id, userId, termId], map: "user_courses_id_user_id_term_id_key")
+  @@unique([userId, termId, courseId], map: "user_courses_user_id_term_id_course_id_key")
+  @@index([userId, termId, archivedAt], map: "user_courses_user_id_term_id_idx")
+  @@map("user_courses")
 }
 
 model UserProfile {
