@@ -21,6 +21,7 @@ model User {
   createdAt  DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt  DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
   identities AuthIdentity[]
+  terms      Term[]
 
   @@map("users")
 }
@@ -39,6 +40,25 @@ model AuthIdentity {
   @@unique([provider, providerSubject], map: "auth_identities_provider_subject_key")
   @@index([userId], map: "auth_identities_user_id_idx")
   @@map("auth_identities")
+}
+
+model Term {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  name       String    @db.VarChar(120)
+  startsOn   DateTime  @map("starts_on") @db.Date
+  endsOn     DateTime  @map("ends_on") @db.Date
+  timeZone   String    @map("time_zone") @db.VarChar(64)
+  isActive   Boolean   @default(false) @map("is_active")
+  archivedAt DateTime? @map("archived_at") @db.Timestamptz(3)
+  version    Int       @default(0)
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt  DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@unique([id, userId], map: "academic_terms_id_user_id_key")
+  @@index([userId, archivedAt, startsOn, endsOn], map: "academic_terms_user_id_idx")
+  @@map("academic_terms")
 }
 
 // Technical-only Sprint 0 compatibility record. This is not a product entity.
