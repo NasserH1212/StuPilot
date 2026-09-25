@@ -1,6 +1,11 @@
 import { render } from "@testing-library/react";
 import axe from "axe-core";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+vi.mock("@/src/modules/authentication/transport/auth-actions", () => ({
+  initialAuthActionState: { status: "idle" },
+  signOutAction: async () => ({ status: "idle" }),
+}));
 
 import { ApplicationPlaceholderView } from "@/src/modules/foundation/presentation/application-placeholder-view";
 import { LandingView } from "@/src/modules/foundation/presentation/landing-view";
@@ -21,6 +26,14 @@ describe("foundation accessibility", () => {
       view: (
         <SiteShell locale="en" destination="workspace">
           <ApplicationPlaceholderView locale="en" />
+        </SiteShell>
+      ),
+    },
+    {
+      name: "English signed-in shell",
+      view: (
+        <SiteShell locale="en" destination="home" authenticated>
+          <LandingView locale="en" />
         </SiteShell>
       ),
     },

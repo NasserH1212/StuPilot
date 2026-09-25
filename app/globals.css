@@ -289,6 +289,24 @@ h1 {
   font-weight: 750;
 }
 
+.checkboxField {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.checkboxField input[type="radio"],
+.checkboxField input[type="checkbox"] {
+  inline-size: auto;
+  min-block-size: auto;
+  padding: 0;
+  border: none;
+  background: transparent;
+  accent-color: var(--color-accent);
+}
+
 .fieldGroup input {
   min-block-size: 3rem;
   inline-size: 100%;

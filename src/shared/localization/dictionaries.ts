@@ -124,7 +124,6 @@ export interface Dictionary {
   readonly chrome: {
     readonly skipToContent: string;
     readonly phase: string;
-    readonly footer: string;
   };
 }
 
@@ -256,7 +255,6 @@ const dictionaries = {
     chrome: {
       skipToContent: "انتقل إلى المحتوى الرئيسي",
       phase: "أساس المصادقة الإنتاجية",
-      footer: "لا توجد خصائص أكاديمية أو تطبيقات جوال في هذه المرحلة.",
     },
   },
   en: {
@@ -389,7 +387,6 @@ const dictionaries = {
     chrome: {
       skipToContent: "Skip to main content",
       phase: "Production authentication foundation",
-      footer: "No academic features or mobile applications are included in this phase.",
     },
   },
 } satisfies Record<Locale, Dictionary>;

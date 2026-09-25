@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { SignOutButton } from "@/src/modules/authentication/presentation/sign-out-button";
 import { publicBrand } from "@/src/shared/config/brand";
 import { getDictionary } from "@/src/shared/localization/dictionaries";
 import { getAlternateLocale, type Locale } from "@/src/shared/localization/locales";
@@ -15,9 +16,15 @@ interface SiteShellProps {
   readonly children: ReactNode;
   readonly locale: Locale;
   readonly destination: LocalizedDestination;
+  readonly authenticated?: boolean;
 }
 
-export function SiteShell({ children, locale, destination }: SiteShellProps) {
+export function SiteShell({
+  children,
+  locale,
+  destination,
+  authenticated = false,
+}: SiteShellProps) {
   const dictionary = getDictionary(locale);
   const alternateLocale = getAlternateLocale(locale);
 
@@ -33,12 +40,23 @@ export function SiteShell({ children, locale, destination }: SiteShellProps) {
           </Link>
           <nav className="primaryNav" aria-label={dictionary.navigation.publicHome}>
             <Link href={localizedPath(locale)}>{dictionary.navigation.publicHome}</Link>
-            <Link href={localizedPath(locale, "workspace")}>
-              {dictionary.navigation.applicationShell}
-            </Link>
-            <Link href={localizedPath(locale, "sign-in")}>
-              {dictionary.navigation.signIn}
-            </Link>
+            {authenticated ? (
+              <>
+                <Link href={localizedPath(locale, "terms")}>
+                  {dictionary.auth.workspace.termsLink}
+                </Link>
+                <SignOutButton locale={locale} />
+              </>
+            ) : (
+              <>
+                <Link href={localizedPath(locale, "workspace")}>
+                  {dictionary.navigation.applicationShell}
+                </Link>
+                <Link href={localizedPath(locale, "sign-in")}>
+                  {dictionary.navigation.signIn}
+                </Link>
+              </>
+            )}
             <Link
               className="languageLink"
               href={localizedPath(alternateLocale, destination)}
@@ -56,7 +74,6 @@ export function SiteShell({ children, locale, destination }: SiteShellProps) {
       <footer className="siteFooter">
         <div className="footerInner">
           <span>{dictionary.chrome.phase}</span>
-          <span>{dictionary.chrome.footer}</span>
         </div>
       </footer>
     </>
