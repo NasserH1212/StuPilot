@@ -22,8 +22,8 @@ The MVP is one responsive bilingual web product. Mobile and desktop share the sa
 | Module | In MVP | Minimum releasable behavior | Not included |
 |---|---:|---|---|
 | Identity | Yes | Register, verify, login, logout, recover password, secure sessions | University SSO, enterprise tenants |
-| Onboarding | Yes | Locale, time zone, optional university/major, first-term path | Long preference survey, SIS import |
-| Terms | Yes | Create/edit/archive/activate | Institutional academic calendar feed |
+| Onboarding | Yes | Locale, time zone, curated Saudi university picker (with free-text fallback) and optional major, first-term path | Long preference survey, SIS import, non-Saudi institutions |
+| Terms | Yes | Create/edit/archive/activate; a curated, owner-supplied published calendar pre-fills dates read-only when the student's university has one | Live institutional calendar feed/sync |
 | Courses | Yes | Create/edit/archive within term | Shared course catalog, instructor portal |
 | Class schedule | Yes | Weekly series, occurrence override, full-series edit | Complex RRULE builder, attendance |
 | Academic items | Yes | Assignment/project/exam, due vs planned, status | Gradebook, rubrics, subtasks unless separately approved |
@@ -91,7 +91,7 @@ General AI chat, document upload, and RAG are not silently introduced through an
 1. A change is in scope only if it directly satisfies a requirement in `03a` or closes a release blocker.
 2. “Small” additions that create a new data domain, provider, permission, job type, or user role require owner approval.
 3. Later-release columns, endpoints, and infrastructure are not built speculatively unless the MVP needs a low-cost extension point.
-4. No university-specific logic enters shared domain rules.
+4. University-specific data may exist only as optional, curated reference data (catalog entries, published calendar terms — see ADR 0017) that pre-fills or informs input. It must never become a required dependency of shared domain rules: the `Term`/`Course` invariants stay university-independent, and every student can always enter terms manually without an affiliation.
 5. Auth, storage, email, analytics, or AI vendor SDKs stay behind application-owned adapters where practical.
 6. A disposable research-prototype asset may be read for historical context but never copied into production.
 

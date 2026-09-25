@@ -94,6 +94,18 @@ against a real dedicated test database before treating it as safe to deploy.
 `prisma/recovery/20260925010000_courses.rollback.sql` is a manual,
 data-destructive reference for a verified empty/disposable target only.
 
+## Universities catalog migration
+
+`20260926000000_universities` creates `universities` (a read-only, migration-seeded
+catalog — Arabic/English name, short name, optional local logo path, active flag)
+and adds a nullable `university_id` restrictive FK on `user_profiles` alongside the
+existing free-text `university` column. Seeded with 27 real, verifiable Saudi
+universities; `logo_path` is null for all of them until logo files are added under
+`public/universities/`. Unlike the two migrations above, this one was run via
+`npm run db:migrate:deploy` against the project's real Supabase database and
+confirmed applied. `prisma/recovery/20260926000000_universities.rollback.sql` is a
+manual, data-destructive reference for a verified empty/disposable target only.
+
 ## Current technical table
 
 `_foundation_health_checks` proves migration execution, UUID/default mapping, generated client use, transactions, and cleanup. It contains only `id`, `checked_at`, and a test marker. Do not add product or user fields to it.
