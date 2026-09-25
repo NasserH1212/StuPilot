@@ -1,22 +1,21 @@
-import type { Route } from "next";
 import { notFound, redirect } from "next/navigation";
+import type { Route } from "next";
 
 import { createAuthenticationRuntime } from "@/src/composition/authentication";
 import { createOnboardingService } from "@/src/composition/onboarding";
-import { createTermService } from "@/src/composition/terms";
 import { isAuthenticationError } from "@/src/modules/authentication/application/authentication-error";
 import { AuthUnavailableView } from "@/src/modules/authentication/presentation/auth-unavailable-view";
-import { TermsView } from "@/src/modules/terms/presentation/terms-view";
+import { OnboardingForm } from "@/src/modules/onboarding/presentation/onboarding-form";
 import { isLocale } from "@/src/shared/localization/locales";
 import { localizedPath } from "@/src/shared/localization/routing";
 
 export const dynamic = "force-dynamic";
 
-interface TermsPageProps {
+interface OnboardingPageProps {
   readonly params: Promise<{ locale: string }>;
 }
 
-export default async function TermsPage({ params }: TermsPageProps) {
+export default async function OnboardingPage({ params }: OnboardingPageProps) {
   const { locale } = await params;
 
   if (!isLocale(locale)) {
@@ -44,11 +43,9 @@ export default async function TermsPage({ params }: TermsPageProps) {
   }
 
   const profile = await createOnboardingService().getProfile(account.id);
-  if (!profile?.completedAt) {
-    redirect(localizedPath(locale, "onboarding"));
+  if (profile?.completedAt) {
+    redirect(localizedPath(locale, "workspace"));
   }
 
-  const terms = await createTermService().listTerms(account.id);
-
-  return <TermsView locale={locale} terms={terms} />;
+  return <OnboardingForm locale={locale} />;
 }

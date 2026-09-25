@@ -57,6 +57,21 @@ Never edit/delete a migration already applied to a shared environment. Never run
 
 The migration does not create ownership by email and does not reference Supabase schemas. `prisma/recovery/20260809090000_production_identity_foundation.rollback.sql` is a manual, data-destructive reference for a verified empty/disposable target only. Once any user or product data exists, use a reviewed forward fix and preserve the identity history.
 
+## Onboarding profile migration
+
+`20260925000000_onboarding_profile` creates `user_profiles`: a one-row-per-user table
+keyed by `user_id` (restrictive FK to `users.id`) holding the locale and time zone
+captured during first-sign-in onboarding, plus a nullable `completed_at` that gates
+whether onboarding is finished. `locale` is constrained to `('ar', 'en')` and
+`time_zone` to non-blank, matching the check-constraint style used for
+`academic_terms`. This migration was authored by hand — no `DATABASE_URL` or
+`TEST_DATABASE_URL` was configured in the environment it was written in, so it has
+not been run via `db:migrate:dev`/`db:test:migrate` or exercised by
+`test:integration`. Run `npm run db:test:migrate`, `npm run db:test:status`, and
+`npm run test:integration` against a real dedicated test database before treating
+this migration as verified. `prisma/recovery/20260925000000_onboarding_profile.rollback.sql`
+is a manual, data-destructive reference for a verified empty/disposable target only.
+
 ## Current technical table
 
 `_foundation_health_checks` proves migration execution, UUID/default mapping, generated client use, transactions, and cleanup. It contains only `id`, `checked_at`, and a test marker. Do not add product or user fields to it.

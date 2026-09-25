@@ -3,6 +3,7 @@ import type { Locale } from "./locales";
 export type LocalizedDestination =
   | "home"
   | "workspace"
+  | "onboarding"
   | "terms"
   | "sign-in"
   | "register"
@@ -16,6 +17,7 @@ export type LocalizedDestination =
 export type LocalizedPath =
   | `/${Locale}`
   | `/${Locale}/workspace`
+  | `/${Locale}/workspace/onboarding`
   | `/${Locale}/workspace/terms`
   | `/${Locale}/auth/sign-in`
   | `/${Locale}/auth/register`
@@ -33,6 +35,7 @@ export function localizedPath(
   const suffixes: Record<LocalizedDestination, string> = {
     home: "",
     workspace: "/workspace",
+    onboarding: "/workspace/onboarding",
     terms: "/workspace/terms",
     "sign-in": "/auth/sign-in",
     register: "/auth/register",
@@ -51,6 +54,7 @@ export function localizedDestinationFromPath(
   pathname: string | null,
 ): LocalizedDestination {
   if (!pathname) return "home";
+  if (pathname.endsWith("/workspace/onboarding")) return "onboarding";
   if (pathname.endsWith("/workspace/terms")) return "terms";
   if (pathname.endsWith("/workspace")) return "workspace";
   if (pathname.endsWith("/auth/sign-in")) return "sign-in";

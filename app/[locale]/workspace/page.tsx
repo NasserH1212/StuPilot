@@ -2,6 +2,7 @@ import type { Route } from "next";
 import { notFound, redirect } from "next/navigation";
 
 import { createAuthenticationRuntime } from "@/src/composition/authentication";
+import { createOnboardingService } from "@/src/composition/onboarding";
 import { isAuthenticationError } from "@/src/modules/authentication/application/authentication-error";
 import { AuthenticatedWorkspaceView } from "@/src/modules/authentication/presentation/authenticated-workspace-view";
 import { isLocale } from "@/src/shared/localization/locales";
@@ -46,6 +47,11 @@ export default async function ApplicationShellPage({
   if (!account) {
     const returnTo = encodeURIComponent(localizedPath(locale, "workspace"));
     redirect(`${localizedPath(locale, "sign-in")}?returnTo=${returnTo}` as Route);
+  }
+
+  const profile = await createOnboardingService().getProfile(account.id);
+  if (!profile?.completedAt) {
+    redirect(localizedPath(locale, "onboarding"));
   }
 
   return <AuthenticatedWorkspaceView locale={locale} account={account} />;
