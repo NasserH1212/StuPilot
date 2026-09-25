@@ -4,10 +4,8 @@ import { useActionState, useState } from "react";
 
 import { locales, type Locale } from "@/src/shared/localization/locales";
 
-import {
-  completeOnboardingAction,
-  initialOnboardingActionState,
-} from "../transport/onboarding-actions";
+import { completeOnboardingAction } from "../transport/onboarding-actions";
+import { initialOnboardingActionState } from "../transport/onboarding-action-state";
 import { getOnboardingDictionary } from "./onboarding-dictionary";
 
 export function OnboardingForm({ locale }: { readonly locale: Locale }) {

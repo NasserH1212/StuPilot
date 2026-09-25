@@ -6,10 +6,8 @@ import { BidiIsolate } from "@/src/modules/foundation/presentation/bidi-isolate"
 import type { TermCourseRecord } from "@/src/modules/courses/application/ports/course-repository";
 import type { Locale } from "@/src/shared/localization/locales";
 
-import {
-  archiveCourseAction,
-  initialCourseActionState,
-} from "../transport/course-actions";
+import { archiveCourseAction } from "../transport/course-actions";
+import { initialCourseActionState } from "../transport/course-action-state";
 import { courseActionMessage, getCoursesDictionary } from "./courses-dictionary";
 import { CourseEditForm } from "./course-edit-form";
 

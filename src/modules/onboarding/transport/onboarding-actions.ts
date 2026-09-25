@@ -9,22 +9,15 @@ import { isOnboardingError } from "@/src/modules/onboarding/application/onboardi
 import { locales } from "@/src/shared/localization/locales";
 import { localizedPath } from "@/src/shared/localization/routing";
 
+import type {
+  OnboardingActionState,
+  OnboardingFieldName,
+} from "./onboarding-action-state";
+
 const localeSchema = z.enum(locales);
 const timeZoneSchema = z.string().trim().min(1).max(64);
 const universitySchema = z.string().trim().max(120);
 const majorSchema = z.string().trim().max(120);
-
-export type OnboardingFieldName = "locale" | "timeZone" | "university" | "major";
-
-export type OnboardingActionCode = "VALIDATION_ERROR" | "UNAVAILABLE" | "UNEXPECTED";
-
-export interface OnboardingActionState {
-  readonly status: "idle" | "error";
-  readonly code?: OnboardingActionCode;
-  readonly fieldErrors?: Readonly<Partial<Record<OnboardingFieldName, true>>>;
-}
-
-export const initialOnboardingActionState: OnboardingActionState = { status: "idle" };
 
 function fieldValue(formData: FormData, name: string): string {
   const value = formData.get(name);

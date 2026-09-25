@@ -5,7 +5,8 @@ import { useActionState } from "react";
 import { getDictionary } from "@/src/shared/localization/dictionaries";
 import type { Locale } from "@/src/shared/localization/locales";
 
-import { initialAuthActionState, signOutAction } from "../transport/auth-actions";
+import { signOutAction } from "../transport/auth-actions";
+import { initialAuthActionState } from "../transport/auth-action-state";
 
 export function SignOutButton({ locale }: { readonly locale: Locale }) {
   const dictionary = getDictionary(locale);

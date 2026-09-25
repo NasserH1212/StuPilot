@@ -4,7 +4,8 @@ import { useActionState, useState } from "react";
 
 import type { Locale } from "@/src/shared/localization/locales";
 
-import { createTermAction, initialTermActionState } from "../transport/term-actions";
+import { createTermAction } from "../transport/term-actions";
+import { initialTermActionState } from "../transport/term-action-state";
 import { getTermsDictionary, termActionMessage } from "./terms-dictionary";
 
 export function TermCreateForm({ locale }: { readonly locale: Locale }) {

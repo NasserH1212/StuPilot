@@ -5,7 +5,8 @@ import { useActionState, useEffect } from "react";
 import type { TermRecord } from "@/src/modules/terms/application/ports/term-repository";
 import type { Locale } from "@/src/shared/localization/locales";
 
-import { editTermAction, initialTermActionState } from "../transport/term-actions";
+import { editTermAction } from "../transport/term-actions";
+import { initialTermActionState } from "../transport/term-action-state";
 import { getTermsDictionary, termActionMessage } from "./terms-dictionary";
 
 function toDateInputValue(value: Date): string {

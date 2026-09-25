@@ -1,6 +1,6 @@
 import type { Locale } from "@/src/shared/localization/locales";
 
-import type { TermActionCode } from "../transport/term-actions";
+import type { TermActionCode } from "../transport/term-action-state";
 
 export interface TermsDictionary {
   readonly eyebrow: string;

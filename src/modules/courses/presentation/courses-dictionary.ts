@@ -1,6 +1,6 @@
 import type { Locale } from "@/src/shared/localization/locales";
 
-import type { CourseActionCode } from "../transport/course-actions";
+import type { CourseActionCode } from "../transport/course-action-state";
 
 export interface CoursesDictionary {
   readonly eyebrow: string;

@@ -5,10 +5,8 @@ import { useActionState, useEffect } from "react";
 import type { TermCourseRecord } from "@/src/modules/courses/application/ports/course-repository";
 import type { Locale } from "@/src/shared/localization/locales";
 
-import {
-  editCourseAction,
-  initialCourseActionState,
-} from "../transport/course-actions";
+import { editCourseAction } from "../transport/course-actions";
+import { initialCourseActionState } from "../transport/course-action-state";
 import { courseActionMessage, getCoursesDictionary } from "./courses-dictionary";
 
 export function CourseEditForm({

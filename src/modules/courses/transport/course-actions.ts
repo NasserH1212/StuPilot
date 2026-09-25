@@ -9,29 +9,13 @@ import { createTermService } from "@/src/composition/terms";
 import { isCourseError } from "@/src/modules/courses/application/course-error";
 import { locales, type Locale } from "@/src/shared/localization/locales";
 
+import type { CourseActionState, CourseFieldName } from "./course-action-state";
+
 const localeSchema = z.enum(locales);
 const idSchema = z.string().uuid();
 const nameSchema = z.string().trim().min(1).max(120);
 const codeSchema = z.string().trim().max(32);
 const locationSchema = z.string().trim().max(120);
-
-export type CourseFieldName = "name" | "code" | "defaultLocation";
-
-export type CourseActionCode =
-  | "VALIDATION_ERROR"
-  | "UNAVAILABLE"
-  | "TERM_NOT_FOUND"
-  | "NOT_FOUND"
-  | "CONFLICT"
-  | "UNEXPECTED";
-
-export interface CourseActionState {
-  readonly status: "idle" | "error" | "success";
-  readonly code?: CourseActionCode;
-  readonly fieldErrors?: Readonly<Partial<Record<CourseFieldName, true>>>;
-}
-
-export const initialCourseActionState: CourseActionState = { status: "idle" };
 
 function fieldValue(formData: FormData, name: string): string {
   const value = formData.get(name);

@@ -8,11 +8,8 @@ import { BidiIsolate } from "@/src/modules/foundation/presentation/bidi-isolate"
 import type { TermRecord } from "@/src/modules/terms/application/ports/term-repository";
 import type { Locale } from "@/src/shared/localization/locales";
 
-import {
-  activateTermAction,
-  archiveTermAction,
-  initialTermActionState,
-} from "../transport/term-actions";
+import { activateTermAction, archiveTermAction } from "../transport/term-actions";
+import { initialTermActionState } from "../transport/term-action-state";
 import { getTermsDictionary, termActionMessage } from "./terms-dictionary";
 import { TermEditForm } from "./term-edit-form";
 

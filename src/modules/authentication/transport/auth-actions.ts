@@ -9,15 +9,14 @@ import {
   createAuthenticationRuntime,
   requireRecoverySession,
 } from "@/src/composition/authentication";
-import {
-  isAuthenticationError,
-  type AuthenticationErrorCode,
-} from "@/src/modules/authentication/application/authentication-error";
+import { isAuthenticationError } from "@/src/modules/authentication/application/authentication-error";
 import { locales, type Locale } from "@/src/shared/localization/locales";
 import {
   localizedPath,
   safeWorkspaceReturnTo,
 } from "@/src/shared/localization/routing";
+
+import type { AuthActionState, AuthFieldError } from "./auth-action-state";
 
 const localeSchema = z.enum(locales);
 const emailSchema = z.string().trim().max(254).email();
@@ -27,19 +26,6 @@ const passwordSchema = z
   .max(128)
   .regex(/[\p{L}]/u)
   .regex(/[0-9]/);
-
-export type AuthFieldError =
-  "INVALID_EMAIL" | "PASSWORD_REQUIREMENTS" | "PASSWORDS_DO_NOT_MATCH";
-
-export interface AuthActionState {
-  readonly status: "idle" | "error" | "success";
-  readonly code?: AuthenticationErrorCode | "VALIDATION_ERROR";
-  readonly fieldErrors?: Readonly<
-    Partial<Record<"email" | "password" | "confirmPassword", AuthFieldError>>
-  >;
-}
-
-export const initialAuthActionState: AuthActionState = { status: "idle" };
 
 function fieldValue(formData: FormData, name: string): string {
   const value = formData.get(name);

@@ -8,24 +8,13 @@ import { createTermService } from "@/src/composition/terms";
 import { isTermError } from "@/src/modules/terms/application/term-error";
 import { locales, type Locale } from "@/src/shared/localization/locales";
 
+import type { TermActionState, TermFieldName } from "./term-action-state";
+
 const localeSchema = z.enum(locales);
 const idSchema = z.string().uuid();
 const nameSchema = z.string().trim().min(1).max(120);
 const dateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 const timeZoneSchema = z.string().trim().min(1).max(64);
-
-export type TermFieldName = "name" | "startsOn" | "endsOn" | "timeZone";
-
-export type TermActionCode =
-  "VALIDATION_ERROR" | "UNAVAILABLE" | "NOT_FOUND" | "CONFLICT" | "UNEXPECTED";
-
-export interface TermActionState {
-  readonly status: "idle" | "error" | "success";
-  readonly code?: TermActionCode;
-  readonly fieldErrors?: Readonly<Partial<Record<TermFieldName, true>>>;
-}
-
-export const initialTermActionState: TermActionState = { status: "idle" };
 
 function fieldValue(formData: FormData, name: string): string {
   const value = formData.get(name);

@@ -4,10 +4,8 @@ import { useActionState } from "react";
 
 import type { Locale } from "@/src/shared/localization/locales";
 
-import {
-  createCourseAction,
-  initialCourseActionState,
-} from "../transport/course-actions";
+import { createCourseAction } from "../transport/course-actions";
+import { initialCourseActionState } from "../transport/course-action-state";
 import { courseActionMessage, getCoursesDictionary } from "./courses-dictionary";
 
 export function CourseCreateForm({

@@ -10,13 +10,15 @@ import { localizedPath } from "@/src/shared/localization/routing";
 import type { AuthenticationErrorCode } from "../application/authentication-error";
 import {
   forgotPasswordAction,
-  initialAuthActionState,
   registerAction,
   resetPasswordAction,
   signInAction,
+} from "../transport/auth-actions";
+import {
+  initialAuthActionState,
   type AuthActionState,
   type AuthFieldError,
-} from "../transport/auth-actions";
+} from "../transport/auth-action-state";
 
 type AuthFormMode = "sign-in" | "register" | "forgot-password" | "reset-password";
 
