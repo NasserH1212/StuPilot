@@ -1,3 +1,4 @@
+import type { UniversityTermSlot } from "@/src/modules/universities/application/ports/university-term-repository";
 import type { Locale } from "@/src/shared/localization/locales";
 
 import type { TermActionCode } from "../transport/term-action-state";
@@ -14,6 +15,9 @@ export interface TermsDictionary {
   readonly endLabel: string;
   readonly timeZoneLabel: string;
   readonly activeLabel: string;
+  readonly publishedTermsLegend: string;
+  readonly publishedTermManualOption: string;
+  readonly termSlotLabels: Readonly<Record<UniversityTermSlot, string>>;
   readonly submit: string;
   readonly submitting: string;
   readonly created: string;
@@ -60,6 +64,14 @@ const dictionaries: Record<Locale, TermsDictionary> = {
     endLabel: "تاريخ النهاية",
     timeZoneLabel: "المنطقة الزمنية",
     activeLabel: "اجعله الفصل النشط",
+    publishedTermsLegend: "فصل جامعتك المعتمد",
+    publishedTermManualOption: "إدخال التواريخ يدوياً",
+    termSlotLabels: {
+      first: "الفصل الأول",
+      second: "الفصل الثاني",
+      third: "الفصل الثالث",
+      summer: "الفصل الصيفي",
+    },
     submit: "حفظ الفصل",
     submitting: "جارٍ الحفظ…",
     created: "تم إنشاء الفصل بنجاح.",
@@ -104,6 +116,14 @@ const dictionaries: Record<Locale, TermsDictionary> = {
     endLabel: "End date",
     timeZoneLabel: "Time zone",
     activeLabel: "Make this the active term",
+    publishedTermsLegend: "Your university's published term",
+    publishedTermManualOption: "Enter dates manually",
+    termSlotLabels: {
+      first: "First term",
+      second: "Second term",
+      third: "Third term",
+      summer: "Summer term",
+    },
     submit: "Save term",
     submitting: "Saving…",
     created: "The term was created successfully.",
@@ -140,6 +160,23 @@ const dictionaries: Record<Locale, TermsDictionary> = {
 
 export function getTermsDictionary(locale: Locale): TermsDictionary {
   return dictionaries[locale];
+}
+
+function toDateLabel(value: Date): string {
+  return value.toISOString().slice(0, 10);
+}
+
+export function publishedTermOptionLabel(
+  dictionary: TermsDictionary,
+  term: {
+    readonly term: UniversityTermSlot;
+    readonly academicYear: number;
+    readonly startsOn: Date;
+    readonly endsOn: Date;
+  },
+): string {
+  const slot = dictionary.termSlotLabels[term.term];
+  return `${slot} ${term.academicYear} (${toDateLabel(term.startsOn)} ${dictionary.datesSeparator} ${toDateLabel(term.endsOn)})`;
 }
 
 export function termActionMessage(

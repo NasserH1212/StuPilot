@@ -1,14 +1,31 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useRef, useState } from "react";
 
+import type { UniversityTermRecord } from "@/src/modules/universities/application/ports/university-term-repository";
 import type { Locale } from "@/src/shared/localization/locales";
 
 import { createTermAction } from "../transport/term-actions";
 import { initialTermActionState } from "../transport/term-action-state";
-import { getTermsDictionary, termActionMessage } from "./terms-dictionary";
+import {
+  getTermsDictionary,
+  publishedTermOptionLabel,
+  termActionMessage,
+} from "./terms-dictionary";
 
-export function TermCreateForm({ locale }: { readonly locale: Locale }) {
+const manualDatesChoice = "manual";
+
+function toDateInputValue(value: Date): string {
+  return value.toISOString().slice(0, 10);
+}
+
+export function TermCreateForm({
+  locale,
+  publishedTerms = [],
+}: {
+  readonly locale: Locale;
+  readonly publishedTerms?: readonly UniversityTermRecord[];
+}) {
   const dictionary = getTermsDictionary(locale);
   const [state, formAction, pending] = useActionState(
     createTermAction,
@@ -21,6 +38,19 @@ export function TermCreateForm({ locale }: { readonly locale: Locale }) {
       return "";
     }
   });
+  const [publishedChoice, setPublishedChoice] = useState("");
+  const startRef = useRef<HTMLInputElement>(null);
+  const endRef = useRef<HTMLInputElement>(null);
+  const selectedPublishedTerm = publishedTerms.find(
+    (term) => term.id === publishedChoice,
+  );
+  const datesReadOnly = Boolean(selectedPublishedTerm);
+
+  function choosePublishedTerm(term: UniversityTermRecord): void {
+    setPublishedChoice(term.id);
+    if (startRef.current) startRef.current.value = toDateInputValue(term.startsOn);
+    if (endRef.current) endRef.current.value = toDateInputValue(term.endsOn);
+  }
 
   const fieldErrors = state.fieldErrors ?? {};
   const actionMessage =
@@ -55,6 +85,40 @@ export function TermCreateForm({ locale }: { readonly locale: Locale }) {
           ) : null}
         </div>
 
+        {publishedTerms.length > 0 ? (
+          <fieldset className="fieldGroup universityFieldset">
+            <legend>{dictionary.publishedTermsLegend}</legend>
+            {publishedTerms.map((term) => (
+              <label
+                className="universityOption"
+                key={term.id}
+                htmlFor={`term-published-${term.id}`}
+              >
+                <input
+                  id={`term-published-${term.id}`}
+                  name="publishedTermChoice"
+                  type="radio"
+                  value={term.id}
+                  checked={publishedChoice === term.id}
+                  onChange={() => choosePublishedTerm(term)}
+                />
+                <span>{publishedTermOptionLabel(dictionary, term)}</span>
+              </label>
+            ))}
+            <label className="universityOption" htmlFor="term-published-manual">
+              <input
+                id="term-published-manual"
+                name="publishedTermChoice"
+                type="radio"
+                value={manualDatesChoice}
+                checked={publishedChoice === manualDatesChoice}
+                onChange={() => setPublishedChoice(manualDatesChoice)}
+              />
+              <span>{dictionary.publishedTermManualOption}</span>
+            </label>
+          </fieldset>
+        ) : null}
+
         <div className="fieldGroup">
           <label htmlFor="term-start">{dictionary.startLabel}</label>
           <input
@@ -63,6 +127,8 @@ export function TermCreateForm({ locale }: { readonly locale: Locale }) {
             type="date"
             dir="ltr"
             required
+            ref={startRef}
+            readOnly={datesReadOnly}
             aria-invalid={fieldErrors.startsOn ? true : undefined}
             aria-describedby={fieldErrors.startsOn ? "term-start-error" : undefined}
           />
@@ -81,6 +147,8 @@ export function TermCreateForm({ locale }: { readonly locale: Locale }) {
             type="date"
             dir="ltr"
             required
+            ref={endRef}
+            readOnly={datesReadOnly}
             aria-invalid={fieldErrors.endsOn ? true : undefined}
             aria-describedby={fieldErrors.endsOn ? "term-end-error" : undefined}
           />

@@ -12,6 +12,16 @@ vi.mock("@/src/modules/terms/transport/term-actions", () => ({
 import type { TermRecord } from "@/src/modules/terms/application/ports/term-repository";
 import { TermCreateForm } from "@/src/modules/terms/presentation/term-create-form";
 import { TermsView } from "@/src/modules/terms/presentation/terms-view";
+import type { UniversityTermRecord } from "@/src/modules/universities/application/ports/university-term-repository";
+
+const publishedTerm: UniversityTermRecord = {
+  id: "018f57b5-f220-7d84-bafd-4d975e550301",
+  universityId: "018f57b5-f220-7d84-bafd-4d975e550101",
+  academicYear: 1448,
+  term: "first",
+  startsOn: new Date("2026-09-01T00:00:00.000Z"),
+  endsOn: new Date("2026-12-15T00:00:00.000Z"),
+};
 
 const activeTerm: TermRecord = {
   id: "018f57b5-f220-7d84-bafd-4d975e550100",
@@ -110,5 +120,37 @@ describe("academic term views", () => {
       screen.getByText("Archiving this term cannot be undone. Continue?"),
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Confirm archive" })).toBeInTheDocument();
+  });
+
+  it("does not show a published-term picker when none exist", () => {
+    render(<TermCreateForm locale="en" />);
+
+    expect(
+      screen.queryByText("Your university's published term"),
+    ).not.toBeInTheDocument();
+  });
+
+  it("fills the create form's dates read-only when a published term is chosen", () => {
+    render(<TermCreateForm locale="en" publishedTerms={[publishedTerm]} />);
+
+    const startInput = screen.getByLabelText("Start date");
+    const endInput = screen.getByLabelText("End date");
+    expect(startInput).not.toHaveAttribute("readonly");
+
+    fireEvent.click(screen.getByLabelText(/First term 1448/));
+
+    expect(startInput).toHaveValue("2026-09-01");
+    expect(startInput).toHaveAttribute("readonly");
+    expect(endInput).toHaveValue("2026-12-15");
+    expect(endInput).toHaveAttribute("readonly");
+  });
+
+  it("keeps dates editable when manual entry is chosen instead", () => {
+    render(<TermCreateForm locale="en" publishedTerms={[publishedTerm]} />);
+
+    fireEvent.click(screen.getByLabelText(/First term 1448/));
+    fireEvent.click(screen.getByLabelText("Enter dates manually"));
+
+    expect(screen.getByLabelText("Start date")).not.toHaveAttribute("readonly");
   });
 });

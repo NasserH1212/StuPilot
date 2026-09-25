@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { createAuthenticationRuntime } from "@/src/composition/authentication";
 import { createOnboardingService } from "@/src/composition/onboarding";
 import { createTermService } from "@/src/composition/terms";
+import { createUniversityService } from "@/src/composition/universities";
 import { isAuthenticationError } from "@/src/modules/authentication/application/authentication-error";
 import { AuthUnavailableView } from "@/src/modules/authentication/presentation/auth-unavailable-view";
 import { TermsView } from "@/src/modules/terms/presentation/terms-view";
@@ -49,6 +50,9 @@ export default async function TermsPage({ params }: TermsPageProps) {
   }
 
   const terms = await createTermService().listTerms(account.id);
+  const publishedTerms = await createUniversityService().listPublishedTerms(
+    profile.universityId,
+  );
 
-  return <TermsView locale={locale} terms={terms} />;
+  return <TermsView locale={locale} terms={terms} publishedTerms={publishedTerms} />;
 }

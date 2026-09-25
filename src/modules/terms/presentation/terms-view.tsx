@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import type { TermRecord } from "@/src/modules/terms/application/ports/term-repository";
+import type { UniversityTermRecord } from "@/src/modules/universities/application/ports/university-term-repository";
 import type { Locale } from "@/src/shared/localization/locales";
 import { localizedPath } from "@/src/shared/localization/routing";
 
@@ -11,9 +12,11 @@ import { TermItem } from "./term-item";
 export function TermsView({
   locale,
   terms,
+  publishedTerms = [],
 }: {
   readonly locale: Locale;
   readonly terms: readonly TermRecord[];
+  readonly publishedTerms?: readonly UniversityTermRecord[];
 }) {
   const dictionary = getTermsDictionary(locale);
 
@@ -40,7 +43,7 @@ export function TermsView({
         </ul>
       )}
 
-      <TermCreateForm locale={locale} />
+      <TermCreateForm locale={locale} publishedTerms={publishedTerms} />
 
       <Link className="secondaryAction" href={localizedPath(locale, "workspace")}>
         {dictionary.backToWorkspace}

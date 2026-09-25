@@ -304,6 +304,12 @@ h1 {
   border-color: #b42318;
 }
 
+.fieldGroup input[readonly] {
+  color: var(--color-text-muted);
+  background: var(--color-surface-subtle);
+  cursor: not-allowed;
+}
+
 .fieldHelp,
 .fieldError,
 .authMessage,
