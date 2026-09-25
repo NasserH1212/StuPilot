@@ -109,18 +109,37 @@ model UserCourse {
 }
 
 model UserProfile {
-  userId      String    @id @map("user_id") @db.Uuid
-  locale      String    @db.VarChar(8)
-  timeZone    String    @map("time_zone") @db.VarChar(64)
-  university  String?   @db.VarChar(120)
-  major       String?   @db.VarChar(120)
-  completedAt DateTime? @map("completed_at") @db.Timestamptz(3)
-  version     Int       @default(0)
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
-  user        User      @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  userId            String      @id @map("user_id") @db.Uuid
+  locale            String      @db.VarChar(8)
+  timeZone          String      @map("time_zone") @db.VarChar(64)
+  university        String?     @db.VarChar(120)
+  universityId      String?     @map("university_id") @db.Uuid
+  major             String?     @db.VarChar(120)
+  completedAt       DateTime?   @map("completed_at") @db.Timestamptz(3)
+  version           Int         @default(0)
+  createdAt         DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user              User        @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  universityCatalog University? @relation(fields: [universityId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@map("user_profiles")
+}
+
+// Curated catalog of Saudi universities for the onboarding picker
+// (Slice B — academic foundation). Read-only reference data: seeded and
+// maintained via migrations, not through in-app CRUD.
+model University {
+  id        String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nameAr    String        @map("name_ar") @db.VarChar(160)
+  nameEn    String        @map("name_en") @db.VarChar(160)
+  shortName String        @map("short_name") @db.VarChar(32)
+  logoPath  String?       @map("logo_path") @db.VarChar(255)
+  active    Boolean       @default(true)
+  createdAt DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+  profiles  UserProfile[]
+
+  @@map("universities")
 }
 
 // Technical-only Sprint 0 compatibility record. This is not a product entity.

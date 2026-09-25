@@ -8,6 +8,11 @@ export interface OnboardingDictionary {
   readonly localeOptions: Readonly<Record<Locale, string>>;
   readonly timeZoneLabel: string;
   readonly universityLabel: string;
+  readonly universitySearchLabel: string;
+  readonly universitySearchPlaceholder: string;
+  readonly universityNotListedLabel: string;
+  readonly universityFreeTextLabel: string;
+  readonly universityNoResults: string;
   readonly majorLabel: string;
   readonly submit: string;
   readonly submitting: string;
@@ -29,6 +34,11 @@ const dictionaries: Record<Locale, OnboardingDictionary> = {
     localeOptions: { ar: "العربية", en: "English" },
     timeZoneLabel: "المنطقة الزمنية",
     universityLabel: "الجامعة (اختياري)",
+    universitySearchLabel: "ابحث عن جامعتك",
+    universitySearchPlaceholder: "اكتب للبحث…",
+    universityNotListedLabel: "جامعتي غير مدرجة",
+    universityFreeTextLabel: "اسم الجامعة",
+    universityNoResults: "لا توجد نتائج مطابقة.",
     majorLabel: "التخصص (اختياري)",
     submit: "متابعة إلى الفصل الأول",
     submitting: "جارٍ الحفظ…",
@@ -48,6 +58,11 @@ const dictionaries: Record<Locale, OnboardingDictionary> = {
     localeOptions: { ar: "العربية", en: "English" },
     timeZoneLabel: "Time zone",
     universityLabel: "University (optional)",
+    universitySearchLabel: "Search for your university",
+    universitySearchPlaceholder: "Type to search…",
+    universityNotListedLabel: "My university isn't listed",
+    universityFreeTextLabel: "University name",
+    universityNoResults: "No matches found.",
     majorLabel: "Major (optional)",
     submit: "Continue to your first term",
     submitting: "Saving…",

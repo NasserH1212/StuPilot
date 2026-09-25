@@ -2,13 +2,21 @@
 
 import { useActionState, useState } from "react";
 
+import type { UniversityRecord } from "@/src/modules/universities/application/ports/university-repository";
+import { UniversityPicker } from "@/src/modules/universities/presentation/university-picker";
 import { locales, type Locale } from "@/src/shared/localization/locales";
 
 import { completeOnboardingAction } from "../transport/onboarding-actions";
 import { initialOnboardingActionState } from "../transport/onboarding-action-state";
 import { getOnboardingDictionary } from "./onboarding-dictionary";
 
-export function OnboardingForm({ locale }: { readonly locale: Locale }) {
+export function OnboardingForm({
+  locale,
+  universities,
+}: {
+  readonly locale: Locale;
+  readonly universities: readonly UniversityRecord[];
+}) {
   const dictionary = getOnboardingDictionary(locale);
   const [state, formAction, pending] = useActionState(
     completeOnboardingAction,
@@ -81,24 +89,21 @@ export function OnboardingForm({ locale }: { readonly locale: Locale }) {
           ) : null}
         </div>
 
-        <div className="fieldGroup">
-          <label htmlFor="onboarding-university">{dictionary.universityLabel}</label>
-          <input
-            id="onboarding-university"
-            name="university"
-            type="text"
-            maxLength={120}
-            aria-invalid={fieldErrors.university ? true : undefined}
-            aria-describedby={
-              fieldErrors.university ? "onboarding-university-error" : undefined
-            }
-          />
-          {fieldErrors.university ? (
-            <p className="fieldError" id="onboarding-university-error">
-              {dictionary.errors.universityTooLong}
-            </p>
-          ) : null}
-        </div>
+        <UniversityPicker
+          locale={locale}
+          universities={universities}
+          dictionary={{
+            searchLabel: dictionary.universitySearchLabel,
+            searchPlaceholder: dictionary.universitySearchPlaceholder,
+            legend: dictionary.universityLabel,
+            notListedLabel: dictionary.universityNotListedLabel,
+            freeTextLabel: dictionary.universityFreeTextLabel,
+            noResults: dictionary.universityNoResults,
+          }}
+          freeTextError={
+            fieldErrors.university ? dictionary.errors.universityTooLong : null
+          }
+        />
 
         <div className="fieldGroup">
           <label htmlFor="onboarding-major">{dictionary.majorLabel}</label>

@@ -12,6 +12,7 @@ const baseProfile: OnboardingProfileRecord = {
   locale: "en",
   timeZone: "Asia/Riyadh",
   university: "State University",
+  universityId: null,
   major: "Computer Science",
   completedAt: new Date("2026-09-01T00:00:00.000Z"),
 };
@@ -42,6 +43,7 @@ describe("onboarding application service", () => {
       locale: "en",
       timeZone: "  Asia/Riyadh  ",
       university: null,
+      universityId: null,
       major: null,
     });
 
@@ -64,11 +66,35 @@ describe("onboarding application service", () => {
       locale: "en",
       timeZone: "Asia/Riyadh",
       university: "  State University  ",
+      universityId: null,
       major: "   ",
     });
 
     expect(received?.university).toBe("State University");
     expect(received?.major).toBeNull();
+  });
+
+  it("prefers a catalog university over free text and clears the free text", async () => {
+    let received: OnboardingCompletion | undefined;
+    const service = new OnboardingService(
+      repository({
+        complete: async (_userId, completion) => {
+          received = completion;
+          return baseProfile;
+        },
+      }),
+    );
+
+    await service.completeOnboarding(baseProfile.userId, {
+      locale: "en",
+      timeZone: "Asia/Riyadh",
+      university: "Stale free text",
+      universityId: "018f57b5-f220-7d84-bafd-4d975e550099",
+      major: null,
+    });
+
+    expect(received?.universityId).toBe("018f57b5-f220-7d84-bafd-4d975e550099");
+    expect(received?.university).toBeNull();
   });
 
   it("rejects a blank time zone as invalid", async () => {
@@ -79,6 +105,7 @@ describe("onboarding application service", () => {
         locale: "en",
         timeZone: "   ",
         university: null,
+        universityId: null,
         major: null,
       }),
     ).rejects.toMatchObject({ code: "ONBOARDING_INVALID" });
@@ -123,6 +150,7 @@ describe("onboarding application service", () => {
         locale: "ar",
         timeZone: "UTC",
         university: null,
+        universityId: null,
         major: null,
       }),
     ).rejects.toMatchObject({ code: "ONBOARDING_PERSISTENCE_UNAVAILABLE" });

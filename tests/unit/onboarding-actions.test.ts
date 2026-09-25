@@ -108,11 +108,12 @@ describe("completeOnboardingAction", () => {
       locale: "en",
       timeZone: "Asia/Riyadh",
       university: null,
+      universityId: null,
       major: null,
     });
   });
 
-  it("passes through trimmed optional university and major", async () => {
+  it("passes through trimmed free text when the university isn't listed", async () => {
     mockAvailableAccount();
     const service = fakeService();
     vi.mocked(createOnboardingService).mockReturnValue(service as never);
@@ -123,7 +124,8 @@ describe("completeOnboardingAction", () => {
         form({
           locale: "en",
           timeZone: "Asia/Riyadh",
-          university: "  State University  ",
+          universityChoice: "not-listed",
+          universityFreeText: "  State University  ",
           major: "",
         }),
       ),
@@ -133,7 +135,48 @@ describe("completeOnboardingAction", () => {
       locale: "en",
       timeZone: "Asia/Riyadh",
       university: "State University",
+      universityId: null,
       major: null,
+    });
+  });
+
+  it("passes through a chosen catalog university id", async () => {
+    mockAvailableAccount();
+    const service = fakeService();
+    vi.mocked(createOnboardingService).mockReturnValue(service as never);
+    const universityId = "018f57b5-f220-7d84-bafd-4d975e550099";
+
+    await expect(
+      completeOnboardingAction(
+        { status: "idle" },
+        form({
+          locale: "en",
+          timeZone: "Asia/Riyadh",
+          universityChoice: universityId,
+          major: "",
+        }),
+      ),
+    ).rejects.toThrow("NEXT_REDIRECT:/en/workspace/terms");
+
+    expect(service.completeOnboarding).toHaveBeenCalledWith(userId, {
+      locale: "en",
+      timeZone: "Asia/Riyadh",
+      university: null,
+      universityId,
+      major: null,
+    });
+  });
+
+  it("rejects a university choice that is neither a known id nor 'not-listed'", async () => {
+    const result = await completeOnboardingAction(
+      { status: "idle" },
+      form({ locale: "en", timeZone: "Asia/Riyadh", universityChoice: "garbage" }),
+    );
+
+    expect(result).toEqual({
+      status: "error",
+      code: "VALIDATION_ERROR",
+      fieldErrors: { university: true },
     });
   });
 

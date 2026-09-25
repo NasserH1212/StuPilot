@@ -37,7 +37,8 @@ export class OnboardingService {
       return assertOnboardingDraft({
         ...draft,
         timeZone: draft.timeZone.trim(),
-        university: draft.university?.trim() || null,
+        university: draft.universityId ? null : draft.university?.trim() || null,
+        universityId: draft.universityId ?? null,
         major: draft.major?.trim() || null,
       });
     } catch (error) {

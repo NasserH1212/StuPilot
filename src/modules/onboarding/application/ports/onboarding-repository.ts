@@ -5,6 +5,7 @@ export interface OnboardingProfileRecord {
   readonly locale: Locale;
   readonly timeZone: string;
   readonly university: string | null;
+  readonly universityId: string | null;
   readonly major: string | null;
   readonly completedAt: Date | null;
 }
@@ -13,6 +14,7 @@ export interface OnboardingCompletion {
   readonly locale: Locale;
   readonly timeZone: string;
   readonly university: string | null;
+  readonly universityId: string | null;
   readonly major: string | null;
 }
 

@@ -3,6 +3,7 @@ import type { Route } from "next";
 
 import { createAuthenticationRuntime } from "@/src/composition/authentication";
 import { createOnboardingService } from "@/src/composition/onboarding";
+import { createUniversityService } from "@/src/composition/universities";
 import { isAuthenticationError } from "@/src/modules/authentication/application/authentication-error";
 import { AuthUnavailableView } from "@/src/modules/authentication/presentation/auth-unavailable-view";
 import { OnboardingForm } from "@/src/modules/onboarding/presentation/onboarding-form";
@@ -47,5 +48,7 @@ export default async function OnboardingPage({ params }: OnboardingPageProps) {
     redirect(localizedPath(locale, "workspace"));
   }
 
-  return <OnboardingForm locale={locale} />;
+  const universities = await createUniversityService().listActiveUniversities();
+
+  return <OnboardingForm locale={locale} universities={universities} />;
 }
