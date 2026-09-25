@@ -29,4 +29,11 @@ describe("onboarding form", () => {
     expect(screen.getByLabelText("English")).toBeChecked();
     expect(screen.getByLabelText("Time zone")).toBeRequired();
   });
+
+  it("renders university and major as optional, unrequired fields", () => {
+    render(<OnboardingForm locale="en" />);
+
+    expect(screen.getByLabelText("University (optional)")).not.toBeRequired();
+    expect(screen.getByLabelText("Major (optional)")).not.toBeRequired();
+  });
 });

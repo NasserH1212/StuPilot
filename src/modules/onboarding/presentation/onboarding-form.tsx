@@ -83,6 +83,42 @@ export function OnboardingForm({ locale }: { readonly locale: Locale }) {
           ) : null}
         </div>
 
+        <div className="fieldGroup">
+          <label htmlFor="onboarding-university">{dictionary.universityLabel}</label>
+          <input
+            id="onboarding-university"
+            name="university"
+            type="text"
+            maxLength={120}
+            aria-invalid={fieldErrors.university ? true : undefined}
+            aria-describedby={
+              fieldErrors.university ? "onboarding-university-error" : undefined
+            }
+          />
+          {fieldErrors.university ? (
+            <p className="fieldError" id="onboarding-university-error">
+              {dictionary.errors.universityTooLong}
+            </p>
+          ) : null}
+        </div>
+
+        <div className="fieldGroup">
+          <label htmlFor="onboarding-major">{dictionary.majorLabel}</label>
+          <input
+            id="onboarding-major"
+            name="major"
+            type="text"
+            maxLength={120}
+            aria-invalid={fieldErrors.major ? true : undefined}
+            aria-describedby={fieldErrors.major ? "onboarding-major-error" : undefined}
+          />
+          {fieldErrors.major ? (
+            <p className="fieldError" id="onboarding-major-error">
+              {dictionary.errors.majorTooLong}
+            </p>
+          ) : null}
+        </div>
+
         <div className="authMessage" role="status" aria-live="polite">
           {actionMessage}
         </div>

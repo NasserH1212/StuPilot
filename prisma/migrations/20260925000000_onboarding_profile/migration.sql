@@ -1,10 +1,12 @@
--- Onboarding profile: locale and time zone preference captured during first-sign-in
--- onboarding (Slice B — academic foundation). One row per user; presence of
--- "completed_at" gates whether onboarding has been finished.
+-- Onboarding profile: locale, time zone, and optional university/major captured
+-- during first-sign-in onboarding (Slice B — academic foundation). One row per
+-- user; presence of "completed_at" gates whether onboarding has been finished.
 CREATE TABLE "user_profiles" (
     "user_id" UUID NOT NULL,
     "locale" VARCHAR(8) NOT NULL,
     "time_zone" VARCHAR(64) NOT NULL,
+    "university" VARCHAR(120),
+    "major" VARCHAR(120),
     "completed_at" TIMESTAMPTZ(3),
     "version" INTEGER NOT NULL DEFAULT 0,
     "created_at" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

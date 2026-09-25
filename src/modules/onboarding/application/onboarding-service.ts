@@ -34,7 +34,12 @@ export class OnboardingService {
 
   private normalize(draft: OnboardingDraft): OnboardingDraft {
     try {
-      return assertOnboardingDraft({ ...draft, timeZone: draft.timeZone.trim() });
+      return assertOnboardingDraft({
+        ...draft,
+        timeZone: draft.timeZone.trim(),
+        university: draft.university?.trim() || null,
+        major: draft.major?.trim() || null,
+      });
     } catch (error) {
       if (error instanceof OnboardingInvariantError) {
         throw new OnboardingError(

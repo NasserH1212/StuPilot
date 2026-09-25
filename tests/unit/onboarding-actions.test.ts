@@ -107,6 +107,33 @@ describe("completeOnboardingAction", () => {
     expect(service.completeOnboarding).toHaveBeenCalledWith(userId, {
       locale: "en",
       timeZone: "Asia/Riyadh",
+      university: null,
+      major: null,
+    });
+  });
+
+  it("passes through trimmed optional university and major", async () => {
+    mockAvailableAccount();
+    const service = fakeService();
+    vi.mocked(createOnboardingService).mockReturnValue(service as never);
+
+    await expect(
+      completeOnboardingAction(
+        { status: "idle" },
+        form({
+          locale: "en",
+          timeZone: "Asia/Riyadh",
+          university: "  State University  ",
+          major: "",
+        }),
+      ),
+    ).rejects.toThrow("NEXT_REDIRECT:/en/workspace/terms");
+
+    expect(service.completeOnboarding).toHaveBeenCalledWith(userId, {
+      locale: "en",
+      timeZone: "Asia/Riyadh",
+      university: "State University",
+      major: null,
     });
   });
 

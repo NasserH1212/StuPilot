@@ -4,12 +4,16 @@ export interface OnboardingProfileRecord {
   readonly userId: string;
   readonly locale: Locale;
   readonly timeZone: string;
+  readonly university: string | null;
+  readonly major: string | null;
   readonly completedAt: Date | null;
 }
 
 export interface OnboardingCompletion {
   readonly locale: Locale;
   readonly timeZone: string;
+  readonly university: string | null;
+  readonly major: string | null;
 }
 
 export interface OnboardingRepository {

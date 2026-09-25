@@ -11,6 +11,8 @@ const baseProfile: OnboardingProfileRecord = {
   userId: "018f57b5-f220-7d84-bafd-4d975e550001",
   locale: "en",
   timeZone: "Asia/Riyadh",
+  university: "State University",
+  major: "Computer Science",
   completedAt: new Date("2026-09-01T00:00:00.000Z"),
 };
 
@@ -39,17 +41,46 @@ describe("onboarding application service", () => {
     const result = await service.completeOnboarding(baseProfile.userId, {
       locale: "en",
       timeZone: "  Asia/Riyadh  ",
+      university: null,
+      major: null,
     });
 
     expect(received?.timeZone).toBe("Asia/Riyadh");
     expect(result.timeZone).toBe("Asia/Riyadh");
   });
 
+  it("trims optional university and major, converting blank to null", async () => {
+    let received: OnboardingCompletion | undefined;
+    const service = new OnboardingService(
+      repository({
+        complete: async (_userId, completion) => {
+          received = completion;
+          return baseProfile;
+        },
+      }),
+    );
+
+    await service.completeOnboarding(baseProfile.userId, {
+      locale: "en",
+      timeZone: "Asia/Riyadh",
+      university: "  State University  ",
+      major: "   ",
+    });
+
+    expect(received?.university).toBe("State University");
+    expect(received?.major).toBeNull();
+  });
+
   it("rejects a blank time zone as invalid", async () => {
     const service = new OnboardingService(repository());
 
     await expect(
-      service.completeOnboarding(baseProfile.userId, { locale: "en", timeZone: "   " }),
+      service.completeOnboarding(baseProfile.userId, {
+        locale: "en",
+        timeZone: "   ",
+        university: null,
+        major: null,
+      }),
     ).rejects.toMatchObject({ code: "ONBOARDING_INVALID" });
   });
 
@@ -88,7 +119,12 @@ describe("onboarding application service", () => {
     );
 
     await expect(
-      service.completeOnboarding(baseProfile.userId, { locale: "ar", timeZone: "UTC" }),
+      service.completeOnboarding(baseProfile.userId, {
+        locale: "ar",
+        timeZone: "UTC",
+        university: null,
+        major: null,
+      }),
     ).rejects.toMatchObject({ code: "ONBOARDING_PERSISTENCE_UNAVAILABLE" });
   });
 });

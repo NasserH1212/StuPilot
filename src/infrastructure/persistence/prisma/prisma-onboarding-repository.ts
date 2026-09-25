@@ -11,6 +11,8 @@ interface UserProfileRow {
   readonly userId: string;
   readonly locale: string;
   readonly timeZone: string;
+  readonly university: string | null;
+  readonly major: string | null;
   readonly completedAt: Date | null;
 }
 
@@ -19,6 +21,8 @@ function toRecord(row: UserProfileRow): OnboardingProfileRecord {
     userId: row.userId,
     locale: row.locale as Locale,
     timeZone: row.timeZone,
+    university: row.university,
+    major: row.major,
     completedAt: row.completedAt,
   };
 }
@@ -41,11 +45,15 @@ export class PrismaOnboardingRepository implements OnboardingRepository {
         userId,
         locale: completion.locale,
         timeZone: completion.timeZone,
+        university: completion.university,
+        major: completion.major,
         completedAt: new Date(),
       },
       update: {
         locale: completion.locale,
         timeZone: completion.timeZone,
+        university: completion.university,
+        major: completion.major,
         completedAt: new Date(),
       },
     });

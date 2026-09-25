@@ -7,10 +7,14 @@ export interface OnboardingDictionary {
   readonly localeLabel: string;
   readonly localeOptions: Readonly<Record<Locale, string>>;
   readonly timeZoneLabel: string;
+  readonly universityLabel: string;
+  readonly majorLabel: string;
   readonly submit: string;
   readonly submitting: string;
   readonly errors: {
     readonly timeZoneRequired: string;
+    readonly universityTooLong: string;
+    readonly majorTooLong: string;
     readonly unavailable: string;
     readonly unexpected: string;
   };
@@ -24,10 +28,14 @@ const dictionaries: Record<Locale, OnboardingDictionary> = {
     localeLabel: "اللغة",
     localeOptions: { ar: "العربية", en: "English" },
     timeZoneLabel: "المنطقة الزمنية",
+    universityLabel: "الجامعة (اختياري)",
+    majorLabel: "التخصص (اختياري)",
     submit: "متابعة إلى الفصل الأول",
     submitting: "جارٍ الحفظ…",
     errors: {
       timeZoneRequired: "أدخل منطقة زمنية صالحة.",
+      universityTooLong: "اسم الجامعة طويل جداً.",
+      majorTooLong: "اسم التخصص طويل جداً.",
       unavailable: "الخدمة غير متاحة حالياً. حاول لاحقاً.",
       unexpected: "تعذر حفظ إعداداتك بأمان.",
     },
@@ -39,10 +47,14 @@ const dictionaries: Record<Locale, OnboardingDictionary> = {
     localeLabel: "Language",
     localeOptions: { ar: "العربية", en: "English" },
     timeZoneLabel: "Time zone",
+    universityLabel: "University (optional)",
+    majorLabel: "Major (optional)",
     submit: "Continue to your first term",
     submitting: "Saving…",
     errors: {
       timeZoneRequired: "Enter a valid time zone.",
+      universityTooLong: "The university name is too long.",
+      majorTooLong: "The major is too long.",
       unavailable: "The service is unavailable right now. Try again later.",
       unexpected: "Your settings could not be saved safely.",
     },

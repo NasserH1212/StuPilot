@@ -4,12 +4,16 @@ export interface OnboardingProfile {
   readonly userId: string;
   readonly locale: Locale;
   readonly timeZone: string;
+  readonly university: string | null;
+  readonly major: string | null;
   readonly completedAt: Date | null;
 }
 
 export interface OnboardingDraft {
   readonly locale: Locale;
   readonly timeZone: string;
+  readonly university: string | null;
+  readonly major: string | null;
 }
 
 export const onboardingInvariantCodes = ["TIME_ZONE_REQUIRED"] as const;
