@@ -19,11 +19,17 @@ export default async function RootLayout({
 }: Readonly<{ children: ReactNode }>) {
   const requestHeaders = await headers();
   const locale = resolveLocale(requestHeaders.get("x-stupilot-locale"));
+  const nonce = requestHeaders.get("x-nonce") ?? undefined;
 
   return (
-    <html lang={locale} dir={getTextDirection(locale)} className={fontVariables}>
+    <html
+      lang={locale}
+      dir={getTextDirection(locale)}
+      className={fontVariables}
+      suppressHydrationWarning
+    >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeBootScript() }} />
+        <script nonce={nonce} dangerouslySetInnerHTML={{ __html: themeBootScript() }} />
       </head>
       <body>
         <ThemeProvider>{children}</ThemeProvider>

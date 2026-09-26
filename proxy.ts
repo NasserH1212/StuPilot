@@ -6,6 +6,23 @@ import { defaultLocale, isLocale } from "@/src/shared/localization/locales";
 import { localizedPath } from "@/src/shared/localization/routing";
 
 const localeHeader = "x-stupilot-locale";
+const nonceHeader = "x-nonce";
+
+function buildContentSecurityPolicy(nonce: string): string {
+  const isDev = process.env.NODE_ENV === "development";
+  return [
+    "default-src 'self'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+    "object-src 'none'",
+    "img-src 'self' data:",
+    "font-src 'self'",
+    "style-src 'self' 'unsafe-inline'",
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
+    "connect-src 'self'",
+  ].join("; ");
+}
 
 function privateNoStore(response: NextResponse): NextResponse {
   response.headers.set(
@@ -39,15 +56,20 @@ export async function proxy(request: NextRequest) {
 
   const firstSegment = pathname.split("/").filter(Boolean)[0];
   const locale = firstSegment && isLocale(firstSegment) ? firstSegment : defaultLocale;
+  const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
+  const contentSecurityPolicy = buildContentSecurityPolicy(nonce);
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set(localeHeader, locale);
   requestHeaders.set("x-stupilot-pathname", pathname);
+  requestHeaders.set(nonceHeader, nonce);
+  requestHeaders.set("Content-Security-Policy", contentSecurityPolicy);
 
   const response = NextResponse.next({
     request: {
       headers: requestHeaders,
     },
   });
+  response.headers.set("Content-Security-Policy", contentSecurityPolicy);
   const isPrivateRoute =
     pathname === localizedPath(locale, "workspace") || pathname.includes("/auth/");
   const configuration = getAuthenticationConfiguration();

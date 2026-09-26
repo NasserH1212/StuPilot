@@ -1,14 +1,10 @@
 import type { NextConfig } from "next";
 
-const isDev = process.env.NODE_ENV === "development";
-
+// Content-Security-Policy is set per-request by proxy.ts, not here: it needs
+// a fresh nonce for every response so script-src can drop 'unsafe-inline' in
+// favor of 'nonce-<value>' 'strict-dynamic' (see docs/engineering, and the
+// Next.js "Content Security Policy" guide under node_modules/next/dist/docs).
 const securityHeaders = [
-  {
-    key: "Content-Security-Policy",
-    value:
-      "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; img-src 'self' data:; font-src 'self'; style-src 'self' 'unsafe-inline'; " +
-      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}; connect-src 'self'`,
-  },
   { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "DENY" },

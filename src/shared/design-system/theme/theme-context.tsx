@@ -5,6 +5,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useState,
 } from "react";
@@ -37,6 +38,19 @@ function readSystemTheme(): ResolvedTheme {
 export function ThemeProvider({ children }: { readonly children: ReactNode }) {
   const [preference, setPreferenceState] = useState<ThemePreference>("system");
   const [systemTheme, setSystemTheme] = useState<ResolvedTheme>("light");
+
+  // In development, React's Strict Mode remounts the tree once and resets
+  // <html> to only the attributes it manages from JSX, clearing the
+  // `data-theme` attribute `themeBootScript` set before paint. Re-applying it
+  // here (before paint, since useLayoutEffect) closes that gap; it's a no-op
+  // in production, where the boot script's attribute is never cleared. See
+  // node_modules/next/dist/docs/01-app/02-guides/preventing-flash-before-hydration.md.
+  useLayoutEffect(() => {
+    const stored = readStoredPreference();
+    if (stored === "light" || stored === "dark") {
+      document.documentElement.setAttribute("data-theme", stored);
+    }
+  }, []);
 
   useEffect(() => {
     // Deferred to an effect (not a lazy useState initializer) so the server
