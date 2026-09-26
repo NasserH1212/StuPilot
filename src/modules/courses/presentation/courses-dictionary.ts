@@ -31,6 +31,7 @@ export interface CoursesDictionary {
   readonly backToCourses: string;
   readonly scheduleHeading: string;
   readonly noScheduleYet: string;
+  readonly addMeetingAction: string;
   readonly upcomingTasksHeading: string;
   readonly upcomingExamsHeading: string;
   readonly tasksNotYetAvailable: string;
@@ -78,6 +79,7 @@ const dictionaries: Record<Locale, CoursesDictionary> = {
     backToCourses: "رجوع إلى المقررات",
     scheduleHeading: "الجدول الأسبوعي",
     noScheduleYet: "لا توجد محاضرات مضافة لهذا المقرر بعد.",
+    addMeetingAction: "إضافة محاضرة أسبوعية",
     upcomingTasksHeading: "المهام القادمة",
     upcomingExamsHeading: "الاختبارات القادمة",
     tasksNotYetAvailable: "المهام غير متاحة بعد في هذا الإصدار.",
@@ -123,6 +125,7 @@ const dictionaries: Record<Locale, CoursesDictionary> = {
     backToCourses: "Back to courses",
     scheduleHeading: "Weekly schedule",
     noScheduleYet: "No class meetings have been added for this course yet.",
+    addMeetingAction: "Add a weekly class meeting",
     upcomingTasksHeading: "Upcoming tasks",
     upcomingExamsHeading: "Upcoming exams",
     tasksNotYetAvailable: "Tasks are not available in this release yet.",

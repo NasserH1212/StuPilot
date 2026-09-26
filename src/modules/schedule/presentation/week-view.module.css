@@ -1,0 +1,131 @@
+.screen {
+  display: flex;
+  min-block-size: 100vh;
+  flex-direction: column;
+  background: var(--color-canvas);
+}
+
+.content {
+  display: grid;
+  flex: 1 0 auto;
+  gap: var(--space-4);
+  max-inline-size: 26rem;
+  margin-inline: auto;
+  inline-size: 100%;
+  padding: var(--space-4);
+}
+
+.heading {
+  font-family: var(--font-family-ui);
+  font-size: var(--type-heading-2-size);
+  font-weight: 600;
+  line-height: var(--type-heading-2-line-height);
+  color: var(--color-text);
+  text-align: start;
+}
+
+.dateRange {
+  font-family: var(--font-family-ui);
+  font-size: var(--type-body-small-size);
+  font-weight: 400;
+  line-height: var(--type-body-small-line-height);
+  color: var(--color-text-muted);
+  text-align: start;
+}
+
+.weekNav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.termName {
+  flex: 1 0 0;
+  font-family: var(--font-family-ui);
+  font-size: var(--type-label-size);
+  font-weight: 500;
+  line-height: var(--type-label-line-height);
+  color: var(--color-text);
+  text-align: center;
+}
+
+.dayStrip {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+}
+
+.sectionHeading {
+  font-family: var(--font-family-ui);
+  font-size: var(--type-heading-3-size);
+  font-weight: 600;
+  line-height: var(--type-heading-3-line-height);
+  color: var(--color-text);
+  text-align: start;
+}
+
+.mutedNote {
+  font-family: var(--font-family-ui);
+  font-size: var(--type-body-small-size);
+  font-weight: 400;
+  line-height: var(--type-body-small-line-height);
+  color: var(--color-text-muted);
+  text-align: start;
+}
+
+.list {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gridHint {
+  font-family: var(--font-family-ui);
+  font-size: var(--type-caption-size);
+  font-weight: 400;
+  line-height: var(--type-caption-line-height);
+  color: var(--color-text-muted);
+  text-align: start;
+}
+
+.grid {
+  display: grid;
+  gap: 1px;
+  overflow: hidden;
+  border-radius: var(--radius-medium);
+  background: var(--color-surface);
+}
+
+.gridHeaderRow {
+  display: grid;
+  grid-template-columns: 3.25rem repeat(5, 1fr);
+  align-items: center;
+  gap: 1px;
+}
+
+.gridHeaderCell {
+  font-family: var(--font-family-ui);
+  font-size: var(--type-caption-size);
+  font-weight: 400;
+  line-height: var(--type-caption-line-height);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.gridRow {
+  display: grid;
+  grid-template-columns: 3.25rem repeat(5, 1fr);
+  align-items: center;
+  gap: 1px;
+}
+
+.gridTimeLabel {
+  font-family: var(--font-family-ui);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  line-height: var(--type-caption-line-height);
+  color: var(--color-text-muted);
+  text-align: center;
+}

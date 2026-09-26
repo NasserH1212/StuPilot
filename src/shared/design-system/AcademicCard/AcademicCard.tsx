@@ -14,10 +14,11 @@ export type AcademicCardKind =
 export interface AcademicCardProps {
   readonly kind: AcademicCardKind;
   readonly title: string;
-  readonly meta?: string;
-  readonly time?: { readonly start: TimeOfDay; readonly end: TimeOfDay };
-  readonly course?: { readonly color: CourseColor; readonly code: string };
-  readonly countdown?: { readonly tone: CountdownTone; readonly label: string };
+  readonly meta?: string | undefined;
+  readonly time?: { readonly start: TimeOfDay; readonly end: TimeOfDay } | undefined;
+  readonly course?: { readonly color: CourseColor; readonly code: string } | undefined;
+  readonly countdown?:
+    { readonly tone: CountdownTone; readonly label: string } | undefined;
   readonly task?: {
     readonly checked: boolean;
     readonly onChange: (checked: boolean) => void;

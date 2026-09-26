@@ -71,11 +71,17 @@ export type { IconButtonProps } from "./IconButton/IconButton";
 export { CourseListItem } from "./CourseListItem/CourseListItem";
 export type { CourseListItemProps } from "./CourseListItem/CourseListItem";
 
+export { WeekDayTab } from "./WeekDayTab/WeekDayTab";
+export type { WeekDayTabProps } from "./WeekDayTab/WeekDayTab";
+
+export { WeekGridBlock, WeekGridEmptyCell } from "./WeekGridBlock/WeekGridBlock";
+export type { WeekGridBlockProps } from "./WeekGridBlock/WeekGridBlock";
+
 export { ThemeProvider, useTheme } from "./theme/theme-context";
 export type { ResolvedTheme, ThemePreference } from "./theme/theme-context";
 export { themeBootScript } from "./theme/theme-script";
 
-export { IconChevronBack } from "./icons/icons";
+export { IconChevronBack, IconChevronForward } from "./icons/icons";
 
 // `fonts.ts` is deliberately NOT re-exported here: it calls `next/font/google`
 // at module scope, which only works inside Next's build pipeline. Pulling it

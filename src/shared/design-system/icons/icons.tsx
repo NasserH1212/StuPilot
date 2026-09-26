@@ -61,6 +61,29 @@ export function IconChevronBack({ className, ...props }: IconProps) {
   );
 }
 
+/**
+ * The mirror image of IconChevronBack: points right by default (the LTR
+ * "forward" direction) and mirrors under `:dir(rtl)` to point left — the
+ * shape the Figma week-navigation "next" control draws directly.
+ */
+export function IconChevronForward({ className, ...props }: IconProps) {
+  return (
+    <svg
+      {...baseProps(24)}
+      className={[styles.chevronForward, className].filter(Boolean).join(" ")}
+      {...props}
+    >
+      <path
+        d="M10 6L16 12L10 18"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export function IconDismissCross(props: IconProps) {
   return (
     <svg {...baseProps(24)} {...props}>

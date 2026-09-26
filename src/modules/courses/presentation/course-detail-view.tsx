@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 
 import type { TermCourseRecord } from "@/src/modules/courses/application/ports/course-repository";
+import { AddClassMeetingForm } from "@/src/modules/schedule/presentation/add-class-meeting-form";
 import type { ClassMeetingRecord } from "@/src/modules/schedule/application/ports/class-meeting-repository";
 import type { Weekday } from "@/src/modules/schedule/domain/class-meeting";
 import { weekdayLabel } from "@/src/modules/schedule/presentation/weekday-labels";
@@ -77,6 +78,7 @@ export function CourseDetailView({
   const router = useRouter();
   const [captureOpen, setCaptureOpen] = useState(false);
   const [confirmingArchive, setConfirmingArchive] = useState(false);
+  const [addingMeeting, setAddingMeeting] = useState(false);
   const [archiveState, archiveAction, archivePending] = useActionState(
     archiveCourseAction,
     initialCourseActionState,
@@ -193,6 +195,26 @@ export function CourseDetailView({
               </li>
             ))}
           </ul>
+        )}
+
+        {addingMeeting ? (
+          <AddClassMeetingForm
+            locale={locale}
+            termId={termId}
+            userCourseId={course.enrollmentId}
+            onCreated={() => {
+              setAddingMeeting(false);
+              router.refresh();
+            }}
+          />
+        ) : (
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => setAddingMeeting(true)}
+          >
+            {dictionary.addMeetingAction}
+          </Button>
         )}
 
         <h2 className={styles.sectionHeading} dir="auto">

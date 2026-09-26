@@ -1,3 +1,7 @@
 .chevronBack:dir(rtl) {
   transform: scaleX(-1);
 }
+
+.chevronForward:dir(rtl) {
+  transform: scaleX(-1);
+}

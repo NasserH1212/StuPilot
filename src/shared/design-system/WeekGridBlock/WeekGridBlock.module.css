@@ -1,0 +1,31 @@
+.block {
+  display: grid;
+  block-size: 5.25rem; /* 84px */
+  inline-size: 3.75rem; /* 60px */
+  align-content: center;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border-radius: var(--radius-small);
+  text-align: center;
+}
+
+.code {
+  font-family: var(--font-family-ui);
+  font-size: 0.625rem;
+  font-weight: 400;
+  line-height: 1.25rem;
+}
+
+.label {
+  font-family: var(--font-family-ui);
+  font-size: var(--type-caption-size);
+  font-weight: 400;
+  line-height: var(--type-caption-line-height);
+}
+
+.empty {
+  block-size: 5.25rem;
+  inline-size: 3.75rem;
+  border-radius: var(--radius-small);
+  background: var(--color-canvas);
+}

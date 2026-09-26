@@ -1,0 +1,64 @@
+.tab {
+  display: grid;
+  inline-size: 4rem; /* 64px */
+  min-block-size: 4.375rem; /* 70px */
+  justify-items: center;
+  align-content: center;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background-color 120ms ease-out;
+}
+
+/* Today, while some other day is selected: an outline only. */
+.tab[aria-current="date"] {
+  border-color: var(--color-accent);
+}
+
+/* The selected day always wins visually, today or not. */
+.tab[data-selected="true"] {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+}
+
+.tab:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab {
+    transition: none;
+  }
+}
+
+.day {
+  font-family: var(--font-family-ui);
+  font-size: var(--type-caption-size);
+  font-weight: 400;
+  line-height: var(--type-caption-line-height);
+}
+
+.date {
+  font-family: var(--font-family-ui);
+  font-size: var(--type-title-size);
+  font-weight: 500;
+  line-height: var(--type-title-line-height);
+}
+
+.dot {
+  inline-size: 0.25rem;
+  block-size: 0.25rem;
+  border-radius: var(--radius-full);
+  background: currentColor;
+  visibility: hidden;
+}
+
+.dot[data-visible="true"] {
+  visibility: visible;
+}
