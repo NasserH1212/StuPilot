@@ -1,4 +1,11 @@
+import { config as loadEnvironment } from "dotenv";
+
 import { defineConfig, devices } from "@playwright/test";
+
+// Only for optional local-only test credentials (see
+// tests/e2e/authenticated-flows.spec.ts); the app server itself loads
+// .env.local independently via Next.js's own env handling.
+loadEnvironment({ path: ".env.local", quiet: true });
 
 export default defineConfig({
   testDir: "./tests/e2e",
