@@ -125,6 +125,24 @@ against the project's real Supabase database and confirmed applied.
 is a manual, data-destructive reference for a verified empty/disposable
 target only.
 
+## Recurring class series migration
+
+`20260927000000_recurring_class_series` creates `recurring_class_series`,
+matching `03f` §4.7 (weekly class meetings per course enrollment), with two
+documented deviations: `weekdays` is `INTEGER[]` rather than `SMALLINT[]`
+(functionally identical for values 0-6), and `meeting_type`
+(`lecture`/`lab`/`tutorial`) is a new column beyond 03f's original reviewed
+set — both noted as amendments in that document. `starts_on`/`ends_on` are
+copied from the enrollment's term at creation time rather than taken as
+separate input. Composite FK `(user_course_id, user_id)` →
+`user_courses(id, user_id)` keeps a meeting from ever referencing another
+user's enrollment even if application checks are missed. This migration was
+run via `npm run db:migrate:deploy` against the project's real Supabase
+database and confirmed applied.
+`prisma/recovery/20260927000000_recurring_class_series.rollback.sql` is a
+manual, data-destructive reference for a verified empty/disposable target
+only.
+
 ## Current technical table
 
 `_foundation_health_checks` proves migration execution, UUID/default mapping, generated client use, transactions, and cleanup. It contains only `id`, `checked_at`, and a test marker. Do not add product or user fields to it.

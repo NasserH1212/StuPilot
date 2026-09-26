@@ -263,13 +263,16 @@ Enrollment/term association.
 
 Representation is deliberately narrower than iCalendar RRULE:
 
-- `weekdays smallint[]`: one or more unique values `0..6` under one documented convention.
+- `weekdays smallint[]`: one or more unique values `0..6`, convention fixed at implementation as `0=Sunday..6=Saturday` (matches JS `Date#getDay` and this app's Sunday week start).
 - `local_start_time`, `local_end_time`: PostgreSQL `time without time zone`; `CHECK end > start` for same-day MVP classes.
-- `starts_on`, `ends_on`: inclusive local dates; check order.
+- `starts_on`, `ends_on`: inclusive local dates; check order. Slice C's implementation copies these from the enrollment's academic term at creation time rather than taking them as separate user input — a class meeting runs for the full term by default; per-meeting date customization is deferred.
 - `time_zone`: IANA zone controlling local-to-instant conversion and DST.
 - optional `location`, archive timestamp, version.
+- **`meeting_type`** (implementation amendment, 2026-09-27): `lecture`/`lab`/`tutorial`, required. Added beyond this section's original reviewed columns to distinguish meeting kinds in the calendar UI; not present in the original ERD.
 
 The application expands occurrences only for a bounded requested date range. It does not insert one row per future occurrence. Overnight classes and arbitrary monthly recurrence are outside MVP unless separately approved.
+
+Occurrence generation additionally skips any date falling within a `university_breaks` row for the student's chosen university, when one is set (see ADR 0017 for that table). A term with no end date cannot occur here: `academic_terms.ends_on` is required, so this case cannot reach occurrence generation for a student's own series — see the schedule module's occurrence-generation function for the defensive behavior it documents anyway.
 
 ### 4.8 `class_occurrence_overrides`
 

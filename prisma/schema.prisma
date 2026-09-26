@@ -25,6 +25,7 @@ model User {
   profile           UserProfile?
   courses           Course[]
   courseEnrollments UserCourse[]
+  classSeries       RecurringClassSeries[]
 
   @@map("users")
 }
@@ -105,7 +106,47 @@ model UserCourse {
   @@unique([id, userId, termId], map: "user_courses_id_user_id_term_id_key")
   @@unique([userId, termId, courseId], map: "user_courses_user_id_term_id_course_id_key")
   @@index([userId, termId, archivedAt], map: "user_courses_user_id_term_id_idx")
+  classSeries RecurringClassSeries[]
   @@map("user_courses")
+}
+
+enum ClassMeetingType {
+  lecture
+  lab
+  tutorial
+
+  @@map("class_meeting_type")
+}
+
+// A weekly class meeting pattern for one course enrollment (Slice C — class
+// schedule and calendar). Deliberately narrower than iCalendar RRULE, per
+// 03f §4.7: "weekdays" holds one or more unique days (0=Sunday..6=Saturday,
+// matching JS Date#getDay and this app's Sunday week start), and the
+// application expands bounded occurrences on demand — it never stores one
+// row per future occurrence. "meetingType" extends 03f's reviewed columns;
+// see the amendment note in that document.
+model RecurringClassSeries {
+  id            String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId        String            @map("user_id") @db.Uuid
+  userCourseId  String            @map("user_course_id") @db.Uuid
+  weekdays      Int[]
+  localStartTime DateTime         @map("local_start_time") @db.Time()
+  localEndTime  DateTime          @map("local_end_time") @db.Time()
+  startsOn      DateTime          @map("starts_on") @db.Date
+  endsOn        DateTime          @map("ends_on") @db.Date
+  timeZone      String            @map("time_zone") @db.VarChar(64)
+  location      String?           @db.VarChar(120)
+  meetingType   ClassMeetingType  @map("meeting_type")
+  archivedAt    DateTime?         @map("archived_at") @db.Timestamptz(3)
+  version       Int               @default(0)
+  createdAt     DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user          User              @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  userCourse    UserCourse        @relation(fields: [userCourseId, userId], references: [id, userId], onDelete: Restrict, onUpdate: Cascade)
+
+  @@unique([id, userId], map: "recurring_class_series_id_user_id_key")
+  @@index([userId, userCourseId, startsOn, endsOn], map: "recurring_class_series_user_id_user_course_id_idx")
+  @@map("recurring_class_series")
 }
 
 model UserProfile {
