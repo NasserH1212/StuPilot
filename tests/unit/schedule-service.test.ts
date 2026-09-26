@@ -7,7 +7,10 @@ import type {
 } from "@/src/modules/schedule/application/ports/class-meeting-repository";
 import { ScheduleError } from "@/src/modules/schedule/application/schedule-error";
 import { ScheduleService } from "@/src/modules/schedule/application/schedule-service";
-import type { ClassMeetingDraft } from "@/src/modules/schedule/domain/class-meeting";
+import type {
+  ClassMeetingDraft,
+  Weekday,
+} from "@/src/modules/schedule/domain/class-meeting";
 
 const baseRecord: ClassMeetingRecord = {
   id: "018f57b5-f220-7d84-bafd-4d975e550400",
@@ -118,7 +121,6 @@ describe("schedule application service", () => {
         weekdays: baseRecord.weekdays,
         localStartTime: baseRecord.localStartTime,
         localEndTime: baseRecord.localEndTime,
-        timeZone: baseRecord.timeZone,
         location: baseRecord.location,
         meetingType: baseRecord.meetingType,
       }),
@@ -140,13 +142,34 @@ describe("schedule application service", () => {
       weekdays: [1],
       localStartTime: "13:00",
       localEndTime: "14:00",
-      timeZone: baseRecord.timeZone,
       location: null,
       meetingType: "lab",
     });
 
     expect(receivedVersion).toBe(baseRecord.version);
     expect(result).toEqual(baseRecord);
+  });
+
+  it("preserves the existing time zone on edit — it is not a user-editable field", async () => {
+    let receivedEdit: { timeZone?: string } | undefined;
+    const service = new ScheduleService(
+      repository({
+        update: async (_id, _userId, edit) => {
+          receivedEdit = edit;
+          return baseRecord;
+        },
+      }),
+    );
+
+    await service.editMeeting(baseRecord.userId, baseRecord.id, {
+      weekdays: [1],
+      localStartTime: "13:00",
+      localEndTime: "14:00",
+      location: null,
+      meetingType: "lab",
+    });
+
+    expect(receivedEdit?.timeZone).toBe(baseRecord.timeZone);
   });
 
   it("archives an owned meeting using its current version", async () => {
@@ -204,6 +227,30 @@ describe("schedule application service", () => {
       userId: baseRecord.userId,
     });
     expect(result).toHaveLength(1);
+  });
+
+  it("generates occurrences for already-fetched meetings within a resolved window", () => {
+    const service = new ScheduleService(repository());
+    const sunday = new Date("2026-09-06T00:00:00.000Z");
+
+    const occurrences = service.generateOccurrences(
+      [{ ...baseRecord, weekdays: [sunday.getUTCDay() as Weekday] }],
+      { startsOn: sunday, endsOn: sunday },
+    );
+
+    expect(occurrences).toHaveLength(1);
+    expect(occurrences[0]?.seriesId).toBe(baseRecord.id);
+  });
+
+  it("translates a null window end date to OCCURRENCE_WINDOW_END_REQUIRED", () => {
+    const service = new ScheduleService(repository());
+
+    expect(() =>
+      service.generateOccurrences([baseRecord], {
+        startsOn: new Date("2027-06-20T00:00:00.000Z"),
+        endsOn: null,
+      }),
+    ).toThrow(expect.objectContaining({ code: "OCCURRENCE_WINDOW_END_REQUIRED" }));
   });
 
   it("wraps an unexpected repository failure as a persistence-unavailable error", async () => {
