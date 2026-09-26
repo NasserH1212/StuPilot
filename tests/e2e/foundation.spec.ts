@@ -64,32 +64,57 @@ test("the shell fits a 320px viewport without horizontal overflow", async ({
   ).toBe(true);
 });
 
-test("the protected workspace fails closed without authentication configuration", async ({
+test("the protected workspace fails closed, or requires sign-in, depending on the real authentication environment", async ({
   page,
 }) => {
+  // Whether Supabase is configured (and reachable) varies with the real
+  // .env.local this suite runs against — a from-scratch checkout has none of
+  // it, a local dev environment usually has credentials but no reachable
+  // hosted project yet, and a fully qualified environment has both. Rather
+  // than assume one of those, read the actual outcome and assert the
+  // fail-closed invariant that must hold for it: the protected workspace
+  // never renders, and every redirect target is one this app is expected to
+  // produce.
   await page.setViewportSize({ width: 1440, height: 900 });
   const response = await page.goto("/en/workspace");
   expect(response?.headers()["cache-control"]).toContain("no-store");
-  await expect(page).toHaveURL(/\/en\/auth\/unavailable\?reason=configuration$/);
-  await expect(
-    page.getByRole("heading", { name: "Authentication is currently unavailable" }),
-  ).toBeVisible();
-  await expect(
-    page.getByText(/No substitute account or session was created/),
-  ).toBeVisible();
+
+  const url = new URL(page.url());
+  if (url.pathname === "/en/auth/unavailable") {
+    const reason = url.searchParams.get("reason");
+    expect(["configuration", "provider"]).toContain(reason);
+    await expect(
+      page.getByRole("heading", { name: "Authentication is currently unavailable" }),
+    ).toBeVisible();
+    if (reason === "configuration") {
+      await expect(
+        page.getByText(/No substitute account or session was created/),
+      ).toBeVisible();
+    }
+  } else {
+    await expect(page).toHaveURL(/\/en\/auth\/sign-in\?returnTo=%2Fen%2Fworkspace$/);
+  }
 });
 
-test("public authentication routes fail closed without rendering credential forms", async ({
+test("public authentication routes fail closed without configuration, and otherwise never trust the returnTo query", async ({
   page,
 }) => {
   const response = await page.goto(
     "/en/auth/sign-in?returnTo=https%3A%2F%2Fattacker.invalid",
   );
   expect(response?.headers()["cache-control"]).toContain("no-store");
-  await expect(
-    page.getByRole("heading", { name: "Authentication is currently unavailable" }),
-  ).toBeVisible();
-  await expect(page.getByLabel("Email address")).toHaveCount(0);
+
+  const unavailable = page.getByRole("heading", {
+    name: "Authentication is currently unavailable",
+  });
+  if (await unavailable.isVisible().catch(() => false)) {
+    await expect(page.getByLabel("Email address")).toHaveCount(0);
+  } else {
+    // Supabase is configured, so the real form renders; the attacker-supplied
+    // returnTo must still have been discarded for the safe workspace default.
+    await expect(page.getByLabel("Email address")).toBeVisible();
+    await expect(page.locator('input[name="returnTo"]')).toHaveValue("/en/workspace");
+  }
 });
 
 test("malformed callback links are stripped and shown as localized failures", async ({
@@ -102,15 +127,25 @@ test("malformed callback links are stripped and shown as localized failures", as
   ).toBeVisible();
 });
 
-test("the current-session API is private and unavailable without real configuration", async ({
+test("the current-session API is private and fails closed for whichever real authentication state is configured", async ({
   request,
 }) => {
   const response = await request.get("/api/v1/session");
-  expect(response.status()).toBe(503);
   expect(response.headers()["cache-control"]).toContain("no-store");
-  expect(await response.json()).toEqual({
-    error: { code: "AUTH_CONFIGURATION_UNAVAILABLE" },
-  });
+  const body = await response.json();
+
+  // A fresh Playwright context carries no session cookie, so the only valid
+  // outcomes are the three fail-closed/unauthenticated codes the route can
+  // return — never a 200 with session data.
+  const validCodes = [
+    "AUTH_CONFIGURATION_UNAVAILABLE",
+    "AUTH_PROVIDER_UNAVAILABLE",
+    "AUTHENTICATION_REQUIRED",
+  ];
+  expect(validCodes).toContain(body.error?.code);
+  expect(response.status()).toBe(
+    body.error.code === "AUTHENTICATION_REQUIRED" ? 401 : 503,
+  );
 });
 
 test("keyboard users reach a visible skip link and main content", async ({ page }) => {
