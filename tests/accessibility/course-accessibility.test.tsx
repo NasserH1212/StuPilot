@@ -49,7 +49,7 @@ describe("course accessibility", () => {
     { name: "populated list", courses: [activeCourse] },
   ] as const)("has no structural axe violations in the $name", async ({ courses }) => {
     const { container } = render(
-      <CoursesView locale="en" term={term} courses={courses} />,
+      <CoursesView locale="en" term={term} courses={courses} university={null} />,
     );
     const result = await axe.run(container, {
       rules: { "color-contrast": { enabled: false } },

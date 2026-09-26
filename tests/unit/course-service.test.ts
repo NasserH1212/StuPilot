@@ -173,6 +173,43 @@ describe("course application service", () => {
     expect(result.archivedAt).not.toBeNull();
   });
 
+  it("returns null from getCourse when the repository finds nothing", async () => {
+    const service = new CourseService(repository({ findForTerm: async () => null }));
+
+    const result = await service.getCourse(
+      baseCourse.userId,
+      baseCourse.termId,
+      baseCourse.enrollmentId,
+    );
+
+    expect(result).toBeNull();
+  });
+
+  it("getCourse scopes the lookup to the requesting user, term, and enrollment", async () => {
+    let requested: { enrollmentId?: string; userId?: string; termId?: string } = {};
+    const service = new CourseService(
+      repository({
+        findForTerm: async (enrollmentId, userId, termId) => {
+          requested = { enrollmentId, userId, termId };
+          return baseCourse;
+        },
+      }),
+    );
+
+    const result = await service.getCourse(
+      baseCourse.userId,
+      baseCourse.termId,
+      baseCourse.enrollmentId,
+    );
+
+    expect(requested).toEqual({
+      enrollmentId: baseCourse.enrollmentId,
+      userId: baseCourse.userId,
+      termId: baseCourse.termId,
+    });
+    expect(result).toEqual(baseCourse);
+  });
+
   it("scopes listing to the requesting user and term", async () => {
     let requested: { userId?: string; termId?: string } = {};
     const service = new CourseService(

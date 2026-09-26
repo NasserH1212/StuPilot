@@ -1,3 +1,6 @@
+import Link from "next/link";
+import type { Route } from "next";
+
 import { IconBook, IconCalendar, IconHome, IconPerson, IconPlus } from "../icons/icons";
 import styles from "./BottomNavigation.module.css";
 
@@ -19,7 +22,12 @@ const trailingItems: ReadonlyArray<{
 
 export interface BottomNavigationProps {
   readonly active: NavKey;
-  readonly onNavigate: (key: NavKey) => void;
+  /**
+   * Real destinations for each item. When given, items render as `next/link`
+   * anchors (actual navigation); omit only for a non-navigating demo/preview.
+   */
+  readonly hrefFor?: (key: NavKey) => Route;
+  readonly onNavigate?: (key: NavKey) => void;
   readonly captureOpen: boolean;
   readonly onToggleCapture: () => void;
   readonly className?: string;
@@ -28,24 +36,45 @@ export interface BottomNavigationProps {
 function NavItem({
   item,
   active,
+  hrefFor,
   onNavigate,
 }: {
   readonly item: { key: NavKey; label: string; Icon: typeof IconHome };
   readonly active: NavKey;
-  readonly onNavigate: (key: NavKey) => void;
+  readonly hrefFor?: ((key: NavKey) => Route) | undefined;
+  readonly onNavigate?: ((key: NavKey) => void) | undefined;
 }) {
   const { key, label, Icon } = item;
-  return (
-    <button
-      type="button"
-      className={styles.item}
-      aria-current={active === key ? "page" : undefined}
-      onClick={() => onNavigate(key)}
-    >
+  const isCurrent = active === key;
+  const content = (
+    <>
       <Icon className={styles.icon} />
       <span className={styles.label} dir="auto">
         {label}
       </span>
+    </>
+  );
+
+  if (hrefFor) {
+    return (
+      <Link
+        href={hrefFor(key)}
+        className={styles.item}
+        aria-current={isCurrent ? "page" : undefined}
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      className={styles.item}
+      aria-current={isCurrent ? "page" : undefined}
+      onClick={() => onNavigate?.(key)}
+    >
+      {content}
     </button>
   );
 }
@@ -58,6 +87,7 @@ function NavItem({
  */
 export function BottomNavigation({
   active,
+  hrefFor,
   onNavigate,
   captureOpen,
   onToggleCapture,
@@ -69,7 +99,13 @@ export function BottomNavigation({
       aria-label="التنقل الرئيسي"
     >
       {items.map((item) => (
-        <NavItem key={item.key} item={item} active={active} onNavigate={onNavigate} />
+        <NavItem
+          key={item.key}
+          item={item}
+          active={active}
+          hrefFor={hrefFor}
+          onNavigate={onNavigate}
+        />
       ))}
       <span className={styles.captureSlot}>
         <button
@@ -85,7 +121,13 @@ export function BottomNavigation({
         </button>
       </span>
       {trailingItems.map((item) => (
-        <NavItem key={item.key} item={item} active={active} onNavigate={onNavigate} />
+        <NavItem
+          key={item.key}
+          item={item}
+          active={active}
+          hrefFor={hrefFor}
+          onNavigate={onNavigate}
+        />
       ))}
     </nav>
   );

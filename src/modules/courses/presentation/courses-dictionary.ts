@@ -27,6 +27,15 @@ export interface CoursesDictionary {
   readonly archiveConfirmPrompt: string;
   readonly archiveCancel: string;
   readonly archiving: string;
+  readonly detailHeading: string;
+  readonly backToCourses: string;
+  readonly scheduleHeading: string;
+  readonly noScheduleYet: string;
+  readonly upcomingTasksHeading: string;
+  readonly upcomingExamsHeading: string;
+  readonly tasksNotYetAvailable: string;
+  readonly examsNotYetAvailable: string;
+  readonly courseNotFound: string;
   readonly errors: {
     readonly nameRequired: string;
     readonly codeTooLong: string;
@@ -65,6 +74,15 @@ const dictionaries: Record<Locale, CoursesDictionary> = {
     archiveConfirmPrompt: "ستُخفى هذه المقرر من قوائم هذا الفصل. هل تريد المتابعة؟",
     archiveCancel: "إلغاء",
     archiving: "جارٍ الأرشفة…",
+    detailHeading: "تفاصيل المقرر",
+    backToCourses: "رجوع إلى المقررات",
+    scheduleHeading: "الجدول الأسبوعي",
+    noScheduleYet: "لا توجد محاضرات مضافة لهذا المقرر بعد.",
+    upcomingTasksHeading: "المهام القادمة",
+    upcomingExamsHeading: "الاختبارات القادمة",
+    tasksNotYetAvailable: "المهام غير متاحة بعد في هذا الإصدار.",
+    examsNotYetAvailable: "الاختبارات غير متاحة بعد في هذا الإصدار.",
+    courseNotFound: "تعذر العثور على هذا المقرر.",
     errors: {
       nameRequired: "أدخل اسماً للمقرر.",
       codeTooLong: "رمز المقرر طويل جداً.",
@@ -101,6 +119,15 @@ const dictionaries: Record<Locale, CoursesDictionary> = {
     archiveConfirmPrompt: "This hides the course from this term's lists. Continue?",
     archiveCancel: "Cancel",
     archiving: "Archiving…",
+    detailHeading: "Course details",
+    backToCourses: "Back to courses",
+    scheduleHeading: "Weekly schedule",
+    noScheduleYet: "No class meetings have been added for this course yet.",
+    upcomingTasksHeading: "Upcoming tasks",
+    upcomingExamsHeading: "Upcoming exams",
+    tasksNotYetAvailable: "Tasks are not available in this release yet.",
+    examsNotYetAvailable: "Exams are not available in this release yet.",
+    courseNotFound: "This course could not be found.",
     errors: {
       nameRequired: "Enter a course name.",
       codeTooLong: "The course code is too long.",

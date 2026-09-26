@@ -24,6 +24,18 @@ export class CourseService {
     }
   }
 
+  public async getCourse(
+    userId: string,
+    termId: string,
+    enrollmentId: string,
+  ): Promise<TermCourseRecord | null> {
+    try {
+      return await this.courses.findForTerm(enrollmentId, userId, termId);
+    } catch (error) {
+      throw this.toCourseError(error);
+    }
+  }
+
   public async createCourse(
     userId: string,
     termId: string,

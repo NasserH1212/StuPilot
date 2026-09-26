@@ -1,5 +1,7 @@
 import type { SVGProps } from "react";
 
+import styles from "./icons.module.css";
+
 /**
  * Inline line icons traced from the Figma design system. All are stroke-based
  * and colored with `currentColor` so each usage site controls color (and
@@ -26,6 +28,30 @@ export function IconForwardArrow(props: IconProps) {
     <svg {...baseProps(24)} {...props}>
       <path
         d="M19 12H5M10 17L5 12L10 7"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/**
+ * Points left by default (the LTR "back" direction) and mirrors under
+ * `:dir(rtl)`, so a single icon serves both locales without a JS branch —
+ * matching the Figma "back" icon, which draws this shape and rotates it
+ * 180° specifically for its RTL demo.
+ */
+export function IconChevronBack({ className, ...props }: IconProps) {
+  return (
+    <svg
+      {...baseProps(24)}
+      className={[styles.chevronBack, className].filter(Boolean).join(" ")}
+      {...props}
+    >
+      <path
+        d="M14 6L8 12L14 18"
         stroke="currentColor"
         strokeWidth="1.8"
         strokeLinecap="round"

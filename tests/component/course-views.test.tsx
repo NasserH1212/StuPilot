@@ -51,14 +51,20 @@ const archivedCourse: TermCourseRecord = {
 
 describe("course views", () => {
   it("shows the English empty state when no courses exist", () => {
-    render(<CoursesView locale="en" term={term} courses={[]} />);
+    render(<CoursesView locale="en" term={term} courses={[]} university={null} />);
 
-    expect(screen.getByRole("heading", { name: "Fall 2026" })).toBeInTheDocument();
     expect(screen.getByText("No courses yet")).toBeInTheDocument();
   });
 
   it("lists an existing course with its code and location", () => {
-    render(<CoursesView locale="en" term={term} courses={[activeCourse]} />);
+    render(
+      <CoursesView
+        locale="en"
+        term={term}
+        courses={[activeCourse]}
+        university={null}
+      />,
+    );
 
     expect(screen.getByText("Calculus I")).toBeInTheDocument();
     expect(screen.getByText("MATH101")).toBeInTheDocument();
@@ -66,7 +72,14 @@ describe("course views", () => {
   });
 
   it("shows only the archived badge for an archived course, with no actions", () => {
-    render(<CoursesView locale="en" term={term} courses={[archivedCourse]} />);
+    render(
+      <CoursesView
+        locale="en"
+        term={term}
+        courses={[archivedCourse]}
+        university={null}
+      />,
+    );
 
     expect(screen.getByText("Archived")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Edit" })).not.toBeInTheDocument();
@@ -74,7 +87,14 @@ describe("course views", () => {
   });
 
   it("opens the edit form pre-filled with the course's current values", () => {
-    render(<CoursesView locale="en" term={term} courses={[activeCourse]} />);
+    render(
+      <CoursesView
+        locale="en"
+        term={term}
+        courses={[activeCourse]}
+        university={null}
+      />,
+    );
 
     fireEvent.click(screen.getByRole("button", { name: "Edit" }));
 
@@ -85,7 +105,14 @@ describe("course views", () => {
   });
 
   it("requires a second click to confirm archiving a course", () => {
-    render(<CoursesView locale="en" term={term} courses={[activeCourse]} />);
+    render(
+      <CoursesView
+        locale="en"
+        term={term}
+        courses={[activeCourse]}
+        university={null}
+      />,
+    );
 
     fireEvent.click(screen.getByRole("button", { name: "Archive" }));
 

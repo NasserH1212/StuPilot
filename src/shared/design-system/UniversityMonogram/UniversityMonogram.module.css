@@ -1,0 +1,23 @@
+.monogram {
+  display: inline-flex;
+  inline-size: 2rem; /* 32px */
+  block-size: 2rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-small);
+  color: var(--color-info-foreground);
+  background: var(--color-info-surface);
+  font-family: var(--font-family-ui);
+  font-size: var(--type-caption-size);
+  font-weight: 400;
+  line-height: var(--type-caption-line-height);
+}
+
+.logo {
+  inline-size: 2rem;
+  block-size: 2rem;
+  border-radius: var(--radius-small);
+  object-fit: contain;
+  background: var(--color-info-surface);
+}

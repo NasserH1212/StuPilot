@@ -1,15 +1,18 @@
 "use client";
 
+import type { Route } from "next";
 import { useActionState, useState } from "react";
 
-import { BidiIsolate } from "@/src/modules/foundation/presentation/bidi-isolate";
 import type { TermCourseRecord } from "@/src/modules/courses/application/ports/course-repository";
 import type { Locale } from "@/src/shared/localization/locales";
+import { Button, CourseListItem } from "@/src/shared/design-system";
 
 import { archiveCourseAction } from "../transport/course-actions";
 import { initialCourseActionState } from "../transport/course-action-state";
+import { resolveCourseColor } from "./course-color";
 import { courseActionMessage, getCoursesDictionary } from "./courses-dictionary";
 import { CourseEditForm } from "./course-edit-form";
+import styles from "./courses-view.module.css";
 
 type Mode = "view" | "editing" | "confirmArchive";
 
@@ -28,24 +31,24 @@ export function CourseItem({
     archiveCourseAction,
     initialCourseActionState,
   );
+  const detailHref =
+    `/${locale}/workspace/terms/${termId}/courses/${course.enrollmentId}` as Route;
 
   if (course.archivedAt) {
     return (
-      <li className="courseItem">
-        <div className="courseItemHeader">
-          <span className="courseName">
-            <BidiIsolate>{course.name}</BidiIsolate>
+      <li className={styles.archivedRow}>
+        <div className={styles.archivedHeader}>
+          <span className={styles.archivedName} dir="auto">
+            {course.name}
           </span>
-          <span className="termBadge">{dictionary.archivedBadge}</span>
+          <span className={styles.archivedBadge}>{dictionary.archivedBadge}</span>
         </div>
         {course.code || course.defaultLocation ? (
-          <p className="courseMeta">
-            {course.code ? (
-              <BidiIsolate direction="ltr">{course.code}</BidiIsolate>
-            ) : null}
+          <p className={styles.archivedMeta}>
+            {course.code ? <span dir="ltr">{course.code}</span> : null}
             {course.code && course.defaultLocation ? " · " : null}
             {course.defaultLocation ? (
-              <BidiIsolate>{course.defaultLocation}</BidiIsolate>
+              <span dir="auto">{course.defaultLocation}</span>
             ) : null}
           </p>
         ) : null}
@@ -55,7 +58,7 @@ export function CourseItem({
 
   if (mode === "editing") {
     return (
-      <li className="courseItem">
+      <li>
         <CourseEditForm
           locale={locale}
           termId={termId}
@@ -73,63 +76,56 @@ export function CourseItem({
       : null;
 
   return (
-    <li className="courseItem">
-      <div className="courseItemHeader">
-        <span className="courseName">
-          <BidiIsolate>{course.name}</BidiIsolate>
-        </span>
-      </div>
-      {course.code || course.defaultLocation ? (
-        <p className="courseMeta">
-          {course.code ? (
-            <BidiIsolate direction="ltr">{course.code}</BidiIsolate>
-          ) : null}
-          {course.code && course.defaultLocation ? " · " : null}
-          {course.defaultLocation ? (
-            <BidiIsolate>{course.defaultLocation}</BidiIsolate>
-          ) : null}
-        </p>
-      ) : null}
+    <li className={styles.item}>
+      <CourseListItem
+        href={detailHref}
+        title={course.name}
+        meta={course.defaultLocation}
+        color={resolveCourseColor(course.colorToken, course.courseId)}
+        courseCode={course.code}
+      />
 
-      <div className="termActions">
-        <button
-          type="button"
-          className="secondaryAction"
-          onClick={() => setMode("editing")}
-        >
+      <div className={styles.actions}>
+        <Button type="button" variant="secondary" onClick={() => setMode("editing")}>
           {dictionary.editAction}
-        </button>
+        </Button>
 
         {mode === "confirmArchive" ? (
-          <form action={archiveAction} className="termActions">
+          <form action={archiveAction} className={styles.confirmRow}>
             <input name="locale" type="hidden" value={locale} />
             <input name="termId" type="hidden" value={termId} />
             <input name="enrollmentId" type="hidden" value={course.enrollmentId} />
-            <span role="status">{dictionary.archiveConfirmPrompt}</span>
-            <button className="primaryAction" type="submit" disabled={archivePending}>
-              {archivePending ? dictionary.archiving : dictionary.archiveConfirm}
-            </button>
-            <button
+            <span className={styles.confirmPrompt} role="status">
+              {dictionary.archiveConfirmPrompt}
+            </span>
+            <Button
+              type="submit"
+              loading={archivePending}
+              loadingLabel={dictionary.archiving}
+            >
+              {dictionary.archiveConfirm}
+            </Button>
+            <Button
               type="button"
-              className="secondaryAction"
+              variant="secondary"
               onClick={() => setMode("view")}
               disabled={archivePending}
             >
               {dictionary.archiveCancel}
-            </button>
+            </Button>
           </form>
         ) : (
-          <button
+          <Button
             type="button"
-            className="secondaryAction"
+            variant="secondary"
             onClick={() => setMode("confirmArchive")}
           >
             {dictionary.archiveAction}
-          </button>
+          </Button>
         )}
       </div>
 
-      <div className="authMessage" role="status" aria-live="polite">
+      <div className={styles.statusMessage} role="status" aria-live="polite">
         {statusMessage}
       </div>
     </li>

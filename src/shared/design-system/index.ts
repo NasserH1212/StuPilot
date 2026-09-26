@@ -1,6 +1,9 @@
 export { Button } from "./Button/Button";
 export type { ButtonProps, ButtonVariant } from "./Button/Button";
 
+export { LinkButton } from "./Button/LinkButton";
+export type { LinkButtonProps } from "./Button/LinkButton";
+
 export { Spinner } from "./Spinner/Spinner";
 
 export { Input } from "./Input/Input";
@@ -56,8 +59,26 @@ export type {
   NavKey,
 } from "./BottomNavigation/BottomNavigation";
 
+export { AppHeader } from "./AppHeader/AppHeader";
+export type { AppHeaderProps } from "./AppHeader/AppHeader";
+
+export { UniversityMonogram } from "./UniversityMonogram/UniversityMonogram";
+export type { UniversityMonogramProps } from "./UniversityMonogram/UniversityMonogram";
+
+export { IconButton } from "./IconButton/IconButton";
+export type { IconButtonProps } from "./IconButton/IconButton";
+
+export { CourseListItem } from "./CourseListItem/CourseListItem";
+export type { CourseListItemProps } from "./CourseListItem/CourseListItem";
+
 export { ThemeProvider, useTheme } from "./theme/theme-context";
 export type { ResolvedTheme, ThemePreference } from "./theme/theme-context";
 export { themeBootScript } from "./theme/theme-script";
 
-export { fontVariables, notoSans, notoSansArabic } from "./fonts";
+export { IconChevronBack } from "./icons/icons";
+
+// `fonts.ts` is deliberately NOT re-exported here: it calls `next/font/google`
+// at module scope, which only works inside Next's build pipeline. Pulling it
+// into this barrel would make every consumer (including component/a11y
+// tests running under plain Vitest) transitively import it and crash. The
+// root layout imports `@/src/shared/design-system/fonts` directly instead.

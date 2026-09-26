@@ -1,0 +1,3 @@
+.chevronBack:dir(rtl) {
+  transform: scaleX(-1);
+}

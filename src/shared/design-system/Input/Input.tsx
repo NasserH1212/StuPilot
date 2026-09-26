@@ -1,26 +1,32 @@
 import { useId } from "react";
-import type { InputHTMLAttributes } from "react";
+import type { InputHTMLAttributes, Ref } from "react";
 
 import styles from "./Input.module.css";
 
-export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "id"> {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   readonly label: string;
-  readonly help?: string;
-  readonly error?: string;
+  readonly help?: string | undefined;
+  readonly error?: string | undefined;
+  readonly ref?: Ref<HTMLInputElement> | undefined;
 }
 
-export function Input({ label, help, error, className, ...rest }: InputProps) {
+export function Input({ label, help, error, className, id, ref, ...rest }: InputProps) {
   const generatedId = useId();
-  const id = rest.name ?? generatedId;
-  const helpId = help || error ? `${id}-help` : undefined;
+  // Falling back to `name` alone isn't unique enough when the same field
+  // name (e.g. "name") can render in more than one form on the same page
+  // (a create form alongside an open edit form) — an explicit `id` or the
+  // generated one avoids colliding label/input associations.
+  const resolvedId = id ?? (rest.name ? `${rest.name}-${generatedId}` : generatedId);
+  const helpId = help || error ? `${resolvedId}-help` : undefined;
 
   return (
     <div className={[styles.field, className].filter(Boolean).join(" ")}>
-      <label className={styles.label} htmlFor={id} dir="auto">
+      <label className={styles.label} htmlFor={resolvedId} dir="auto">
         {label}
       </label>
       <input
-        id={id}
+        ref={ref}
+        id={resolvedId}
         className={styles.control}
         dir="auto"
         aria-invalid={Boolean(error)}
