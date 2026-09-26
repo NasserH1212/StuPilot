@@ -44,12 +44,16 @@ export function TermCreateForm({
   const selectedPublishedTerm = publishedTerms.find(
     (term) => term.id === publishedChoice,
   );
-  const datesReadOnly = Boolean(selectedPublishedTerm);
+  const startReadOnly = Boolean(selectedPublishedTerm);
+  // The university's end date may not be published yet (endsOn is then
+  // null); a student's own term still requires one, so it stays editable.
+  const endReadOnly = Boolean(selectedPublishedTerm?.endsOn);
 
   function choosePublishedTerm(term: UniversityTermRecord): void {
     setPublishedChoice(term.id);
     if (startRef.current) startRef.current.value = toDateInputValue(term.startsOn);
-    if (endRef.current) endRef.current.value = toDateInputValue(term.endsOn);
+    if (endRef.current)
+      endRef.current.value = term.endsOn ? toDateInputValue(term.endsOn) : "";
   }
 
   const fieldErrors = state.fieldErrors ?? {};
@@ -128,7 +132,7 @@ export function TermCreateForm({
             dir="ltr"
             required
             ref={startRef}
-            readOnly={datesReadOnly}
+            readOnly={startReadOnly}
             aria-invalid={fieldErrors.startsOn ? true : undefined}
             aria-describedby={fieldErrors.startsOn ? "term-start-error" : undefined}
           />
@@ -148,7 +152,7 @@ export function TermCreateForm({
             dir="ltr"
             required
             ref={endRef}
-            readOnly={datesReadOnly}
+            readOnly={endReadOnly}
             aria-invalid={fieldErrors.endsOn ? true : undefined}
             aria-describedby={fieldErrors.endsOn ? "term-end-error" : undefined}
           />

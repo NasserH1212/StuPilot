@@ -17,6 +17,7 @@ export interface TermsDictionary {
   readonly activeLabel: string;
   readonly publishedTermsLegend: string;
   readonly publishedTermManualOption: string;
+  readonly publishedTermNotAnnouncedYet: string;
   readonly termSlotLabels: Readonly<Record<UniversityTermSlot, string>>;
   readonly submit: string;
   readonly submitting: string;
@@ -66,6 +67,7 @@ const dictionaries: Record<Locale, TermsDictionary> = {
     activeLabel: "اجعله الفصل النشط",
     publishedTermsLegend: "فصل جامعتك المعتمد",
     publishedTermManualOption: "إدخال التواريخ يدوياً",
+    publishedTermNotAnnouncedYet: "لم يُعلن بعد",
     termSlotLabels: {
       first: "الفصل الأول",
       second: "الفصل الثاني",
@@ -118,6 +120,7 @@ const dictionaries: Record<Locale, TermsDictionary> = {
     activeLabel: "Make this the active term",
     publishedTermsLegend: "Your university's published term",
     publishedTermManualOption: "Enter dates manually",
+    publishedTermNotAnnouncedYet: "not announced yet",
     termSlotLabels: {
       first: "First term",
       second: "Second term",
@@ -172,11 +175,14 @@ export function publishedTermOptionLabel(
     readonly term: UniversityTermSlot;
     readonly academicYear: number;
     readonly startsOn: Date;
-    readonly endsOn: Date;
+    readonly endsOn: Date | null;
   },
 ): string {
   const slot = dictionary.termSlotLabels[term.term];
-  return `${slot} ${term.academicYear} (${toDateLabel(term.startsOn)} ${dictionary.datesSeparator} ${toDateLabel(term.endsOn)})`;
+  const endLabel = term.endsOn
+    ? toDateLabel(term.endsOn)
+    : dictionary.publishedTermNotAnnouncedYet;
+  return `${slot} ${term.academicYear} (${toDateLabel(term.startsOn)} ${dictionary.datesSeparator} ${endLabel})`;
 }
 
 export function termActionMessage(

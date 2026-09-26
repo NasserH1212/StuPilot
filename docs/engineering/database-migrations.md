@@ -106,6 +106,25 @@ universities; `logo_path` is null for all of them until logo files are added und
 confirmed applied. `prisma/recovery/20260926000000_universities.rollback.sql` is a
 manual, data-destructive reference for a verified empty/disposable target only.
 
+## University of Hail 1448 calendar migration
+
+`20260926020000_university_of_hail_1448_calendar` seeds the University of
+Hail's official 1448 academic calendar (source cited in the migration file)
+into `university_terms` and a new `university_breaks` table. The summer
+term's end date is not published yet, so this migration also drops the
+`NOT NULL` constraint on `university_terms.ends_on`; the existing
+`ends_on >= starts_on` check already tolerates a `NULL` operand under
+PostgreSQL's three-valued check evaluation, so it needed no change.
+`university_breaks` (official recesses — academic year, name, start/end,
+resumption date) is read-only reference data seeded via migration; nothing
+in the application reads it yet, since it exists for Slice C's future
+class-schedule feature to hide occurrences during a break. Like the
+universities migration above, this one was run via `npm run db:migrate:deploy`
+against the project's real Supabase database and confirmed applied.
+`prisma/recovery/20260926020000_university_of_hail_1448_calendar.rollback.sql`
+is a manual, data-destructive reference for a verified empty/disposable
+target only.
+
 ## Current technical table
 
 `_foundation_health_checks` proves migration execution, UUID/default mapping, generated client use, transactions, and cleanup. It contains only `id`, `checked_at`, and a test marker. Do not add product or user fields to it.

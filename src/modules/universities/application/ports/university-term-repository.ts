@@ -8,7 +8,8 @@ export interface UniversityTermRecord {
   readonly academicYear: number;
   readonly term: UniversityTermSlot;
   readonly startsOn: Date;
-  readonly endsOn: Date;
+  /** Null when the university has not yet published this term's end date. */
+  readonly endsOn: Date | null;
 }
 
 export interface UniversityTermRepository {

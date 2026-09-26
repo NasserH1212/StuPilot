@@ -11,7 +11,7 @@ interface UniversityTermRow {
   readonly academicYear: number;
   readonly term: UniversityTermRecord["term"];
   readonly startsOn: Date;
-  readonly endsOn: Date;
+  readonly endsOn: Date | null;
 }
 
 function toRecord(row: UniversityTermRow): UniversityTermRecord {

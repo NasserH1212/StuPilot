@@ -129,16 +129,17 @@ model UserProfile {
 // (Slice B — academic foundation). Read-only reference data: seeded and
 // maintained via migrations, not through in-app CRUD.
 model University {
-  id        String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  nameAr    String           @map("name_ar") @db.VarChar(160)
-  nameEn    String           @map("name_en") @db.VarChar(160)
-  shortName String           @map("short_name") @db.VarChar(32)
-  logoPath  String?          @map("logo_path") @db.VarChar(255)
-  active    Boolean          @default(true)
-  createdAt DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  id        String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nameAr    String            @map("name_ar") @db.VarChar(160)
+  nameEn    String            @map("name_en") @db.VarChar(160)
+  shortName String            @map("short_name") @db.VarChar(32)
+  logoPath  String?           @map("logo_path") @db.VarChar(255)
+  active    Boolean           @default(true)
+  createdAt DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
   profiles  UserProfile[]
   terms     UniversityTerm[]
+  breaks    UniversityBreak[]
 
   @@map("universities")
 }
@@ -162,7 +163,7 @@ model UniversityTerm {
   academicYear Int                @map("academic_year")
   term         UniversityTermSlot
   startsOn     DateTime           @map("starts_on") @db.Date
-  endsOn       DateTime           @map("ends_on") @db.Date
+  endsOn       DateTime?          @map("ends_on") @db.Date
   createdAt    DateTime           @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt    DateTime           @updatedAt @map("updated_at") @db.Timestamptz(3)
   university   University         @relation(fields: [universityId], references: [id], onDelete: Restrict, onUpdate: Cascade)
@@ -170,6 +171,28 @@ model UniversityTerm {
   @@unique([universityId, academicYear, term], map: "university_terms_university_id_academic_year_term_key")
   @@index([universityId, academicYear], map: "university_terms_university_id_idx")
   @@map("university_terms")
+}
+
+// Official recesses within a university's academic calendar (Slice C —
+// university catalog and calendars). Read-only reference data supplied by the
+// owner via migrations. Not consumed anywhere yet; Slice C's class-schedule
+// feature will use it to hide occurrences during a break.
+model UniversityBreak {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  universityId String     @map("university_id") @db.Uuid
+  academicYear Int        @map("academic_year")
+  nameAr       String     @map("name_ar") @db.VarChar(120)
+  nameEn       String     @map("name_en") @db.VarChar(120)
+  startsOn     DateTime   @map("starts_on") @db.Date
+  endsOn       DateTime   @map("ends_on") @db.Date
+  resumesOn    DateTime   @map("resumes_on") @db.Date
+  createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime   @updatedAt @map("updated_at") @db.Timestamptz(3)
+  university   University @relation(fields: [universityId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@unique([universityId, academicYear, nameEn], map: "university_breaks_university_id_academic_year_name_en_key")
+  @@index([universityId, academicYear], map: "university_breaks_university_id_idx")
+  @@map("university_breaks")
 }
 
 // Technical-only Sprint 0 compatibility record. This is not a product entity.

@@ -23,6 +23,15 @@ const publishedTerm: UniversityTermRecord = {
   endsOn: new Date("2026-12-15T00:00:00.000Z"),
 };
 
+const unpublishedEndTerm: UniversityTermRecord = {
+  id: "018f57b5-f220-7d84-bafd-4d975e550302",
+  universityId: "018f57b5-f220-7d84-bafd-4d975e550101",
+  academicYear: 1448,
+  term: "summer",
+  startsOn: new Date("2027-06-20T00:00:00.000Z"),
+  endsOn: null,
+};
+
 const activeTerm: TermRecord = {
   id: "018f57b5-f220-7d84-bafd-4d975e550100",
   userId: "018f57b5-f220-7d84-bafd-4d975e550001",
@@ -152,5 +161,20 @@ describe("academic term views", () => {
     fireEvent.click(screen.getByLabelText("Enter dates manually"));
 
     expect(screen.getByLabelText("Start date")).not.toHaveAttribute("readonly");
+  });
+
+  it("labels an unpublished end date and leaves it editable for manual entry", () => {
+    render(<TermCreateForm locale="en" publishedTerms={[unpublishedEndTerm]} />);
+
+    expect(screen.getByLabelText(/not announced yet/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByLabelText(/not announced yet/));
+
+    const startInput = screen.getByLabelText("Start date");
+    const endInput = screen.getByLabelText("End date");
+    expect(startInput).toHaveValue("2027-06-20");
+    expect(startInput).toHaveAttribute("readonly");
+    expect(endInput).toHaveValue("");
+    expect(endInput).not.toHaveAttribute("readonly");
   });
 });
