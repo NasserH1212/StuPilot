@@ -1,0 +1,53 @@
+.tag {
+  display: inline-flex;
+  block-size: 1.75rem; /* 28px */
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-1);
+  border-radius: var(--radius-small);
+  font-family: var(--font-family-ui);
+  font-size: var(--type-caption-size);
+  font-weight: 400;
+  line-height: var(--type-caption-line-height);
+  white-space: nowrap;
+}
+
+.blue {
+  color: var(--color-course-blue-foreground);
+  background: var(--color-course-blue-surface);
+}
+
+.teal {
+  color: var(--color-course-teal-foreground);
+  background: var(--color-course-teal-surface);
+}
+
+.violet {
+  color: var(--color-course-violet-foreground);
+  background: var(--color-course-violet-surface);
+}
+
+.rose {
+  color: var(--color-course-rose-foreground);
+  background: var(--color-course-rose-surface);
+}
+
+.amber {
+  color: var(--color-course-amber-foreground);
+  background: var(--color-course-amber-surface);
+}
+
+.orange {
+  color: var(--color-course-orange-foreground);
+  background: var(--color-course-orange-surface);
+}
+
+.green {
+  color: var(--color-course-green-foreground);
+  background: var(--color-course-green-surface);
+}
+
+.slate {
+  color: var(--color-course-slate-foreground);
+  background: var(--color-course-slate-surface);
+}

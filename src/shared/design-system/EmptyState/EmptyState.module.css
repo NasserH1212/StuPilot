@@ -1,0 +1,35 @@
+.state {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border-radius: var(--radius-large);
+  background: var(--color-surface);
+  text-align: center;
+}
+
+.glyph {
+  color: var(--color-accent);
+  font-family: var(--font-family-ui);
+  font-size: var(--type-heading-1-size);
+  font-weight: 600;
+  line-height: var(--type-heading-1-line-height);
+}
+
+.title {
+  color: var(--color-text);
+  font-family: var(--font-family-ui);
+  font-size: var(--type-heading-3-size);
+  font-weight: 600;
+  line-height: var(--type-heading-3-line-height);
+  max-inline-size: 20ch;
+}
+
+.description {
+  color: var(--color-text-muted);
+  font-family: var(--font-family-ui);
+  font-size: var(--type-body-small-size);
+  font-weight: 400;
+  line-height: var(--type-body-small-line-height);
+  max-inline-size: 32ch;
+}

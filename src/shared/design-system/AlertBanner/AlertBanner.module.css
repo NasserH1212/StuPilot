@@ -1,0 +1,64 @@
+.banner {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid;
+  border-radius: var(--radius-medium);
+  font-family: var(--font-family-ui);
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+.body {
+  display: grid;
+  flex: 1 0 0;
+  gap: var(--space-1);
+  min-inline-size: 0;
+  text-align: start;
+}
+
+.title {
+  font-size: var(--type-label-size);
+  font-weight: 500;
+  line-height: var(--type-label-line-height);
+}
+
+.message {
+  font-size: var(--type-caption-size);
+  font-weight: 400;
+  line-height: var(--type-caption-line-height);
+}
+
+.info {
+  align-items: center;
+  border-color: var(--color-info-foreground);
+  color: var(--color-info-foreground);
+  background: var(--color-info-surface);
+}
+
+.success {
+  border-color: var(--color-success-foreground);
+  color: var(--color-success-foreground);
+  background: var(--color-success-surface);
+}
+
+.warning {
+  border-color: var(--color-warning-foreground);
+  color: var(--color-warning-foreground);
+  background: var(--color-warning-surface);
+}
+
+.danger {
+  border-color: var(--color-danger-foreground);
+  color: var(--color-danger-foreground);
+  background: var(--color-danger-surface);
+}
+
+.break {
+  align-items: flex-start;
+  border-color: var(--color-info-foreground);
+  color: var(--color-info-foreground);
+  background: var(--color-info-surface);
+}

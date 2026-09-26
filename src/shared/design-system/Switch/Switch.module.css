@@ -1,0 +1,55 @@
+.control {
+  display: inline-flex;
+  min-block-size: 2.75rem; /* 44px tappable target */
+  min-inline-size: 4rem; /* 64px */
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.control:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.control:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.track {
+  position: relative;
+  inline-size: 3.25rem; /* 52px */
+  block-size: 2rem; /* 32px */
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-subtle);
+}
+
+.control[aria-checked="true"] .track {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+}
+
+.thumb {
+  position: absolute;
+  inset-block-start: 0.25rem;
+  inset-inline-start: 0.25rem;
+  inline-size: 1.5rem; /* 24px */
+  block-size: 1.5rem;
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  transition: inset-inline-start 180ms ease-out;
+}
+
+.control[aria-checked="true"] .thumb {
+  inset-inline-start: 1.5rem; /* 52 - 24 - 4 */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumb {
+    transition: none;
+  }
+}

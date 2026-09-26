@@ -1,0 +1,42 @@
+.option {
+  display: inline-flex;
+  min-block-size: 3rem; /* 48px */
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-small);
+  cursor: pointer;
+}
+
+.option:has(.nativeInput:disabled) {
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+.option:has(.nativeInput:focus-visible) {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.nativeInput {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.label {
+  flex: 1 0 auto;
+  font-family: var(--font-family-ui);
+  font-size: var(--type-label-size);
+  font-weight: 500;
+  line-height: var(--type-label-line-height);
+  color: inherit;
+  text-align: start;
+}
+
+.indicator {
+  flex-shrink: 0;
+}

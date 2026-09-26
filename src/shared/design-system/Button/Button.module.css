@@ -1,0 +1,120 @@
+.button {
+  position: relative;
+  display: inline-flex;
+  min-block-size: 3rem; /* 48px */
+  min-inline-size: 2.75rem; /* 44px target */
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding-inline: var(--space-4);
+  border: 0;
+  font: inherit;
+  font-family: var(--font-family-ui);
+  font-size: var(--type-label-size);
+  font-weight: 500;
+  line-height: var(--type-label-line-height);
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease-out,
+    filter 120ms ease-out,
+    opacity 120ms ease-out;
+}
+
+.fullWidth {
+  inline-size: 100%;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.button:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+}
+
+/* Primary */
+.primary {
+  border-radius: var(--radius-medium);
+  color: var(--color-accent-text);
+  background: var(--color-accent);
+}
+
+.primary:hover:not(:disabled) {
+  background: var(--color-accent-strong);
+}
+
+.primary:active:not(:disabled) {
+  filter: brightness(0.94);
+}
+
+/* Secondary */
+.secondary {
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-full);
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+.secondary:hover:not(:disabled) {
+  background: var(--color-surface-subtle);
+}
+
+.secondary:active:not(:disabled) {
+  filter: brightness(0.97);
+}
+
+/* Danger — original drawing; not adapted from a third-party source */
+.danger {
+  gap: 0;
+  padding-inline: 0;
+  border-radius: var(--radius-medium);
+  color: var(--color-danger-surface);
+  background: var(--color-danger-foreground);
+}
+
+.danger .dangerLabel {
+  flex: 1 0 auto;
+  padding-inline: var(--space-4);
+}
+
+.danger .dangerSegment {
+  display: inline-flex;
+  block-size: 100%;
+  min-inline-size: 2.75rem; /* 44px */
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-inline-start: 1px solid var(--color-danger-surface);
+  transition: background-color 120ms ease-out;
+}
+
+.danger:active:not(:disabled) .dangerSegment {
+  background: rgb(255 255 255 / 12%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .danger .dangerSegment {
+    transition: none;
+  }
+}
+
+.loadingBubble {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+}

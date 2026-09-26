@@ -1,0 +1,50 @@
+.skeleton {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface);
+}
+
+.bar {
+  block-size: 1rem;
+  border-radius: var(--radius-small);
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-subtle) 0%,
+    var(--color-divider) 50%,
+    var(--color-surface-subtle) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s linear infinite;
+}
+
+.bar:first-child {
+  block-size: 1.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    animation: none;
+    background: var(--color-surface-subtle);
+  }
+}
+
+@keyframes skeleton-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+.visuallyHidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

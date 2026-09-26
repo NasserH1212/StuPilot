@@ -1,0 +1,206 @@
+/*
+ * Design tokens mapped from Figma (StuPilot / Design System, file 8Gc1tSgSYENW3CrRu2UkXR).
+ * Names mirror the Figma variable names (color/*, space/*, radius/*, type/*, elevation/*).
+ * Light values are the default; dark values apply under `prefers-color-scheme: dark`
+ * (system default) and are pinned by `[data-theme="dark"]` / `[data-theme="light"]`
+ * once a person picks an explicit preference.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* color/* — neutral + brand */
+  --color-canvas: #f7f8fc;
+  --color-surface: #ffffff;
+  --color-surface-subtle: #eaf0f8;
+  --color-divider: #dde4ef;
+  --color-text: #172033;
+  --color-text-muted: #4b5870;
+  --color-border: #697a94;
+  --color-accent: #174ea6;
+  --color-accent-strong: #123b7c;
+  --color-accent-text: #ffffff;
+  --color-focus: #b54708;
+
+  /* color/* — semantic */
+  --color-success-foreground: #146536;
+  --color-success-surface: #eaf7ef;
+  --color-warning-foreground: #805000;
+  --color-warning-surface: #fff3da;
+  --color-danger-foreground: #a42227;
+  --color-danger-surface: #fff0f0;
+  --color-info-foreground: #174ea6;
+  --color-info-surface: #eaf0f8;
+
+  /* color/course/* — AA-contrast pairs; always shown with the course name/code, never alone */
+  --color-course-blue-foreground: #174ea6;
+  --color-course-blue-surface: #eaf1fc;
+  --color-course-teal-foreground: #006a65;
+  --color-course-teal-surface: #e4f5f1;
+  --color-course-violet-foreground: #6635a4;
+  --color-course-violet-surface: #f2eafc;
+  --color-course-rose-foreground: #a22561;
+  --color-course-rose-surface: #fceaf3;
+  --color-course-amber-foreground: #805000;
+  --color-course-amber-surface: #fff3da;
+  --color-course-orange-foreground: #a13f16;
+  --color-course-orange-surface: #fff0e7;
+  --color-course-green-foreground: #336729;
+  --color-course-green-surface: #edf6e7;
+  --color-course-slate-foreground: #475569;
+  --color-course-slate-surface: #eff2f7;
+
+  /* space/* */
+  --space-0: 0rem;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* radius/* */
+  --radius-none: 0rem;
+  --radius-small: 0.5rem;
+  --radius-medium: 0.875rem;
+  --radius-large: 1.5rem;
+  --radius-full: 999px;
+
+  /* elevation/* — theme-independent drop shadows */
+  --elevation-0: none;
+  --elevation-1: 0 0.125rem 0.5rem rgb(10 20 38 / 8%);
+  --elevation-2: 0 0.5rem 1.25rem rgb(10 20 38 / 12%);
+  --elevation-3: 0 1rem 2rem rgb(10 20 38 / 16%);
+  --shadow-soft: var(--elevation-2);
+
+  /* font/family */
+  --font-family-ui:
+    var(--font-noto-sans-arabic), var(--font-noto-sans), "Segoe UI", Tahoma, Arial,
+    sans-serif;
+
+  /* type/* — size + line-height pairs; weight applied per role (400/500/600) */
+  --type-display-size: 2.5rem;
+  --type-display-line-height: 3.5rem;
+  --type-heading-1-size: 2rem;
+  --type-heading-1-line-height: 2.75rem;
+  --type-heading-2-size: 1.5rem;
+  --type-heading-2-line-height: 2.25rem;
+  --type-heading-3-size: 1.25rem;
+  --type-heading-3-line-height: 1.875rem;
+  --type-title-size: 1.125rem;
+  --type-title-line-height: 1.75rem;
+  --type-body-large-size: 1.125rem;
+  --type-body-large-line-height: 1.875rem;
+  --type-body-size: 1rem;
+  --type-body-line-height: 1.625rem;
+  --type-body-small-size: 0.875rem;
+  --type-body-small-line-height: 1.375rem;
+  --type-label-size: 0.875rem;
+  --type-label-line-height: 1.375rem;
+  --type-caption-size: 0.75rem;
+  --type-caption-line-height: 1.25rem;
+  --type-countdown-size: 1.75rem;
+  --type-countdown-line-height: 2.375rem;
+
+  --content-width: 72rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --color-canvas: #101827;
+    --color-surface: #192438;
+    --color-surface-subtle: #23334b;
+    --color-divider: #34445c;
+    --color-text: #f3f6fb;
+    --color-text-muted: #b9c6d9;
+    --color-border: #8193ac;
+    --color-accent: #a8caff;
+    --color-accent-strong: #d6e6ff;
+    --color-accent-text: #102a50;
+    --color-focus: #ffc27a;
+
+    --color-success-foreground: #82e2a6;
+    --color-success-surface: #153c2b;
+    --color-warning-foreground: #ffd084;
+    --color-warning-surface: #42321c;
+    --color-danger-foreground: #ffadb2;
+    --color-danger-surface: #47272f;
+    --color-info-foreground: #a8caff;
+    --color-info-surface: #1d3454;
+
+    --color-course-blue-foreground: #a8caff;
+    --color-course-blue-surface: #1c3555;
+    --color-course-teal-foreground: #7addd2;
+    --color-course-teal-surface: #143c3c;
+    --color-course-violet-foreground: #d2b2ff;
+    --color-course-violet-surface: #36264d;
+    --color-course-rose-foreground: #ffacd2;
+    --color-course-rose-surface: #47263b;
+    --color-course-amber-foreground: #ffd084;
+    --color-course-amber-surface: #42321c;
+    --color-course-orange-foreground: #ffba97;
+    --color-course-orange-surface: #472c22;
+    --color-course-green-foreground: #ade092;
+    --color-course-green-surface: #283c25;
+    --color-course-slate-foreground: #ced8e8;
+    --color-course-slate-surface: #2d394c;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-canvas: #101827;
+  --color-surface: #192438;
+  --color-surface-subtle: #23334b;
+  --color-divider: #34445c;
+  --color-text: #f3f6fb;
+  --color-text-muted: #b9c6d9;
+  --color-border: #8193ac;
+  --color-accent: #a8caff;
+  --color-accent-strong: #d6e6ff;
+  --color-accent-text: #102a50;
+  --color-focus: #ffc27a;
+
+  --color-success-foreground: #82e2a6;
+  --color-success-surface: #153c2b;
+  --color-warning-foreground: #ffd084;
+  --color-warning-surface: #42321c;
+  --color-danger-foreground: #ffadb2;
+  --color-danger-surface: #47272f;
+  --color-info-foreground: #a8caff;
+  --color-info-surface: #1d3454;
+
+  --color-course-blue-foreground: #a8caff;
+  --color-course-blue-surface: #1c3555;
+  --color-course-teal-foreground: #7addd2;
+  --color-course-teal-surface: #143c3c;
+  --color-course-violet-foreground: #d2b2ff;
+  --color-course-violet-surface: #36264d;
+  --color-course-rose-foreground: #ffacd2;
+  --color-course-rose-surface: #47263b;
+  --color-course-amber-foreground: #ffd084;
+  --color-course-amber-surface: #42321c;
+  --color-course-orange-foreground: #ffba97;
+  --color-course-orange-surface: #472c22;
+  --color-course-green-foreground: #ade092;
+  --color-course-green-surface: #283c25;
+  --color-course-slate-foreground: #ced8e8;
+  --color-course-slate-surface: #2d394c;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-scale: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    --motion-scale: 1;
+  }
+}

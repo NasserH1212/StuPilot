@@ -1,0 +1,8 @@
+.range {
+  font-family: var(--font-family-ui);
+  font-size: var(--type-body-small-size);
+  font-weight: 400;
+  line-height: var(--type-body-small-line-height);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
